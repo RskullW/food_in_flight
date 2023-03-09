@@ -1,0 +1,44 @@
+version: '3.7'
+
+volumes:
+  pgdata:
+# tar backup: docker run --rm -v pgdata:/dbdata -v $(pwd):/backup alpine tar cvf /backup/backup.tar /dbdata
+# untar backup: docker run --rm -v pgdata:/dbdata -v $(pwd):/backup alpine bash -c "cd /dbdata && tar xvf /backup/backup.tar --strip 1"
+
+networks:
+  backnet:
+    driver: bridge
+    internal: true
+  frontnet:
+    driver: bridge
+
+services:
+  foodinflight_postgres:
+    container_name: foodinflight_postgres
+    image: postgres:alpine
+    command:
+      - "postgres"
+      - "-c"
+      - "config_file=/etc/postgresql.conf"
+    environment:
+      POSTGRES_DB: "${POSTGRES_NAME}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data            # docker volume usage
+      - ./postgresql.conf:/etc/postgresql.conf
+      - ./logs:/logs
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_NAME}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: unless-stopped
+    networks:
+      - frontnet
+
