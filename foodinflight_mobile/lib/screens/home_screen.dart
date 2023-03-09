@@ -2,8 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
-import 'package:mobile/components/product.dart';
-import 'package:mobile/components/product_grid.dart';
+import 'package:mobile/products/categories.dart';
+import 'package:mobile/products/product.dart';
+import 'package:mobile/products/product_grid.dart';
 import 'package:mobile/components/colors.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -23,29 +24,44 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _products = [
       Product(
-        name: "Серёжа, иди нахуй",
-        price: 10000000000000000000000,
-        imageUrl: "https://picsum.photos/200/300",
+        Name: "Name",
+        Price: 100,
+        ImageUrl: "https://picsum.photos/200/300",
+        productCategory: ProductCategory.DRINK,
+        Weight: 300,
+        Description: "Description text",
       ),
       Product(
-        name: "Харам с соусом",
-        price: 100,
-        imageUrl: "https://picsum.photos/200/300",
+        Name: "Name",
+        Price: 100,
+        ImageUrl: "https://picsum.photos/200/300",
+        Description: "Description text",
+        Weight: 500,
+        productCategory: ProductCategory.FOOD,
       ),
       Product(
-        name: "Харам с соусом",
-        price: 100,
-        imageUrl: "https://picsum.photos/200/300",
+        Name: "Name",
+        Price: 100,
+        ImageUrl: "https://picsum.photos/200/300",
+        productCategory: ProductCategory.DRINK,
+        Weight: 1500,
+        Description: "Description text",
       ),
       Product(
-        name: "Харам с соусом",
-        price: 100,
-        imageUrl: "https://picsum.photos/200/300",
+        Name: "Name",
+        Price: 100,
+        ImageUrl: "https://picsum.photos/200/300",
+        Weight: 50,
+        Description: "Description text",
+        productCategory: ProductCategory.FOOD,
       ),
       Product(
-        name: "Харам с соусом",
-        price: 100,
-        imageUrl: "https://picsum.photos/200/300",
+        Name: "Name",
+        Price: 100,
+        ImageUrl: "https://picsum.photos/200/300",
+        productCategory: ProductCategory.DRINK,
+        Weight: 500,
+        Description: "Description text",
       )
     ];
     _productGrid = ProductGrid(products: _products);

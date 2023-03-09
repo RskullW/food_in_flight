@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:mobile/components/product.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/products/categories.dart';
+import 'package:mobile/products/product.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
@@ -24,6 +25,24 @@ class ProductGrid extends StatelessWidget {
             physics: NeverScrollableScrollPhysics(),
             itemBuilder: (context, index) {
               final product = products[index];
+              String description;
+
+              switch (product.productCategory) {
+                case ProductCategory.DRINK:
+                  double liters = product.Weight / 1000;
+                  description = liters.toStringAsFixed(
+                          liters.truncateToDouble() == liters ? 0 : 1) +
+                      'л';
+                  break;
+                case ProductCategory.FOOD:
+                  int grams = product.Weight.toInt();
+                  description = grams > 1000
+                      ? (grams ~/ 1000).toString() + 'кг'
+                      : grams.toString() + 'г';
+                  break;
+                default:
+                  description = 'NaN';
+              }
               return Container(
                 margin: EdgeInsets.all(5),
                 decoration: BoxDecoration(
@@ -51,7 +70,7 @@ class ProductGrid extends StatelessWidget {
                             top: Radius.circular(20),
                           ),
                           child: Image.network(
-                            product.imageUrl,
+                            product.ImageUrl,
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -59,8 +78,7 @@ class ProductGrid extends StatelessWidget {
                       Container(
                         padding: EdgeInsets.all(1),
                         decoration: BoxDecoration(
-                          color:
-                              colorBackgroundScreen, // цвет нижней панели изображения
+                          color: colorBackgroundScreen,
                           borderRadius: BorderRadius.vertical(
                             bottom: Radius.circular(20),
                           ),
@@ -69,7 +87,7 @@ class ProductGrid extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Text(
-                              product.name,
+                              product.Name,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
@@ -78,9 +96,16 @@ class ProductGrid extends StatelessWidget {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              '${product.price}₽',
+                              '${product.Price}₽',
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
+                                color: colorPriceProduct,
+                              ),
+                            ),
+                            SizedBox(height: 6),
+                            Text(
+                              description,
+                              style: TextStyle(
                                 color: colorPriceProduct,
                               ),
                             ),
@@ -90,7 +115,7 @@ class ProductGrid extends StatelessWidget {
                               children: [
                                 ElevatedButton(
                                   onPressed: () {
-                                    print("Clicked \'${product.name}\'");
+                                    print("Clicked \'${product.Name}\'");
                                   },
                                   child: Icon(
                                     Icons.add_shopping_cart,
