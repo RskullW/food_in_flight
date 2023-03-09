@@ -1,0 +1,26 @@
+import 'package:flutter/material.dart';
+import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/more_screen.dart';
+import 'package:mobile/screens/splash_screen.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Food in Flight',
+      theme: ThemeData(
+        primarySwatch: Colors.purple,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: SplashScreen(),
+      routes: {
+        '/home': (context) => HomeScreen(),
+        '/more': (context) => MyMoreScreen(),
+      },
+    );
+  }
+}
