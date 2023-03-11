@@ -51,7 +51,7 @@ class Image(models.Model):
 
 class Order(models.Model):
     class OrderStates(models.TextChoices):
-        PENDING = 'PENDING', _('Ожтдает оплаты')
+        PENDING = 'PENDING', _('Ожидает оплаты')
         PAID = 'PAID', _('Оплачен')
         COOKING = 'COOKING', _('Готовится')
         DELIVERING = 'DELIVERING', _('В доставке')
@@ -59,7 +59,7 @@ class Order(models.Model):
         CANCELED = 'CANCELED', _('Отменен')
     
     def get_items_price(self):
-        return sum(item.price for item in self.items)
+        return sum([item.price for item in self.items])
     
     unique_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     state = models.CharField(max_length=10, choices=OrderStates.choices, default=OrderStates.PENDING, blank=False)
@@ -76,10 +76,10 @@ class Order(models.Model):
     address = models.CharField(max_length=254)
 
     def items(self):
-        return OrderProduct.objects.filter(item=self)
+        return OrderProduct.objects.filter(order=self)
     
     def __str__(self):
-        return 'Заказ № ' + self.unique_uuid
+        return 'Заказ № ' + str(self.unique_uuid)
 
     class Meta:
         verbose_name = 'Заказ'
@@ -87,6 +87,7 @@ class Order(models.Model):
     
 
 class OrderProduct(models.Model):
+    unique_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     amount = models.IntegerField(default=1)

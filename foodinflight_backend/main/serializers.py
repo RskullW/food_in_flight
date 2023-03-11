@@ -17,3 +17,24 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             'url': {'lookup_field': 'slug'},
         }
+
+        
+class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = OrderProduct
+        fields = '__all__'
+        lookup_field = 'unique_uuid'
+        extra_kwargs = {
+            'url': {'lookup_field': 'unique_uuid'},
+        }
+
+class OrderSerializer(serializers.HyperlinkedModelSerializer):
+    items = OrderProductSerializer(many=True)
+
+    class Meta:
+        model = Order
+        fields = '__all__'
+        lookup_field = 'unique_uuid'
+        extra_kwargs = {
+            'url': {'lookup_field': 'unique_uuid'},
+        }
