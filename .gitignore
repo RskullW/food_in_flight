@@ -40,3 +40,6 @@ app.*.map.json
 
 .env
 /foodinflight_backend/media/
+
+/foodinflight_frontend/package-lock.json
+/foodinflight_frontend/node_modules/
