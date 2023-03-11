@@ -5,20 +5,30 @@ from .models import *
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
-        fields = ['image', 'ordering']
+        fields = ('image', 'ordering')
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
 
     class Meta:
         model = Product
-        exclude = ['is_active']
+        fields = '__all__'
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'},
         }
 
-        
+
+class ProductCategorieSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ProductCategorie
+        fields = '__all__'
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'},
+        }
+
+
 class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
@@ -33,7 +43,7 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('state', 'unique_uuid', 'items', 'created', 'updated', 'items_price', 'delivery_price', 'total_price',
+        fields = ('url', 'state', 'unique_uuid', 'items', 'created', 'updated', 'items_price', 'delivery_price', 'total_price',
                    'name', 'email', 'phone', 'address')
         lookup_field = 'unique_uuid'
         extra_kwargs = {
