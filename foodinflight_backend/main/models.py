@@ -59,7 +59,7 @@ class Order(models.Model):
         CANCELED = 'CANCELED', _('Отменен')
     
     def get_items_price(self):
-        return sum([item.price for item in self.items])
+        return sum([item.price for item in self.items()])
     
     unique_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
     state = models.CharField(max_length=10, choices=OrderStates.choices, default=OrderStates.PENDING, blank=False)
@@ -94,6 +94,8 @@ class OrderProduct(models.Model):
     price = property(lambda self: self.item.price * self.amount)
     add_ice = models.BooleanField(default=False)
 
+    def item_title(self):
+        return self.item.title
 
     def __str__(self):
         return self.item.title + ' в заказе'

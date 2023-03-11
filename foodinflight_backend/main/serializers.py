@@ -19,10 +19,10 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         }
 
         
-class OrderProductSerializer(serializers.HyperlinkedModelSerializer):
+class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
-        fields = '__all__'
+        fields = ('item_title', 'amount', 'price', 'add_ice')
         lookup_field = 'unique_uuid'
         extra_kwargs = {
             'url': {'lookup_field': 'unique_uuid'},
@@ -33,7 +33,8 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ('state', 'unique_uuid', 'items', 'created', 'updated', 'items_price', 'delivery_price', 'total_price',
+                   'name', 'email', 'phone', 'address')
         lookup_field = 'unique_uuid'
         extra_kwargs = {
             'url': {'lookup_field': 'unique_uuid'},
