@@ -1,17 +1,15 @@
 import React from 'react'
 import { Box } from '@chakra-ui/react'
-import Navbar from './Navbar'
-import Footer from './Footer'
+import Header from './Header'
 
 
 const Layout = ({ children }) => {
     return (
         <Box>
-            <Navbar />
+          <Header />
             <Box>
                 { children }
             </Box>
-            <Footer />
         </Box>
     )
 }
