@@ -43,3 +43,4 @@ app.*.map.json
 
 /foodinflight_frontend/package-lock.json
 /foodinflight_frontend/node_modules/
+.vscode/
