@@ -2,11 +2,11 @@ from rest_framework import serializers
 from .models import *
 
 
+
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = Image
         fields = ('image', 'ordering')
-
 
 
 class ProductCategorieSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,7 +30,8 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             'url': {'lookup_field': 'slug'},
         }
-        
+
+
 class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
@@ -39,6 +40,7 @@ class OrderProductSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'url': {'lookup_field': 'unique_uuid'},
         }
+
 
 class OrderSerializer(serializers.HyperlinkedModelSerializer):
     items = OrderProductSerializer(many=True)

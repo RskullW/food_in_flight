@@ -3,6 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from phonenumber_field.modelfields import PhoneNumberField
 import uuid
 
+
+
 class ProductCategorie(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
     title = models.CharField(max_length=50)
@@ -13,6 +15,7 @@ class ProductCategorie(models.Model):
     class Meta:
         verbose_name = 'Категория товаров'
         verbose_name_plural = 'Категории товаров'
+
 
 class Product(models.Model):
     class TypeOfProduct(models.TextChoices):
@@ -59,6 +62,7 @@ class Image(models.Model):
         ordering = ['ordering']
         verbose_name = 'Фото товара'
         verbose_name_plural = 'Фото товаров'
+
 
 class Order(models.Model):
     class OrderStates(models.TextChoices):
