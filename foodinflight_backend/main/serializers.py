@@ -7,16 +7,6 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = ('image', 'ordering')
 
-class ProductSerializer(serializers.HyperlinkedModelSerializer):
-    images = ImageSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Product
-        fields = '__all__'
-        lookup_field = 'slug'
-        extra_kwargs = {
-            'url': {'lookup_field': 'slug'},
-        }
 
 
 class ProductCategorieSerializer(serializers.HyperlinkedModelSerializer):
@@ -29,6 +19,18 @@ class ProductCategorieSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
+class ProductSerializer(serializers.HyperlinkedModelSerializer):
+    images = ImageSerializer(many=True, read_only=True)
+    category = ProductCategorieSerializer()
+    
+    class Meta:
+        model = Product
+        fields = '__all__'
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'},
+        }
+        
 class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
