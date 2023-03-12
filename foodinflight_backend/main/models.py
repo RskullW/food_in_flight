@@ -5,7 +5,7 @@ import uuid
 
 
 
-class ProductCategorie(models.Model):
+class ProductCategory(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
     title = models.CharField(max_length=50)
 
@@ -26,7 +26,7 @@ class Product(models.Model):
 
     slug = models.SlugField(max_length=100, unique=True)
     type = models.CharField(max_length=1, choices=TypeOfProduct.choices, default=TypeOfProduct.FOOD, blank=False)
-    category = models.ForeignKey(ProductCategorie, on_delete=models.DO_NOTHING)
+    category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING)
 
     title = models.CharField(max_length=254, blank=False)
     description = models.TextField()

@@ -18,8 +18,8 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.BasePermission]
 
 
-class ProductCategorieViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = ProductCategorie.objects.all()
-    serializer_class = ProductCategorieSerializer
+class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerializer
     lookup_field = 'slug'
     permission_classes = [permissions.BasePermission]

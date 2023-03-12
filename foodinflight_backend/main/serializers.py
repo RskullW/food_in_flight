@@ -9,9 +9,9 @@ class ImageSerializer(serializers.ModelSerializer):
         fields = ('image', 'ordering')
 
 
-class ProductCategorieSerializer(serializers.HyperlinkedModelSerializer):
+class ProductCategorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = ProductCategorie
+        model = ProductCategory
         fields = '__all__'
         lookup_field = 'slug'
         extra_kwargs = {
@@ -21,7 +21,7 @@ class ProductCategorieSerializer(serializers.HyperlinkedModelSerializer):
 
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
-    category = ProductCategorieSerializer()
+    category = ProductCategorySerializer()
     
     class Meta:
         model = Product
