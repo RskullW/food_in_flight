@@ -5,7 +5,7 @@ import MainPart from "./MainPart";
 
 const MainContent = () => {
   return (
-    <Grid className="main-content" templateColumns="repeat(12, 1fr)" gap="2%" minH="calc(100vh - 80px)">
+    <Grid className="main-content" templateColumns="repeat(12, 1fr)" gap="2%">
       <Navbar />
       <MainPart />
     </Grid>

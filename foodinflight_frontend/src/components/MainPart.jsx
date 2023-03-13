@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, GridItem, Box, Image, Link, Heading, Wrap, Center, WrapItem, Text, Button, UnorderedList, ListItem, IconButton} from "@chakra-ui/react";
+import { Grid, GridItem, Box, Image, Link, Heading, Wrap, Center, WrapItem, Text, Button, List, ListItem, IconButton} from "@chakra-ui/react";
 import { CATEGORIES } from "../data/Categories";
 import { POPULAR_CATEGORIES } from "../data/PopularCategories";
 import { KITCHENS } from "../data/Kitchens";
@@ -58,7 +58,7 @@ const MainPart = () => {
       <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" border="2px solid blue" margin="20px">
         <GridItem className="footer__nav-menu">
           <Heading>Кухни</Heading>
-          <UnorderedList>
+          <List>
             {
               KITCHENS.map((KITCHEN) => (
                 <ListItem>
@@ -66,15 +66,21 @@ const MainPart = () => {
                 </ListItem>
               ))
             }
-          </UnorderedList>
+          </List>
         </GridItem>
         <GridItem className="footer__nav-menu">
           <Heading>Компания</Heading>
-          <UnorderedList>
-            <ListItem><Link>Наша Кухня</Link></ListItem>
-            <ListItem><Link>Оплата</Link></ListItem>
-            <ListItem><Link>Контакты</Link></ListItem>
-          </UnorderedList>
+          <List>
+            <ListItem>
+              <Link>Наша Кухня</Link>
+            </ListItem>
+            <ListItem>
+              <Link>Оплата</Link>
+            </ListItem>
+            <ListItem>
+              <Link>Контакты</Link>
+            </ListItem>
+          </List>
         </GridItem>
         <GridItem className="footer__nav-item">
           <Wrap>

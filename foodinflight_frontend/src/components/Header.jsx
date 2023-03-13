@@ -6,7 +6,7 @@ const Header = () => {
   return (
     <Grid className="header" templateColumns="repeat(6, 1fr)" templateRows="repeat(4, 1fr)" gap="10%" h="80px" borderBottom="1px solid rgba(0, 0, 0, 0.15)" padding="10px 20px">
       <GridItem className="header__logo" colSpan="1" rowStart="1" rowSpan={4} border="1px solid red">
-        <Image src="/full-logo.png"></Image>
+        <Image src="/icons/full-logo.png" objectFit="contain" alt="full-logo"></Image>
       </GridItem>
 
       <GridItem className="header__search-bar" colSpan="2" rowStart="2" rowSpan={2} border="1px solid red">
