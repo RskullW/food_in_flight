@@ -1,10 +1,33 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Grid, GridItem, Box, Image, Link, Heading, Wrap, Center, WrapItem, Text, Button, List, ListItem, IconButton} from "@chakra-ui/react";
 import { CATEGORIES } from "../data/Categories";
 import { POPULAR_CATEGORIES } from "../data/PopularCategories";
 import { KITCHENS } from "../data/Kitchens";
 
 const MainPart = () => {
+  const [allProducts, setAllProducts] = useState([]);
+  const [productsError, setProductsError] = useState(false);
+
+  useEffect(() => {
+    const getData = async() => {
+      const productsResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:8000/api/products/`, {
+        method: 'GET',
+        mode: 'cors',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+
+      if (productsResponse.status == 200) {
+        const productsData = await productsResponse.json();
+        setAllProducts(productsData);
+      } else {
+        setProductsError(true);
+      }
+    }
+    getData();
+  }, []);
+
   return (
     <GridItem className="main-part" colSpan="10" border="1px solid black" borderRadius="10px" margin="20px 20px 20px 0px">
       <Box className="carousel" border="2px solid blue" margin="20px">
@@ -27,9 +50,10 @@ const MainPart = () => {
         </Center>
         <Wrap justify="center" margin="20px 0px">
           {
-          POPULAR_CATEGORIES.map((POPULAR_CATEGORIE) => (
+          allProducts.map((product) => (
             <WrapItem className="popular-category__item" area={`item`} border="5px solid pink" w="250px">
-              <Link style={{textDecoration: "none"}}>{POPULAR_CATEGORIE.title}</Link>
+              <Link style={{textDecoration: "none"}}>{product.title}</Link>
+              <Image src={product.images[0]?.image} />
             </WrapItem>
           ))
         }
