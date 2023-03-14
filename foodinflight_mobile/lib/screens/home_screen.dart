@@ -17,54 +17,63 @@ class _HomeScreenState extends State<HomeScreen> {
   bool _isSearchOpen = false;
   TextEditingController _searchController = TextEditingController();
   late List<Product> _products;
-  late ProductGrid _productGrid;
+  late List<Product> _productsSearchList;
 
   @override
   void initState() {
     super.initState();
     _products = [
       Product(
-        Name: "Name",
-        Price: 100,
+        Name: "раз",
+        Price: 123,
         ImageUrl: "https://picsum.photos/200/300",
+        Description: "TEMP",
+        Weight: 100,
         productCategory: ProductCategory.DRINK,
-        Weight: 300,
-        Description: "Description text",
       ),
       Product(
-        Name: "Name",
-        Price: 100,
+        Name: "dva",
+        Price: 123,
         ImageUrl: "https://picsum.photos/200/300",
-        Description: "Description text",
-        Weight: 500,
+        Description: "TEMP",
+        Weight: 100,
         productCategory: ProductCategory.FOOD,
       ),
       Product(
-        Name: "Name",
-        Price: 100,
+        Name: "dva",
+        Price: 123,
         ImageUrl: "https://picsum.photos/200/300",
+        Description: "TEMP",
+        Weight: 100,
         productCategory: ProductCategory.DRINK,
-        Weight: 1500,
-        Description: "Description text",
       ),
       Product(
-        Name: "Name",
-        Price: 100,
+        Name: "temp",
+        Price: 123,
         ImageUrl: "https://picsum.photos/200/300",
-        Weight: 50,
-        Description: "Description text",
+        Description: "TEMP",
+        Weight: 100,
         productCategory: ProductCategory.FOOD,
       ),
       Product(
-        Name: "Name",
-        Price: 100,
+        Name: "три",
+        Price: 123,
         ImageUrl: "https://picsum.photos/200/300",
+        Description: "TEMP",
+        Weight: 100,
         productCategory: ProductCategory.DRINK,
-        Weight: 500,
-        Description: "Description text",
       )
     ];
-    _productGrid = ProductGrid(products: _products);
+    _productsSearchList = List<Product>.from(_products);
+  }
+
+  void _searchForProducts(String query) {
+    setState(() {
+      _productsSearchList = _products
+          .where((product) =>
+              product.Name.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    });
   }
 
   Widget _buildLeadingIcon() {
@@ -77,6 +86,12 @@ class _HomeScreenState extends State<HomeScreen> {
       onPressed: () {
         setState(() {
           _isSearchOpen = !_isSearchOpen;
+
+          if (!_isSearchOpen) {
+            _searchController.clear();
+            _productsSearchList =
+                List<Product>.from(_products); // TODO: Optimaze
+          }
         });
       },
     );
@@ -87,7 +102,14 @@ class _HomeScreenState extends State<HomeScreen> {
       controller: _searchController,
       decoration: InputDecoration(
         hintText: 'Введите запрос...',
+        hintStyle: TextStyle(color: colorAppBar),
+        enabledBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
+        focusedBorder:
+            UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
       ),
+      style: TextStyle(color: colorAppBar),
+      onChanged: _searchForProducts,
     );
   }
 
@@ -123,7 +145,19 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(),
-      body: _productGrid,
+      body: _isSearchOpen
+          ? _productsSearchList.isNotEmpty
+              ? ProductGrid(products: _productsSearchList)
+              : Center(
+                  child: Text(
+                    'Товар не найден!',
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.width * 0.05,
+                      color: colorAppBar,
+                    ),
+                  ),
+                )
+          : ProductGrid(products: _products),
       bottomNavigationBar: MyBottomAppBar("Home"),
       backgroundColor: colorBackgroundScreen,
     );
