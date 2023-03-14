@@ -29,7 +29,7 @@ const Footer = () => {
           </Flex>
         </WrapItem>
         <WrapItem className="footer__copyright">
-          <Text>© 2023-XXXX ООО «Food in Flight»</Text>
+          <Text>© 2023 ООО «Food in Flight»</Text>
           <Text>Проект компании Шпонка Шапокляка</Text>
         </WrapItem>
       </Wrap>

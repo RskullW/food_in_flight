@@ -1,26 +1,40 @@
 import React from "react";
-import { Grid, GridItem, Text, Image } from "@chakra-ui/react";
+import { Grid, GridItem, Text, Image, Flex, Center } from "@chakra-ui/react";
 
 
 const Header = () => {
   return (
-    <Grid className="header" templateColumns="repeat(6, 1fr)" templateRows="repeat(4, 1fr)" gap="10%" h="80px" borderBottom="1px solid rgba(0, 0, 0, 0.15)" padding="10px 20px">
-      <GridItem className="header__logo" colSpan="1" rowStart="1" rowSpan={4} border="1px solid red">
-        <Image src="/icons/full-logo.png" objectFit="contain" alt="full-logo"></Image>
-      </GridItem>
+    <Flex
+      className="header"  
+      position="fixed" 
+      zIndex="100000" 
+      bgColor="white" 
+      gap="10%" 
+      h="80px" 
+      w="100%"
+      borderBottom="1px solid rgba(0, 0, 0, 0.15)" 
+      padding="10px 20px"
+    >
+      <Center 
+        className="header__logo" 
+        border="1px solid red"
+        w="300px"
+      >
+        <Image src="/icons/full-logo.png" objectFit="cover" alt="full-logo"></Image>
+      </Center>
 
-      <GridItem className="header__search-bar" colSpan="2" rowStart="2" rowSpan={2} border="1px solid red">
+      <Center className="header__search-bar" border="1px solid red" w="500px">
         <Text>Search-bar</Text>
-      </GridItem>
+      </Center>
 
-      <GridItem className="header__adress-bar" colSpan="2" rowStart="2" rowSpan={2} border="1px solid red">
+      <Center className="header__adress-bar" border="1px solid red" w="400px">
         <Text>adress-bar</Text>
-      </GridItem>
+      </Center>
 
-      <GridItem className="header__enter-account" colSpan="1" rowStart="2" rowSpan={2} border="1px solid red">
+      <Center className="header__enter-account" border="1px solid red" w="300px">
         <Text>enter-account</Text>
-      </GridItem>
-    </Grid>
+      </Center>
+    </Flex>
   )
 }
 
