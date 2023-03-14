@@ -25,7 +25,7 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
     
     class Meta:
         model = Product
-        fields = '__all__'
+        exclude = ['is_active']
         lookup_field = 'slug'
         extra_kwargs = {
             'url': {'lookup_field': 'slug'},

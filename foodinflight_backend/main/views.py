@@ -1,6 +1,5 @@
-from rest_framework import viewsets
-from rest_framework import permissions
-from .models import Product
+from rest_framework import viewsets, permissions
+from .models import *
 from .serializers import *
 
 
@@ -11,15 +10,15 @@ class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     permission_classes = [permissions.BasePermission]
 
 
-class OrderViewSet(viewsets.ReadOnlyModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-    lookup_field = 'unique_uuid'
-    permission_classes = [permissions.BasePermission]
-
-
 class ProductCategoryViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
     lookup_field = 'slug'
+    permission_classes = [permissions.BasePermission]
+
+
+class OrderViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class =  OrderSerializer
+    lookup_field = 'unique_uuid'
     permission_classes = [permissions.BasePermission]

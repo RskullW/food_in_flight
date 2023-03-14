@@ -22,7 +22,7 @@ class RegisterAPI(generics.GenericAPIView):
             return Response({'message': 'Username with this email already exists'}, status=status.HTTP_400_BAD_REQUEST)
         else:
             serializer = self.get_serializer(data=request.data)
-            serializer.is_valid()
+            serializer.is_valid(raise_exception=True)
             user = serializer.save()
 
             return Response({
