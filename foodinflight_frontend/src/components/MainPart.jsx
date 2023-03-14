@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Grid, GridItem, Box, Image, Link, Heading, Wrap, Center, WrapItem, Text, Button, List, ListItem, IconButton} from "@chakra-ui/react";
 import { CATEGORIES } from "../data/Categories";
-import { POPULAR_CATEGORIES } from "../data/PopularCategories";
 import { KITCHENS } from "../data/Kitchens";
 
 const MainPart = () => {
@@ -52,7 +51,8 @@ const MainPart = () => {
           {
           allProducts.map((product) => (
             <WrapItem className="popular-category__item" area={`item`} border="5px solid pink" w="250px">
-              <Link style={{textDecoration: "none"}}>{product.title}</Link>
+              <Link href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
+                style={{textDecoration: "none"}}>{product.title}</Link>
               <Image src={product.images[0]?.image} />
             </WrapItem>
           ))
