@@ -51,10 +51,10 @@ class Product(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     type = models.CharField(max_length=1, choices=TypeOfProduct.choices, default=TypeOfProduct.FOOD, blank=False)
     
-    category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING, null=True)
-    group_category = models.ForeignKey(GroupProductCategory, on_delete=models.DO_NOTHING, null=True)
-    cuisine = models.ForeignKey(ProductCuisine, on_delete=models.DO_NOTHING, null=True)
-
+    category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING, blank=True, null=True)
+    cuisine = models.ForeignKey(ProductCuisine, on_delete=models.DO_NOTHING, blank=True, null=True)
+    group_categories = models.ManyToManyField(GroupProductCategory, blank=True) #, through=ProductToGroupProductCategory)
+    
     title = models.CharField(max_length=254, blank=False)
     description = models.TextField()
     composition = models.TextField()

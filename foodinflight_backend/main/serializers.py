@@ -39,11 +39,13 @@ class ProductCuisineSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
+
+
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
-    category = ProductCategorySerializer()
-    group_category = GroupProductCategorySerializer()
-    cuisine = ProductCuisineSerializer()
+    category = ProductCategorySerializer(read_only=True)
+    group_categories = GroupProductCategorySerializer(many=True, read_only=True)
+    cuisine = ProductCuisineSerializer(read_only=True)
     
     class Meta:
         model = Product
