@@ -58,6 +58,8 @@ class ProductGrid extends StatelessWidget {
                   ],
                 ),
                 child: InkWell(
+                  highlightColor: Colors.transparent,
+                  splashColor: Colors.transparent,
                   onTap: () {
                     print("hello world");
                   },

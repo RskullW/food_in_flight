@@ -94,6 +94,9 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         });
       },
+      color: colorIcon,
+      splashColor: Colors.transparent,
+      highlightColor: colorIcon.withOpacity(0.1),
     );
   }
 
@@ -141,24 +144,28 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Widget? _buildBody() {
+    return _isSearchOpen
+        ? _productsSearchList.isNotEmpty
+            ? ProductGrid(products: _productsSearchList)
+            : Center(
+                child: Text(
+                  'Товар не найден!',
+                  style: TextStyle(
+                    fontSize: MediaQuery.of(context).size.width * 0.05,
+                    color: colorAppBar,
+                  ),
+                ),
+              )
+        : ProductGrid(products: _products);
+  }
+
   Widget _buildAllBars() {
     return Scaffold(
       key: _scaffoldKey,
       appBar: _buildAppBar(),
-      body: _isSearchOpen
-          ? _productsSearchList.isNotEmpty
-              ? ProductGrid(products: _productsSearchList)
-              : Center(
-                  child: Text(
-                    'Товар не найден!',
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.width * 0.05,
-                      color: colorAppBar,
-                    ),
-                  ),
-                )
-          : ProductGrid(products: _products),
       bottomNavigationBar: MyBottomAppBar("Home"),
+      body: _buildBody(),
       backgroundColor: colorBackgroundScreen,
     );
   }
