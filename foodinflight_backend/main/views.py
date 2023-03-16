@@ -54,9 +54,22 @@ class OrderViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
     def create(self, request):
-        print(request.data)
+        items = request.data.pop('items')
+
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+        created_order_queryset = Order.objects.filter(unique_uuid=serializer.data.get('unique_uuid'))[:1].get()
+        
+        if created_order_queryset:
+            for item in items:
+                item_from_db = Product.objects.filter(slug=item.get('slug'))[:1].get()
+                
+                add_ice = True if item.get('add_ice') is True else False
+                OrderProduct.objects.create(item=item_from_db, order=created_order_queryset, amount=item.get('amount'), add_ice=add_ice)
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        else:
+            return Response({'message': 'Unable to create order'}, status=status.HTTP_400_BAD_REQUEST, headers=headers)
