@@ -19,9 +19,33 @@ class ProductCategorySerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
+class GroupProductCategorySerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = GroupProductCategory
+        fields = '__all__'
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'},
+        }
+
+
+class ProductCuisineSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = ProductCuisine
+        fields = '__all__'
+        lookup_field = 'slug'
+        extra_kwargs = {
+            'url': {'lookup_field': 'slug'},
+        }
+
+
+
+
 class ProductSerializer(serializers.HyperlinkedModelSerializer):
     images = ImageSerializer(many=True, read_only=True)
-    category = ProductCategorySerializer()
+    category = ProductCategorySerializer(read_only=True)
+    group_categories = GroupProductCategorySerializer(many=True, read_only=True)
+    cuisine = ProductCuisineSerializer(read_only=True)
     
     class Meta:
         model = Product
@@ -53,3 +77,6 @@ class OrderSerializer(serializers.HyperlinkedModelSerializer):
         extra_kwargs = {
             'url': {'lookup_field': 'unique_uuid'},
         }
+    
+    def create(self, validated_data):
+        return Order.objects.create(**validated_data)
