@@ -10,3 +10,4 @@ const Color colorBackgroundScreen = Color.fromRGBO(46, 46, 46, 1);
 const Color colorBlack = Color.fromRGBO(1, 1, 1, 1);
 const Color colorNameApp = Color.fromRGBO(255, 106, 0, 1);
 const Color colorIconCart = Color.fromRGBO(255, 255, 255, 1);
+const Color colorSplashScreen = Color.fromRGBO(46, 46, 46, 1);

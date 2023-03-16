@@ -126,7 +126,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ? _buildSearchBar()
             : Text('FOOD IN FLIGHT',
                 style: TextStyle(
-                    color: colorNameApp, fontWeight: FontWeight.bold)),
+                  color: colorNameApp,
+                  fontWeight: FontWeight.bold,
+                )),
         centerTitle: true,
         leading: _isSearchOpen
             ? null

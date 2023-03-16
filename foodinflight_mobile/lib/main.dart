@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/more_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
+import 'package:mobile/utils/internet_connectivity_checker.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +17,12 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.purple,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: SplashScreen(),
+      home: MediaQuery(
+        data: MediaQueryData(),
+        child: InternetConnectivityChecker(
+          child: SplashScreen(),
+        ),
+      ),
       routes: {
         '/home': (context) => HomeScreen(),
         '/more': (context) => MyMoreScreen(),

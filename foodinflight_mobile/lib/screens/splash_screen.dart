@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/colors.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -27,7 +28,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 230, 141, 246),
+      backgroundColor: colorSplashScreen,
       body: Center(
         child: Opacity(
             opacity: _animation.value,
