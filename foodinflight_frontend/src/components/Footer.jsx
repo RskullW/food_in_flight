@@ -4,7 +4,7 @@ import { Heading } from "@chakra-ui/react";
 
 const Footer = () => {
   return(
-    <Box className="footer" borderTop="1px solid rgba(0,0,0,0.15)" h="80px">
+    <Box className="footer" bgColor="white" position="relative" bottom="-80px" zIndex="10000000" borderTop="1px solid rgba(0,0,0,0.15)" h="80px">
       <Heading className="footer__article">О компании</Heading>
       <Wrap className="footer__content">
         <WrapItem className="footer__nav-menu">
