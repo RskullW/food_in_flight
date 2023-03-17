@@ -42,18 +42,16 @@ class OrderViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             permission_classes = [permissions.AllowAny]
         elif self.action == 'retrieve':
-            permission_classes = [permissions.IsAuthenticated]
+            permission_classes = [permissions.AllowAny]
         elif self.action == 'create':
             permission_classes = [permissions.AllowAny]
-        elif self.action == 'update':
-            permission_classes = [permissions.IsAuthenticated]
-        elif self.action == 'destroy':
-            permission_classes = [permissions.IsAdminUser]
+        elif self.action == 'partial_update':
+            permission_classes = [permissions.AllowAny]
         else:
             permission_classes = [permissions.IsAdminUser]
         return [permission() for permission in permission_classes]
 
-    def create(self, request):
+    def create(self, request, *args, **kwargs):
         items = request.data.pop('items')
 
         serializer = self.get_serializer(data=request.data)
@@ -66,10 +64,23 @@ class OrderViewSet(viewsets.ModelViewSet):
         if created_order_queryset:
             for item in items:
                 item_from_db = Product.objects.filter(slug=item.get('slug'))[:1].get()
-                
                 add_ice = True if item.get('add_ice') is True else False
-                OrderProduct.objects.create(item=item_from_db, order=created_order_queryset, amount=item.get('amount'), add_ice=add_ice)
-            
+
+                OrderProduct.objects.create(
+                    item=item_from_db, 
+                    order=created_order_queryset, 
+                    amount=item.get('amount'), 
+                    add_ice=add_ice
+                )
             return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
         else:
-            return Response({'message': 'Unable to create order'}, status=status.HTTP_400_BAD_REQUEST, headers=headers)
+            return Response(status=status.HTTP_400_BAD_REQUEST, headers=headers)
+    
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(status=status.HTTP_200_OK)
+        
