@@ -111,9 +111,12 @@ const MainPart = () => {
                         href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/category/${category.slug}`} 
                         style={{textDecoration: "none"}}
                       >
-                        <Box textAlign="center">
-
-                          <Divider margin="10px 0px 10px 0px"/>
+                        <Box textAlign="center" textColor="white">
+                          <Image 
+                            src={category.image}
+                            borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"
+                            margin="0px 0px -24px 0px"
+                          />
 
                           {category.title}
 
@@ -134,46 +137,49 @@ const MainPart = () => {
           <Heading as="h2">Популярное</Heading>
         </Center>
         <Wrap justify="center" margin="20px 0px">
-          {
+        {
           allProducts.map((product) => (
-            <WrapItem 
-              className="popular-category__item"
-            >
-              <Card maxW="300px">
-                <CardBody p="0 !important">
-                  <Box>
-                    <Link 
-                      href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
-                      style={{textDecoration: "none"}}
-                    >
-                      <Box textAlign="center">
+            product.is_popular ? (
+              <WrapItem 
+                className="popular-category__item"
+              >
+                <Card maxW="300px" minH="335px">
+                  <CardBody p="0 !important">
+                    <Box>
+                      <Link 
+                        href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
+                        style={{textDecoration: "none"}}
+                      >
+                        <Box textAlign="center">
 
-                        <Image 
-                          src={product.images[0]?.image}
-                          borderRadius="0.375rem 0.375rem 0rem 0rem"
-                          margin="0px 0px 10px 0px"
-                        />
+                          <Image 
+                            src={product.images[0]?.image}
+                            borderRadius="0.375rem 0.375rem 0rem 0rem"
+                            margin="0px 0px 10px 0px"
+                          />
 
-                        {product.title}
+                          {product.title}
 
-                        <Divider margin="10px 0px 10px 0px"/>
-                        
-                      </Box>
-                    </Link>
-                  </Box>
-                </CardBody>
+                          <Divider margin="10px 0px 10px 0px"/>
+                            
+                        </Box>
+                      </Link>
+                    </Box>
+                  </CardBody>
 
-                <CardFooter alignItems="center">
-                  <Text>{product.price}₽</Text>
+                  <CardFooter alignItems="center">
+                    <Text>{product.price}₽</Text>
 
-                  <Spacer/>
+                    <Spacer/>
 
-                  <Button>В корзину</Button>
-                </CardFooter>
-              </Card>
+                    <Button>В корзину</Button>
+                  </CardFooter>
+                </Card>
 
-            </WrapItem>
-          ))
+              </WrapItem>
+            ) : null
+          )  
+          )
         }
         </Wrap>
       </Box>
