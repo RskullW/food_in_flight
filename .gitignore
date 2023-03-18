@@ -46,3 +46,4 @@ foodinflight_backend/static/
 foodinflight_frontend/node_modules/
 data/
 logs/
+**/virtualenv
