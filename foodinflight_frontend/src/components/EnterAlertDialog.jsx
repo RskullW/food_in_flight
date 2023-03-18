@@ -45,7 +45,7 @@ const EnterAlerDialog = () => {
               <Stack spacing={4}>
                 <InputGroup>
                   <InputLeftAddon children='+7' />
-                  <Input type='tel' placeholder='Номер телефона'/>
+                  <Input type='number' placeholder='Номер телефона'/>
                 </InputGroup>
                 <PasswordInput />
                 <Box >
