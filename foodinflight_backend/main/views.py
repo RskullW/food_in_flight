@@ -44,11 +44,11 @@ class OrderViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             permission_classes = [permissions.IsAuthenticated]
         elif self.action == 'retrieve':
-            permission_classes = [permissions.AllowAny]
+            permission_classes = [permissions.IsAuthenticated]
         elif self.action == 'create':
-            permission_classes = [permissions.AllowAny]
+            permission_classes = [permissions.IsAuthenticated]
         elif self.action == 'partial_update':
-            permission_classes = [permissions.AllowAny]
+            permission_classes = [permissions.IsAdminUser]
         else:
             permission_classes = [permissions.IsAdminUser]
         return [permission() for permission in permission_classes]
@@ -62,7 +62,6 @@ class OrderViewSet(viewsets.ModelViewSet):
 
             if token:
                 requested_user_id = int(token.user_id)
-
                 requested_user = User.objects.filter(id=requested_user_id)[:1].get()
                 
                 if requested_user.is_staff:
@@ -80,27 +79,43 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
     def create(self, request, *args, **kwargs):
-        items = request.data.pop('items')
+        access_token_provided = request.META.get('HTTP_AUTHORIZATION')
 
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
+        if access_token_provided is not None:
+            token_key = access_token_provided[6:14]
+            token = AuthToken.objects.filter(token_key=token_key)[:1].get()
 
-        created_order_queryset = Order.objects.filter(unique_uuid=serializer.data.get('unique_uuid'))[:1].get()
+            if token:
+                requested_user_id = int(token.user_id)
+                requested_user = User.objects.filter(id=requested_user_id)[:1].get()
         
-        if created_order_queryset:
-            for item in items:
-                item_from_db = Product.objects.filter(slug=item.get('slug'))[:1].get()
-                add_ice = True if item.get('add_ice') is True else False
+                if requested_user.username == request.data.get('email'):
+                    items = request.data.pop('items')
 
-                OrderProduct.objects.create(
-                    item=item_from_db, 
-                    order=created_order_queryset, 
-                    amount=item.get('amount'), 
-                    add_ice=add_ice
-                )
-            return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+                    serializer = self.get_serializer(data=request.data)
+                    serializer.is_valid(raise_exception=True)
+                    self.perform_create(serializer)
+                    headers = self.get_success_headers(serializer.data)
+
+                    created_order_queryset = Order.objects.filter(unique_uuid=serializer.data.get('unique_uuid'))[:1].get()
+                    if created_order_queryset:
+                        for item in items:
+                            item_from_db = Product.objects.filter(slug=item.get('slug'))[:1].get()
+                            add_ice = True if item.get('add_ice') is True else False
+
+                            OrderProduct.objects.create(
+                                item=item_from_db, 
+                                order=created_order_queryset, 
+                                amount=item.get('amount'), 
+                                add_ice=add_ice
+                            )
+                    else:
+                        return Response(status=status.HTTP_400_BAD_REQUEST)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+                else:
+                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
         else:
             return Response(status=status.HTTP_400_BAD_REQUEST, headers=headers)
     
@@ -112,3 +127,24 @@ class OrderViewSet(viewsets.ModelViewSet):
 
         return Response(status=status.HTTP_200_OK)
         
+    def retrieve(self, request, *args, **kwargs):
+        access_token_provided = request.META.get('HTTP_AUTHORIZATION')
+
+        if access_token_provided is not None:
+            token_key = access_token_provided[6:14]
+            token = AuthToken.objects.filter(token_key=token_key)[:1].get()
+
+            if token:
+                requested_user_id = int(token.user_id)
+                requested_user = User.objects.filter(id=requested_user_id)[:1].get()
+        
+                instance = self.get_object()
+                serializer = self.get_serializer(instance)
+                if requested_user.username == serializer.data.get('email'):
+                    return Response(serializer.data)
+                else:
+                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)

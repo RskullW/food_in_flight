@@ -53,7 +53,7 @@ class Product(models.Model):
     
     category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING, blank=True, null=True)
     cuisine = models.ForeignKey(ProductCuisine, on_delete=models.DO_NOTHING, blank=True, null=True)
-    group_categories = models.ManyToManyField(GroupProductCategory, blank=True) #, through=ProductToGroupProductCategory)
+    group_categories = models.ManyToManyField(GroupProductCategory, blank=True)
     
     title = models.CharField(max_length=254, blank=False)
     description = models.TextField()
