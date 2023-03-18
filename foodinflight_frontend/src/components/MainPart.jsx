@@ -1,5 +1,25 @@
 import React, { useState, useEffect } from "react";
-import { Grid, GridItem, Box, Image, Link, Heading, Wrap, Center, WrapItem, Text, Button, List, ListItem, IconButton} from "@chakra-ui/react";
+import { 
+  Grid, 
+  GridItem, 
+  Box, 
+  Image, 
+  Link, 
+  Heading, 
+  Wrap, 
+  Center, 
+  WrapItem, 
+  Text, 
+  Button, 
+  List, 
+  ListItem, 
+  IconButton,
+  Card,
+  CardBody,
+  CardFooter,
+  Divider,
+  Spacer
+} from "@chakra-ui/react";
 
 
 const MainPart = () => {
@@ -7,6 +27,8 @@ const MainPart = () => {
   const [productsError, setProductsError] = useState(false);
   const [allCuisines, setAllCuisines] = useState([]);
   const [cuisinesError, setCuisinesError] = useState(false);
+  const [allCategories, setAllCategories] = useState([]);
+  const [categoriesError, setCategoriesError] = useState(false);
 
   useEffect(() => {
     const getData = async() => {
@@ -43,20 +65,70 @@ const MainPart = () => {
       }
     }
 
+    const getCategories = async() => {
+      const categoriesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:8000/api/categories/`, {
+        method: "GET",
+        mode: 'cors',
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+
+  
+      if (categoriesResponse.status === 200) {
+        const categoriesData = await categoriesResponse.json();
+        setAllCategories(categoriesData);
+      } else {
+        setCategoriesError(true);
+      }
+    }
+
     getData();
     getCuisinesData();
+    getCategories();
   }, []);
 
   return (
     <GridItem className="main-part" colSpan="10" border="1px solid black" borderRadius="10px" margin="20px 20px 20px 0px">
+      
       <Box className="carousel" border="2px solid blue" margin="20px">
         <Image src="/favicon.ico"></Image>
       </Box>
-      <Box className="category" border="2px solid blue" margin="50px 20px 0px 20px" padding="20px 0px">
-        <Wrap justify="center" margin="20px 0px">
 
+      <Box className="category" border="2px solid blue" margin="50px 20px 0px 20px">
+        <Center area={`header`}>
+          <Heading as="h2">Категории</Heading>
+        </Center>
+
+        <Wrap justify="center" margin="20px 0px">
+          {
+            allCategories.map((category) => (
+              <WrapItem>
+                <Card maxW="300px">
+                  <CardBody p="0 !important">
+                    <Box>
+                      <Link 
+                        href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/category/${category.slug}`} 
+                        style={{textDecoration: "none"}}
+                      >
+                        <Box textAlign="center">
+
+                          <Divider margin="10px 0px 10px 0px"/>
+
+                          {category.title}
+
+                        </Box>
+                      </Link>
+                    </Box>
+                  </CardBody>
+
+                </Card>
+              </WrapItem>
+            ))
+          }
         </Wrap>
       </Box>
+
       <Box className="popular-category" border="2px solid blue" margin="100px 20px 0px 20px">
         <Center className="popular-category__header" area={`header`}>
           <Heading as="h2">Популярное</Heading>
@@ -64,10 +136,42 @@ const MainPart = () => {
         <Wrap justify="center" margin="20px 0px">
           {
           allProducts.map((product) => (
-            <WrapItem className="popular-category__item" area={`item`} border="5px solid pink" w="250px">
-              <Link href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
-                style={{textDecoration: "none"}}>{product.title}</Link>
-              <Image src={product.images[0]?.image} />
+            <WrapItem 
+              className="popular-category__item"
+            >
+              <Card maxW="300px">
+                <CardBody p="0 !important">
+                  <Box>
+                    <Link 
+                      href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
+                      style={{textDecoration: "none"}}
+                    >
+                      <Box textAlign="center">
+
+                        <Image 
+                          src={product.images[0]?.image}
+                          borderRadius="0.375rem 0.375rem 0rem 0rem"
+                          margin="0px 0px 10px 0px"
+                        />
+
+                        {product.title}
+
+                        <Divider margin="10px 0px 10px 0px"/>
+                        
+                      </Box>
+                    </Link>
+                  </Box>
+                </CardBody>
+
+                <CardFooter alignItems="center">
+                  <Text>{product.price}₽</Text>
+
+                  <Spacer/>
+
+                  <Button>В корзину</Button>
+                </CardFooter>
+              </Card>
+
             </WrapItem>
           ))
         }
@@ -105,7 +209,7 @@ const MainPart = () => {
                   href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/cuisines/${cuisine.slug}`}
                 >
 
-                  <ListItem>
+                  <ListItem margin="20px 0px">
                     {cuisine.title}
                   </ListItem>
                   
