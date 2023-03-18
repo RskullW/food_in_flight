@@ -7,8 +7,15 @@ import {
   AlertDialogContent,
   AlertDialogOverlay,
   useDisclosure,
-  Button
+  Button,
+  Center,
+  Input,
+  InputLeftAddon,
+  InputGroup,
+  Stack,
+  Box
 } from '@chakra-ui/react'
+import PasswordInput from "./EnterPassword";
 
 const EnterAlerDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -21,26 +28,43 @@ const EnterAlerDialog = () => {
       </Button>
 
       <AlertDialog
+        motionPreset='slideInRight'
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
+        isCentered
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
-            <AlertDialogHeader fontSize='lg' fontWeight='bold'>
-              Delete Customer
-            </AlertDialogHeader>
-
+            <Center>
+              <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
+                Авторизация
+              </AlertDialogHeader>
+            </Center>
             <AlertDialogBody>
-              Are you sure? You can't undo this action afterwards.
+              <Stack spacing={4}>
+                <InputGroup>
+                  <InputLeftAddon children='+7' />
+                  <Input type='tel' placeholder='Номер телефона'/>
+                </InputGroup>
+                <PasswordInput />
+                <Box >
+                  <Button variant='link'>
+                    Ещё не регистрировались?
+                  </Button>
+                  <Button variant='link' marginLeft='55'>
+                    Забыли пароль?
+                  </Button>
+                </Box>
+              </Stack>
             </AlertDialogBody>
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onClose}>
-                Cancel
+                Закрыть
               </Button>
-              <Button colorScheme='red' onClick={onClose} ml={3}>
-                Delete
+              <Button colorScheme='green' onClick ml={3}>
+                Войти
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>
