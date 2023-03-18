@@ -1,7 +1,9 @@
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from knox.models import AuthToken
 from .models import *
 from .serializers import *
+from django.contrib.auth.models import User
 
 
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
@@ -40,23 +42,109 @@ class OrderViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         if self.action == 'list':
-            permission_classes = [permissions.AllowAny]
+            permission_classes = [permissions.IsAuthenticated]
         elif self.action == 'retrieve':
             permission_classes = [permissions.IsAuthenticated]
         elif self.action == 'create':
-            permission_classes = [permissions.AllowAny]
-        elif self.action == 'update':
             permission_classes = [permissions.IsAuthenticated]
-        elif self.action == 'destroy':
+        elif self.action == 'partial_update':
             permission_classes = [permissions.IsAdminUser]
         else:
             permission_classes = [permissions.IsAdminUser]
         return [permission() for permission in permission_classes]
 
-    def create(self, request):
-        print(request.data)
-        serializer = self.get_serializer(data=request.data)
+    def list(self, request, *args, **kwargs):
+        access_token_provided = request.META.get('HTTP_AUTHORIZATION')
+
+        if access_token_provided is not None:
+            token_key = access_token_provided[6:14]
+            token = AuthToken.objects.filter(token_key=token_key)[:1].get()
+
+            if token:
+                requested_user_id = int(token.user_id)
+                requested_user = User.objects.filter(id=requested_user_id)[:1].get()
+                
+                if requested_user.is_staff:
+                    queryset = Order.objects.all()
+                else:
+                    queryset = Order.objects.filter(email=requested_user.username)
+
+                page = self.paginate_queryset(queryset)
+                if page is not None:
+                    serializer = self.get_serializer(page, many=True)
+                    return self.get_paginated_response(serializer.data)
+
+                serializer = self.get_serializer(queryset, many=True)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+    def create(self, request, *args, **kwargs):
+        access_token_provided = request.META.get('HTTP_AUTHORIZATION')
+
+        if access_token_provided is not None:
+            token_key = access_token_provided[6:14]
+            token = AuthToken.objects.filter(token_key=token_key)[:1].get()
+
+            if token:
+                requested_user_id = int(token.user_id)
+                requested_user = User.objects.filter(id=requested_user_id)[:1].get()
+        
+                if requested_user.username == request.data.get('email'):
+                    items = request.data.pop('items')
+
+                    serializer = self.get_serializer(data=request.data)
+                    serializer.is_valid(raise_exception=True)
+                    self.perform_create(serializer)
+                    headers = self.get_success_headers(serializer.data)
+
+                    created_order_queryset = Order.objects.filter(unique_uuid=serializer.data.get('unique_uuid'))[:1].get()
+                    if created_order_queryset:
+                        for item in items:
+                            item_from_db = Product.objects.filter(slug=item.get('slug'))[:1].get()
+                            add_ice = True if item.get('add_ice') is True else False
+
+                            OrderProduct.objects.create(
+                                item=item_from_db, 
+                                order=created_order_queryset, 
+                                amount=item.get('amount'), 
+                                add_ice=add_ice
+                            )
+                    else:
+                        return Response(status=status.HTTP_400_BAD_REQUEST)
+                    return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+                else:
+                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_400_BAD_REQUEST, headers=headers)
+    
+    def partial_update(self, request, pk=None, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+        self.perform_update(serializer)
+
+        return Response(status=status.HTTP_200_OK)
+        
+    def retrieve(self, request, *args, **kwargs):
+        access_token_provided = request.META.get('HTTP_AUTHORIZATION')
+
+        if access_token_provided is not None:
+            token_key = access_token_provided[6:14]
+            token = AuthToken.objects.filter(token_key=token_key)[:1].get()
+
+            if token:
+                requested_user_id = int(token.user_id)
+                requested_user = User.objects.filter(id=requested_user_id)[:1].get()
+        
+                instance = self.get_object()
+                serializer = self.get_serializer(instance)
+                if requested_user.username == serializer.data.get('email'):
+                    return Response(serializer.data)
+                else:
+                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+            else:
+                return Response(status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
