@@ -1,0 +1,37 @@
+FROM python:3.11-alpine
+
+WORKDIR /app
+
+RUN apk --no-cache add \
+    build-base \
+    freetype-dev \
+    fribidi-dev \
+    harfbuzz-dev \
+    jpeg-dev \
+    lcms2-dev \
+    libimagequant-dev \
+    openjpeg-dev \
+    tcl-dev \
+    tiff-dev \
+    tk-dev \
+    zlib-dev \
+    pcre-dev
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV INSIDE_A_DOCKER Yes
+
+COPY ./uwsgi.ini /app/
+
+COPY ../foodinflight_backend/requirements.txt /app/
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY ../.env /
+
+COPY ../foodinflight_backend/docker-entrypoint.sh /app/
+RUN chmod +x /app/docker-entrypoint.sh
+COPY ../foodinflight_backend /app/
+
+EXPOSE 8000
+ENTRYPOINT ["sh", "/app/docker-entrypoint.sh"]
