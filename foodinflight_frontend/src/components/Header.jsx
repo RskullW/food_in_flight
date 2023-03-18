@@ -1,5 +1,8 @@
 import React from "react";
-import { Grid, GridItem, Text, Image, Flex, Center } from "@chakra-ui/react";
+import { Text, Image, Flex, Center, Spacer } from "@chakra-ui/react";
+import EnterAlerDialog from "./EnterAlertDialog";
+import SearchBar from "./SearchBar";
+import AdressBar from "./AdressBar";
 
 
 const Header = () => {
@@ -9,7 +12,6 @@ const Header = () => {
       position="fixed" 
       zIndex="100000" 
       bgColor="white" 
-      gap="10%" 
       h="80px" 
       w="100%"
       borderBottom="1px solid rgba(0, 0, 0, 0.15)" 
@@ -17,22 +19,25 @@ const Header = () => {
     >
       <Center 
         className="header__logo" 
-        border="1px solid red"
-        w="300px"
+        w="150px"
+        h="100%"
+        display="block"
       >
-        <Image src="/icons/full-logo.png" objectFit="cover" alt="full-logo"></Image>
+        <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
       </Center>
 
-      <Center className="header__search-bar" border="1px solid red" w="500px">
-        <Text>Search-bar</Text>
-      </Center>
+      <Spacer/>
 
-      <Center className="header__adress-bar" border="1px solid red" w="400px">
-        <Text>adress-bar</Text>
-      </Center>
+      <SearchBar/>
 
-      <Center className="header__enter-account" border="1px solid red" w="300px">
-        <Text>enter-account</Text>
+      <Spacer/>
+
+      <AdressBar/>
+
+      <Spacer/>
+
+      <Center className="header__adress-bar" w="200px">
+        <EnterAlerDialog/>
       </Center>
     </Flex>
   )

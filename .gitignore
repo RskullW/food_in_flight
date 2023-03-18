@@ -39,6 +39,7 @@ app.*.map.json
 /android/app/release
 
 .env
+/foodinflight_frontend/.env.local
 /foodinflight_backend/media/
 **/__pycache__/
 /foodinflight_frontend/node_modules/
