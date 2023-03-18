@@ -53,7 +53,7 @@ class Product(models.Model):
     
     category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING, blank=True, null=True)
     cuisine = models.ForeignKey(ProductCuisine, on_delete=models.DO_NOTHING, blank=True, null=True)
-    group_categories = models.ManyToManyField(GroupProductCategory, blank=True) #, through=ProductToGroupProductCategory)
+    group_categories = models.ManyToManyField(GroupProductCategory, blank=True)
     
     title = models.CharField(max_length=254, blank=False)
     description = models.TextField()
@@ -130,11 +130,15 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     unique_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    order_uuid = property(lambda self: self.order.unique_uuid)
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     amount = models.IntegerField(default=1)
     price = property(lambda self: self.item.price * self.amount)
     add_ice = models.BooleanField(default=False)
+
+    def item_slug(self):
+        return self.item.slug
 
     def item_title(self):
         return self.item.title
