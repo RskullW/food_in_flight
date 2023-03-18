@@ -76,6 +76,10 @@ class OrderViewSet(viewsets.ModelViewSet):
 
                 serializer = self.get_serializer(queryset, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response({'error': 'Invalid access token provided'}, status=status.HTTP_401_UNAUTHORIZED)
+        else:
+            return Response({'error': 'Access token was not provided'}, status=status.HTTP_401_UNAUTHORIZED)
 
 
     def create(self, request, *args, **kwargs):
@@ -110,16 +114,16 @@ class OrderViewSet(viewsets.ModelViewSet):
                                 add_ice=add_ice
                             )
                     else:
-                        return Response(status=status.HTTP_400_BAD_REQUEST)
+                        return Response({'error': 'Unable to create new order'}, status=status.HTTP_400_BAD_REQUEST)
                     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
                 else:
-                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({'error': 'Invalid email provided'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'error': 'Invalid access token provided'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response(status=status.HTTP_400_BAD_REQUEST, headers=headers)
+            return Response({'error': 'Access token was not provided'}, status=status.HTTP_400_BAD_REQUEST)
     
-    def partial_update(self, request, pk=None, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         serializer.is_valid(raise_exception=True)
@@ -137,14 +141,14 @@ class OrderViewSet(viewsets.ModelViewSet):
             if token:
                 requested_user_id = int(token.user_id)
                 requested_user = User.objects.filter(id=requested_user_id)[:1].get()
-        
                 instance = self.get_object()
                 serializer = self.get_serializer(instance)
+        
                 if requested_user.username == serializer.data.get('email'):
-                    return Response(serializer.data)
+                    return Response(serializer.data, status=status.HTTP_200_OK)
                 else:
-                    return Response(status=status.HTTP_401_UNAUTHORIZED)
+                    return Response({'error': 'Invalid email'}, status=status.HTTP_401_UNAUTHORIZED)
             else:
-                return Response(status=status.HTTP_401_UNAUTHORIZED)
+                return Response({'error': 'Invalid access token provided'}, status=status.HTTP_401_UNAUTHORIZED)
         else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+            return Response({'error': 'Access token was not provided'}, status=status.HTTP_401_UNAUTHORIZED)
