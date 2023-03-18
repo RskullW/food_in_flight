@@ -9,6 +9,9 @@ class ProductCategory(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
     title = models.CharField(max_length=100)
 
+    image = models.ImageField(upload_to='images/', null=True)
+    icon = models.ImageField(upload_to='images/', null=True)
+
     def __str__(self):
         return self.title
 
@@ -47,6 +50,7 @@ class Product(models.Model):
         DRINK = 'D', _('Напиток')
     
     is_active = models.BooleanField(default=False)
+    is_popular = models.BooleanField(default=False)
 
     slug = models.SlugField(max_length=100, unique=True)
     type = models.CharField(max_length=1, choices=TypeOfProduct.choices, default=TypeOfProduct.FOOD, blank=False)
