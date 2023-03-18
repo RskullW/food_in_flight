@@ -7,7 +7,10 @@ import uuid
 
 class ProductCategory(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=100)
+
+    image = models.ImageField(upload_to='images/', null=True)
+    icon = models.ImageField(upload_to='images/', null=True)
 
     def __str__(self):
         return self.title
@@ -17,17 +20,45 @@ class ProductCategory(models.Model):
         verbose_name_plural = 'Категории товаров'
 
 
+class GroupProductCategory(models.Model):
+    slug = models.SlugField(max_length=50, unique=True)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Группа категорий товаров'
+        verbose_name_plural = 'Группы категорий товаров'
+
+
+class ProductCuisine(models.Model):
+    slug = models.SlugField(max_length=50, unique=True)
+    title = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        verbose_name = 'Кухня'
+        verbose_name_plural = 'Кухни'
+
+
 class Product(models.Model):
     class TypeOfProduct(models.TextChoices):
         FOOD = 'F', _('Еда')
         DRINK = 'D', _('Напиток')
     
     is_active = models.BooleanField(default=False)
+    is_popular = models.BooleanField(default=False)
 
     slug = models.SlugField(max_length=100, unique=True)
     type = models.CharField(max_length=1, choices=TypeOfProduct.choices, default=TypeOfProduct.FOOD, blank=False)
-    category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING)
-
+    
+    category = models.ForeignKey(ProductCategory, on_delete=models.DO_NOTHING, blank=True, null=True)
+    cuisine = models.ForeignKey(ProductCuisine, on_delete=models.DO_NOTHING, blank=True, null=True)
+    group_categories = models.ManyToManyField(GroupProductCategory, blank=True)
+    
     title = models.CharField(max_length=254, blank=False)
     description = models.TextField()
     composition = models.TextField()
@@ -47,7 +78,7 @@ class Product(models.Model):
 
     class Meta:
         verbose_name = 'Товар'
-        verbose_name_plural = 'Товар'
+        verbose_name_plural = 'Товары'
 
 
 class Image(models.Model):
@@ -103,11 +134,15 @@ class Order(models.Model):
 
 class OrderProduct(models.Model):
     unique_uuid = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)
+    order_uuid = property(lambda self: self.order.unique_uuid)
     item = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     amount = models.IntegerField(default=1)
     price = property(lambda self: self.item.price * self.amount)
     add_ice = models.BooleanField(default=False)
+
+    def item_slug(self):
+        return self.item.slug
 
     def item_title(self):
         return self.item.title
