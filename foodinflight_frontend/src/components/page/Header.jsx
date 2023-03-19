@@ -1,8 +1,8 @@
 import React from "react";
 import { Text, Image, Flex, Center, Spacer } from "@chakra-ui/react";
-import EnterAlerDialog from "./EnterAlertDialog";
-import SearchBar from "./SearchBar";
-import AdressBar from "./AdressBar";
+import EnterAlerDialog from "../page-components/EnterAlertDialog";
+import SearchBar from "../page-components/SearchBar";
+import AdressBar from "../page-components/AdressBar";
 
 
 const Header = () => {
