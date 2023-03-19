@@ -165,9 +165,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildAllBars() {
     return Scaffold(
       key: _scaffoldKey,
+      body: _buildBody(),
       appBar: _buildAppBar(),
       bottomNavigationBar: MyBottomAppBar("Home"),
-      body: _buildBody(),
       backgroundColor: colorBackgroundScreen,
     );
   }
