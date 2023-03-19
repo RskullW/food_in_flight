@@ -70,9 +70,7 @@ services:
     container_name: foodinflight_postgres
     image: postgres:alpine
     command:
-      - "postgres"
-      - "-c"
-      - "config_file=/etc/postgresql.conf"
+      - "postgres -c config_file=/etc/postgresql.conf"
     environment:
       POSTGRES_DB: "${POSTGRES_NAME}"
       POSTGRES_USER: "${POSTGRES_USER}"
