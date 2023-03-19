@@ -9,8 +9,8 @@ class ProductCategory(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
     title = models.CharField(max_length=100)
 
-    image = models.ImageField(upload_to='images/', null=True)
-    icon = models.ImageField(upload_to='images/', null=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    icon = models.ImageField(upload_to='images/', null=True, blank=True)
 
     def __str__(self):
         return self.title
