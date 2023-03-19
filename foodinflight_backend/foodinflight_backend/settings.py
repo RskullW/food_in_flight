@@ -126,3 +126,5 @@ REST_FRAMEWORK = {
         'knox.auth.TokenAuthentication',
     ]
 }
+
+CORS_ORIGIN_ALLOW_ALL = True
