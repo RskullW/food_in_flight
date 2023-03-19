@@ -7,22 +7,29 @@ import {
   WrapItem, 
   Text, 
   Button, 
+  Spacer,
+  Flex
 } from "@chakra-ui/react";
 
 const ExtraInfo = () => {
   return (
-    <Box className="extra-info" border="2px solid blue" margin="20px">
-      <Wrap className="extra-info__image-block" justify="center" border="5px solid pink" margin="20px 0px 0px 0px" padding="20px 0px">
-        <WrapItem>
-          <Image src="/favicon.ico" objectFit="cover"></Image>
-        </WrapItem>
-        <WrapItem>
+    <Box className="extra-info" border="2px solid blue" margin="50px 20px 20px 20px">
+      <Box 
+      className="extra-info__image-block" 
+      justify="center" border="5px solid pink" 
+      position="relative"
+      >
+        <Image src="/icons/extra-info_image.jpeg" objectFit="cover" maxH="400px" w="100%" />
+
+        <Box textAlign="center" position="absolute" top="20%" left="25%">
           <Text> Во главе каждой из наших кухонь стоят повара, которые живут своей работой, вкладывают душу.</Text>
-        </WrapItem>
-        <WrapItem>
+        </Box>
+
+        <Box textAlign="center" position="absolute" top="80%" left="45%">
           <Button>Узнать больше</Button>
-        </WrapItem>
-      </Wrap>
+        </Box>
+        
+      </Box>
 
       <Box className="extra-info__article-block" margin="50px 0px" padding="20px 0px">
         <Heading as="h1" margin="20px 0px 0px 0px">Бесплатная доставка еды 24 часа домой и в офис</Heading>

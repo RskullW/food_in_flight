@@ -17,7 +17,7 @@ const Footer = () => {
         О компании
       </Heading>
       <Flex className="footer__content" flexDirection="column">
-        <Flex justifyContent="space-between" margin="10px 0px 0px 0px">
+        <Flex justifyContent="center" gap="10px" textAlign="center" margin="10px 0px 0px 0px">
           <Link>Пользовательское соглашение</Link>
           <Link>Контакты</Link>
           <Link>Доставка</Link>

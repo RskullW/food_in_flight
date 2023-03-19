@@ -19,7 +19,7 @@ const Header = () => {
     >
       <Center 
         className="header__logo" 
-        w="150px"
+        minW="120px"
         h="100%"
         display="block"
       >
