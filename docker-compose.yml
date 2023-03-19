@@ -24,7 +24,8 @@ services:
       - ./foodinflight_backend/media:/app/media
       - ./foodinflight_backend/static:/app/static
       - ./logs:/logs
-      - ./data/uwsgi_socket:/uwsgi_socket
+    ports:
+      - "8001:8001"
     networks:
       - backnet
 
@@ -35,22 +36,26 @@ services:
     image: nginx:alpine
     volumes:
       - ./configs/nginx.conf.template:/etc/nginx/nginx.conf.template
-      - ./configs/uwsgi_params:/uwsgi
+      - ./configs/uwsgi_params:/etc/nginx/uwsgi_params
       - ./foodinflight_backend/media:/web/media
       - ./foodinflight_backend/static:/web/static
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
-      - ./data/uwsgi_socket:/uwsgi_socket
       - ./logs:/logs
     environment:
-      - HOST_DOMAIN=${HOST_DOMAIN}
+      - NGINX_HOST=${HOST_DOMAIN}
+      - BACKEND_HOSTNAME=foodinflight_backend
+      - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx
+      - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
+      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template
+    entrypoint: /docker-entrypoint.sh
     command: >
-      /bin/sh -c "envsubst '$$HOST_DOMAIN' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
-      && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\""
+      /bin/sh -c " while :; do sleep 6h & wait $${!}; nginx -s reload; done & /docker-entrypoint.sh nginx -g \"daemon off;\""
     ports:
       - "80:80"
       - "443:443"
     networks:
+      - backnet
       - frontnet
 
   foodinflight_certbot:
