@@ -24,26 +24,29 @@ services:
       - ./foodinflight_backend/media:/app/media
       - ./foodinflight_backend/static:/app/static
       - ./logs:/logs
-      - ./data/uwsgi:/uwsgi
+      - ./data/uwsgi_socket:/uwsgi_socket
     networks:
       - backnet
 
   foodinflight_nginx:
     container_name: foodinflight_nginx
     depends_on:
-      - foodinflight_backend
       - foodinflight_certbot
     image: nginx:alpine
     volumes:
-      - ./configs/nginx.conf:/etc/nginx/nginx.conf
+      - ./configs/nginx.conf.template:/etc/nginx/nginx.conf.template
       - ./configs/uwsgi_params:/uwsgi
       - ./foodinflight_backend/media:/web/media
       - ./foodinflight_backend/static:/web/static
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
+      - ./data/uwsgi_socket:/uwsgi_socket
+      - ./logs:/logs
     environment:
-      - NGINX_HOST=${HOST_DOMAIN}
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+      - HOST_DOMAIN=${HOST_DOMAIN}
+    command: >
+      /bin/sh -c "envsubst '$$HOST_DOMAIN' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf
+      && while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\""
     ports:
       - "80:80"
       - "443:443"

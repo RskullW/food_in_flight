@@ -1,0 +1,60 @@
+worker_processes  4;
+error_log  /logs/nginx.log;
+worker_rlimit_nofile 8192;
+
+events {
+  worker_connections  4096;
+}
+
+http {
+    include /etc/nginx/sites-enabled/*;
+
+    log_format   main '$remote_addr - $remote_user [$time_local]  $status '
+    '"$request" $body_bytes_sent "$http_referer" '
+    '"$http_user_agent" "$http_x_forwarded_for"';
+    access_log   /logs/access_nginx.log  main;
+    sendfile     on;
+    tcp_nopush   on;
+    server_names_hash_bucket_size 128; # this seems to be required for some vhosts
+
+    # the upstream component nginx needs to connect to
+    upstream djangouwsgi {
+        server unix:///uwsgi_socket/uwsgi.sock;
+    }
+
+    server {
+        listen 80;
+        server_name ${HOST_DOMAIN};
+
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
+
+        location / {
+            return 301 https://$host$request_uri;
+        }
+    }
+    server {
+        listen 443 ssl;
+        server_name ${HOST_DOMAIN};
+        charset     utf-8;
+        client_max_body_size 64M;
+
+        ssl_certificate /etc/letsencrypt/live/${HOST_DOMAIN}/fullchain.pem;
+        ssl_certificate_key /etc/letsencrypt/live/${HOST_DOMAIN}/privkey.pem;
+        include /etc/letsencrypt/options-ssl-nginx.conf;
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+        location /media  {
+            alias /web/media;
+        }
+        location /static {
+            alias /web/static;
+        }
+
+        location / {
+            uwsgi_pass  djangouwsgi;
+            include     /uwsgi;
+        }
+    }
+}
