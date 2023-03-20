@@ -6,6 +6,7 @@ from .serializers import *
 from django.contrib.auth.models import User
 
 
+
 class ProductViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Product.objects.filter(is_active=True)
     serializer_class = ProductSerializer
