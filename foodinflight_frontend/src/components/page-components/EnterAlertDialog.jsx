@@ -13,7 +13,7 @@ import {
   InputLeftAddon,
   InputGroup,
   Stack,
-  Box
+  Box,
 } from '@chakra-ui/react'
 import PasswordInput from "./EnterPassword";
 
@@ -23,7 +23,20 @@ const EnterAlerDialog = () => {
 
   return (
     <>
-      <Button w="200px" h="60px" bgColor="white" border="1px solid black" onClick={onOpen}>
+      <Button 
+        w="200px" 
+        h="50px" 
+        bgColor="white"
+        borderRadius="10px"
+        onClick={onOpen}
+        bgGradient="none"
+        transition="700ms"
+        transitionDelay="bgColor linear"
+        _hover={{
+          bgColor:"#F7B42C"
+        }}
+        
+      >
         Войти
       </Button>
 

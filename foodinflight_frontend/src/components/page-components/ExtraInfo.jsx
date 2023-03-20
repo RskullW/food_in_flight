@@ -3,17 +3,13 @@ import {
   Box, 
   Image, 
   Heading, 
-  Wrap, 
-  WrapItem, 
   Text, 
-  Button, 
-  Spacer,
-  Flex
+  Button
 } from "@chakra-ui/react";
 
 const ExtraInfo = () => {
   return (
-    <Box className="extra-info" border="2px solid blue" margin="50px 20px 20px 20px">
+    <Box className="extra-info" margin="50px 20px 20px 20px">
       <Box 
       className="extra-info__image-block" 
       justify="center" border="5px solid pink" 

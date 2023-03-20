@@ -4,11 +4,15 @@ import { FormControl, Input, Center } from "@chakra-ui/react";
 const AdressBar = () => {
   return (
     <Center w="400px">
-      <FormControl>
+      <FormControl _focus={{borderColor:"rgba(255, 165, 0, 1)"}}>
         <Input
-          h="60px" 
+          h="50px"
+          bgColor="white"
+          borderRadius="10px"
           type="search" 
           placeholder="Введите адрес"
+          focusBorderColor="rgba(255, 165, 0, 1)"
+          
         />
       </FormControl>
     </Center>

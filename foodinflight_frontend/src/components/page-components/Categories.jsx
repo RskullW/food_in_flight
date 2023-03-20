@@ -18,7 +18,7 @@ const Categories = () => {
 
   useEffect(() => {
     const getCategories = async() => {
-      const categoriesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:8000/api/categories/`, {
+      const categoriesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/categories/`, {
         method: "GET",
         mode: 'cors',
         headers: {

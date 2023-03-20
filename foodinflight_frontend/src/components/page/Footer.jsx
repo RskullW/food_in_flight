@@ -6,25 +6,33 @@ const Footer = () => {
   return(
     <Box 
       className="footer" 
-      bgColor="white" 
+      bgColor="rgba(0, 0, 0, 0.8)" 
       position="relative" 
       bottom="-80px" 
       borderTop="1px solid rgba(0,0,0,0.15)" 
-      h="80px"
+      h="90px"
       padding="10px 20px"
     >
-      <Heading className="footer__article">
-        О компании
-      </Heading>
+
       <Flex className="footer__content" flexDirection="column">
-        <Flex justifyContent="center" gap="10px" textAlign="center" margin="10px 0px 0px 0px">
+        <Flex 
+          justifyContent="center" 
+          gap="30px" 
+          textAlign="center" 
+          margin="10px 0px 0px 0px"
+          textColor="white"
+        >
           <Link>Пользовательское соглашение</Link>
           <Link>Контакты</Link>
           <Link>Доставка</Link>
           <Link>Обратная связь</Link>
         </Flex>
           
-        <Flex justifyContent="space-between" margin="10px 0px 10px 0px">
+        <Flex 
+          justifyContent="space-between" 
+          margin="10px 0px 10px 0px"
+          textColor="white"
+        >
           <Text>© 2023 ООО «Food in Flight»</Text>
           <Text>Проект компании Шпонка Шапокляка</Text>
         </Flex>

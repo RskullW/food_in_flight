@@ -23,7 +23,7 @@ const PopularCategory = () => {
 
   useEffect(() => {
     const getData = async() => {
-      const productsResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:8000/api/products/`, {
+      const productsResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/products/`, {
         method: 'GET',
         mode: 'cors',
         headers: {

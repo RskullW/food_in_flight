@@ -28,27 +28,30 @@ const FooterMainPart = () => {
   useEffect(() => {
 
     const getCuisinesData = async() => {
-      const cuisinesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:8000/api/cuisines/`, {
+      const url = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/cuisines/`;
+      const cuisinesResponse = await fetch(url, {
         method: "GET",
         mode: "cors",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         }
       })
-
+      
       if (cuisinesResponse.status === 200) {
         const cuisinesData = await cuisinesResponse.json();
         setAllCuisines(cuisinesData);
       } else {
         setCuisinesError(true);
       }
+
+      console.log(cuisinesResponse);
     }
 
     getCuisinesData();
   }, []);
 
   return (
-    <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" border="2px solid blue" margin="20px">
+    <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" margin="70px 20px 20px 20px">
       <GridItem className="footer__nav-menu">
         <Heading>Кухни</Heading>
         {
