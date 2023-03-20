@@ -49,21 +49,21 @@ const PopularCategory = () => {
         <Heading as="h2">Популярное</Heading>
       </Center>
 
-      <Wrap justify="center" margin="20px 0px">
+      <Wrap justify="center" margin="40px 0px" p="5px">
       {
         allProducts.map((product) => (
           product.is_popular ? (
             <WrapItem 
               className="popular-category__item"
             >
-              <Card maxW="300px" minH="335px">
-                <CardBody p="0 !important">
+              <Card maxW="300px" minH="250px" shadow="base">
+                <CardBody p="0px">
                   <Box>
                     <Link 
                       href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
                       style={{textDecoration: "none"}}
                     >
-                      <Box textAlign="center">
+                      <Box textAlign="left">
 
                         <Image 
                           src={product.images[0]?.image}
@@ -71,9 +71,7 @@ const PopularCategory = () => {
                           margin="0px 0px 10px 0px"
                         />
 
-                        {product.title}
-
-                        <Divider margin="10px 0px 10px 0px"/>
+                        <Text p="10px 0px 0px 20px">{product.title}</Text>
                             
                       </Box>
                     </Link>
