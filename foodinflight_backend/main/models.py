@@ -5,6 +5,7 @@ import uuid
 
 
 
+
 class ProductCategory(models.Model):
     slug = models.SlugField(max_length=50, unique=True)
     title = models.CharField(max_length=100)
