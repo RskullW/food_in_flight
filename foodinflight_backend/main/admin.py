@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import *
 
 
+
 @admin.action(description='Сделать выбранные продукты неактивными')
 def make_products_inactive(modeladmin, request, queryset):
     queryset.update(is_active=False)    
@@ -18,3 +19,8 @@ class ProductAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Image)
+admin.site.register(Order)
+admin.site.register(OrderProduct)
+admin.site.register(ProductCategory)
+admin.site.register(GroupProductCategory)
+admin.site.register(ProductCuisine)

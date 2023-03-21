@@ -11,7 +11,9 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DEBUG = os.getenv('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', os.getenv('HOST_DOMAIN')]
+
+CSRF_TRUSTED_ORIGINS = ['https://' + os.getenv('HOST_DOMAIN')]
 
 
 # Application definition
@@ -25,7 +27,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'main',
+    'authentication',
     'corsheaders',
+    'knox',
 ]
 
 MIDDLEWARE = [
@@ -61,7 +65,8 @@ WSGI_APPLICATION = 'foodinflight_backend.wsgi.application'
 
 
 # Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
+
+host = os.getenv('POSTGRES_HOST_DOCKER') if os.getenv('INSIDE_A_DOCKER', False) else os.getenv('POSTGRES_HOST')
 
 DATABASES = {
     'default': {
@@ -69,14 +74,13 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_NAME'),
         'USER': os.getenv('POSTGRES_USER'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'HOST': os.getenv('DJANGO_HOST'),
-        'PORT': os.getenv('DJANGO_PORT'),
+        'HOST': host,
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 
 
 # Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -95,9 +99,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Internationalization
-# https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 
@@ -107,14 +110,21 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'knox.auth.TokenAuthentication',
+    ]
+}
+
+CORS_ALLOW_ALL_ORIGINS = True

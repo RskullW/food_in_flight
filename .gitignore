@@ -39,5 +39,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 
-.env
-/foodinflight_backend/media/
+**/.env
+**/.env.local
+foodinflight_backend/media/
+foodinflight_backend/static/
+**/__pycache__/
+foodinflight_frontend/node_modules/
+data/
+logs/
+**/virtualenv
+/foodinflight_frontend/package-lock.json
+.vscode/

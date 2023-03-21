@@ -1,0 +1,35 @@
+version: '3.7'
+
+volumes:
+  pgdata:
+
+services:
+  foodinflight_backend:
+    container_name: foodinflight_backend
+    depends_on:
+      - foodinflight_postgres
+    build:
+      context: .
+      dockerfile: configs/Dockerfile_backend_dev
+    volumes:
+      - ./foodinflight_backend/media:/app/media
+      - ./foodinflight_backend/static:/app/static
+      - ./logs:/logs
+    ports:
+      - "8000:8000"
+
+  foodinflight_postgres:
+    container_name: foodinflight_postgres
+    image: postgres:alpine
+    command:
+      - "postgres -c config_file=/etc/postgresql.conf"
+    environment:
+      POSTGRES_DB: "${POSTGRES_NAME}"
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+    volumes:
+      - pgdata:/var/lib/postgresql/data            # docker volume usage
+      - ./configs/postgresql.conf:/etc/postgresql.conf
+      - ./logs:/logs
+    ports:
+      - "5432:5432"
