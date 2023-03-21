@@ -28,7 +28,7 @@ const FooterMainPart = () => {
   useEffect(() => {
 
     const getCuisinesData = async() => {
-      const url = `${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/cuisines/`;
+      const url = `${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/cuisines/`;
       const cuisinesResponse = await fetch(url, {
         method: "GET",
         mode: "cors",
@@ -60,7 +60,7 @@ const FooterMainPart = () => {
 
               <Link 
                 style={{textDecoration: "none"}}
-                href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/cuisines/${cuisine.slug}`}
+                href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/cuisines/${cuisine.slug}`}
               >
 
                 <ListItem margin="20px 0px">

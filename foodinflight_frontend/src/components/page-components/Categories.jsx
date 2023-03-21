@@ -18,7 +18,7 @@ const Categories = () => {
 
   useEffect(() => {
     const getCategories = async() => {
-      const categoriesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/categories/`, {
+      const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
         method: "GET",
         mode: 'cors',
         headers: {
@@ -53,7 +53,7 @@ const Categories = () => {
               <CardBody p="0 !important">
                 <Box>
                   <Link 
-                    href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/category/${category.slug}`} 
+                    href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/category/${category.slug}`} 
                     style={{textDecoration: "none"}}
                   >
                     <Box textAlign="center" textColor="white">

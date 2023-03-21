@@ -9,7 +9,7 @@ const Navbar = () => {
 
   useEffect(() => {
     const getCategories = async() => {
-      const categoriesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/categories/`, {
+      const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
         method: "GET",
         mode: 'cors',
         headers: {
@@ -27,7 +27,7 @@ const Navbar = () => {
     }
 
     const getGroupCategories = async() => {
-      const groupCategoriesResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/group_categories/`, {
+      const groupCategoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/group_categories/`, {
         method: "GET",
         mode: "cors",
         headers: {
@@ -54,7 +54,7 @@ const Navbar = () => {
           {
             allCategories.map((category) => (
               <Box margin="15px 0px">
-                <Link href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/categories/${category.slug}`} 
+                <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}`} 
                 style={{textDecoration: "none"}}
                 >
                   {category.title}
@@ -70,7 +70,7 @@ const Navbar = () => {
             <Box margin="15px 0px">
               <Link 
               style={{textDecoration: "none"}}
-              href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/group-categories/${groupCategory.slug}`}
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/group-categories/${groupCategory.slug}`}
               >
                 {groupCategory.title}
               </Link>

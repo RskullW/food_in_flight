@@ -23,7 +23,7 @@ const PopularCategory = () => {
 
   useEffect(() => {
     const getData = async() => {
-      const productsResponse = await fetch(`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}/api/products/`, {
+      const productsResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/products/`, {
         method: 'GET',
         mode: 'cors',
         headers: {
@@ -60,7 +60,7 @@ const PopularCategory = () => {
                 <CardBody p="0px">
                   <Box>
                     <Link 
-                      href={`${process.env.REACT_APP_PROTOCOL}://${process.env.REACT_APP_HOSTNAME}:3000/products/${product.slug}`} 
+                      href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/products/${product.slug}`} 
                       style={{textDecoration: "none"}}
                     >
                       <Box textAlign="left">
