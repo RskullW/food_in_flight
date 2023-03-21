@@ -17,9 +17,9 @@ function PasswordInput() {
                 type={show ? 'text' : 'password'}
                 placeholder='Введите пароль'
             />
-            <InputRightElement width='4.5rem'>
-                <Button h='1.75rem' size='sm' onClick={handleClick}>
-                    {show ? 'Hide' : 'Show'}
+            <InputRightElement width='5rem'>
+                <Button h='1.75rem' size='xs' onClick={handleClick}>
+                {show ? 'Убрать' : 'Показать'}
                 </Button>
             </InputRightElement>
         </InputGroup>
