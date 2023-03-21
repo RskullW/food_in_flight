@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_key_in_widget_constructors
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
 import 'package:mobile/products/categories.dart';
@@ -16,55 +18,47 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isSearchOpen = false;
   TextEditingController _searchController = TextEditingController();
-  late List<Product> _products;
-  late List<Product> _productsSearchList;
+  List<Product> _products = [];
+  List<Product> _productsSearchList = [];
+  List<String> _categories = [];
+
+  Future<List<Product>> fetchProducts() async {
+    final response =
+        await http.get(Uri.parse('https://foodflight.ru/api/products/'));
+
+    if (response.statusCode == 200) {
+      final jsonData = jsonDecode(response.body);
+      final products = <Product>[];
+
+      for (var item in jsonData) {
+        products.add(Product.fromJson(item));
+      }
+
+      return products;
+    } else {
+      throw Exception('Failed to load products');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _products = [
-      Product(
-        Name: "раз",
-        Price: 123,
-        ImageUrl: "https://picsum.photos/200/300",
-        Description: "TEMP",
-        Weight: 100,
-        productCategory: ProductCategory.DRINK,
-      ),
-      Product(
-        Name: "dva",
-        Price: 123,
-        ImageUrl: "https://picsum.photos/200/300",
-        Description: "TEMP",
-        Weight: 100,
-        productCategory: ProductCategory.FOOD,
-      ),
-      Product(
-        Name: "dva",
-        Price: 123,
-        ImageUrl: "https://picsum.photos/200/300",
-        Description: "TEMP",
-        Weight: 100,
-        productCategory: ProductCategory.DRINK,
-      ),
-      Product(
-        Name: "temp",
-        Price: 123,
-        ImageUrl: "https://picsum.photos/200/300",
-        Description: "TEMP",
-        Weight: 100,
-        productCategory: ProductCategory.FOOD,
-      ),
-      Product(
-        Name: "три",
-        Price: 123,
-        ImageUrl: "https://picsum.photos/200/300",
-        Description: "TEMP",
-        Weight: 100,
-        productCategory: ProductCategory.DRINK,
-      )
-    ];
-    _productsSearchList = List<Product>.from(_products);
+    _loadProducts();
+  }
+
+  Future<void> _loadProducts() async {
+    final products = await fetchProducts();
+    final categories = <String>{};
+
+    for (var product in products) {
+      categories.add(product.Category);
+    }
+
+    setState(() {
+      _products = products;
+      _productsSearchList = List<Product>.from(_products);
+      _categories = categories.toList();
+    });
   }
 
   void _searchForProducts(String query) {
@@ -159,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
               )
-        : ProductGrid(products: _products);
+        : ProductGridWithTitle(products: _products, categories: _categories);
   }
 
   Widget _buildAllBars() {

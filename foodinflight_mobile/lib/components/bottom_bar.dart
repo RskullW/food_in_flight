@@ -143,7 +143,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                   Text('Корзина',
                       style: TextStyle(
                           color: _isSelectCart ? colorSelectIcon : colorIcon)),
-                  () => _defaultFunction('Cart'),
+                  () => Navigator.pushNamed(context, '/cart_screen'),
                 ),
               ),
               Expanded(

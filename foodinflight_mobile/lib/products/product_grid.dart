@@ -27,7 +27,7 @@ class ProductGrid extends StatelessWidget {
               final product = products[index];
               String description;
 
-              switch (product.productCategory) {
+              switch (product.Type) {
                 case ProductCategory.DRINK:
                   double liters = product.Weight / 1000;
                   description = liters.toStringAsFixed(
@@ -145,6 +145,50 @@ class ProductGrid extends StatelessWidget {
             },
           ),
         ],
+      ),
+    );
+  }
+}
+
+class ProductGridWithTitle extends StatelessWidget {
+  final List<Product> products;
+  final List<String> categories;
+
+  const ProductGridWithTitle({
+    Key? key,
+    required this.products,
+    required this.categories,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: categories
+            .map((category) => Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 16.0, horizontal: 24.0),
+                      child: Text(
+                        category,
+                        style: TextStyle(
+                          fontSize: 24.0,
+                          fontWeight: FontWeight.bold,
+                          color: colorAppBar,
+                        ),
+                      ),
+                    ),
+                    ProductGrid(
+                      products: products
+                          .where((product) => product.Category == category)
+                          .toList(),
+                    ),
+                  ],
+                ))
+            .toList(),
       ),
     );
   }
