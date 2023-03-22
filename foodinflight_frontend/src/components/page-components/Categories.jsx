@@ -53,7 +53,7 @@ const Categories = () => {
               <CardBody p="0 !important">
                 <Box>
                   <Link 
-                    href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/category/${category.slug}`} 
+                    href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${category.slug}`} 
                     style={{textDecoration: "none"}}
                   >
                     <Box textAlign="center" textColor="white">

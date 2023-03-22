@@ -1,24 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
-  Grid,
-  GridItem,
-  Box,
-  Image,
-  Link,
-  Heading,
-  Wrap,
-  Center,
-  WrapItem,
-  Text,
-  Button,
-  List,
-  ListItem,
-  IconButton,
-  Card,
-  CardBody,
-  CardFooter,
-  Divider,
-  Spacer
+  Box
 } from "@chakra-ui/react";
 
 import Categories from "../page-components/Categories";
@@ -30,13 +12,7 @@ import FooterMainPart from "../page-components/FooterMainPart";
 
 const MainPart = () => {
   return (
-    <Box
-      className="main-part"
-      width={{ base: "100%", lg: "85%" }}
-      border="1px solid black"
-      borderRadius="10px"
-      margin="20px"
-    >
+    <Box>
 
       <Carousel />
 

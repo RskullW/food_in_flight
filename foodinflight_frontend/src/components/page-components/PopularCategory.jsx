@@ -12,7 +12,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Divider,
   Spacer
 } from "@chakra-ui/react";
 
@@ -60,7 +59,7 @@ const PopularCategory = () => {
                 <CardBody p="0px">
                   <Box>
                     <Link 
-                      href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/products/${product.slug}`} 
+                      href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}`} 
                       style={{textDecoration: "none"}}
                     >
                       <Box textAlign="left">
