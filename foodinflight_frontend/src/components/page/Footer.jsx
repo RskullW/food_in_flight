@@ -21,7 +21,7 @@ const Footer = () => {
           margin="10px 0px 0px 0px"
           textColor="white"
         >
-          <Link>Пользовательское соглашение</Link>
+          <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/user-agreement`}>Пользовательское соглашение</Link>
           <Link>Контакты</Link>
           <Link>Доставка</Link>
           <Link>Обратная связь</Link>

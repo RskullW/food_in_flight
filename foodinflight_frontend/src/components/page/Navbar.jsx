@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import { GridItem, Box, Link, Text } from "@chakra-ui/react";
+
 
 const Navbar = () => {
   const [allCategories, setAllCategories] = useState([]);

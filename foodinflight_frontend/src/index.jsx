@@ -4,6 +4,7 @@ import './index.css';
 import IndexPage from './pages/IndexPage';
 import AboutPage from './pages/AboutPage';
 import CategoryPage from './pages/CategoryPage';
+import UserAgreementPage from './pages/UserAgreementPage';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ChakraProvider } from '@chakra-ui/react'
 import ProductPage from './pages/ProductPage';
@@ -28,6 +29,11 @@ const router = createBrowserRouter([
     path: '/:category',
     element: <CategoryPage/>,
   },
+
+  {
+    path: '/user-agreement',
+    element: <UserAgreementPage/>
+  }
 ]);
 
 
