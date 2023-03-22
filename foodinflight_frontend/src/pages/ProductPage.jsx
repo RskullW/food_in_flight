@@ -1,17 +1,16 @@
 import React, { useState } from 'react'
-import { Box, Heading, Flex, Button } from '@chakra-ui/react'
+import { Box, Text} from '@chakra-ui/react'
 import { useParams } from 'react-router-dom'
+import Layout from '../components/page/Layout'
 
 
 const ProductPage = () => {
     const { product } = useParams();
     
     return (
-        <Box>
-            <Heading>
-                { product }
-            </Heading> 
-        </Box>
+      <Layout>
+        <Text></Text>
+      </Layout>
     )
 }
 

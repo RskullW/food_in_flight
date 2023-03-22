@@ -30,12 +30,12 @@ import FooterMainPart from "../page-components/FooterMainPart";
 
 const MainPart = () => {
   return (
-    <GridItem
+    <Box
       className="main-part"
-      colSpan="10"
+      width={{ base: "100%", lg: "85%" }}
       border="1px solid black"
       borderRadius="10px"
-      margin="20px 20px 20px 0px"
+      margin="20px"
     >
 
       <Carousel />
@@ -48,7 +48,7 @@ const MainPart = () => {
 
       <FooterMainPart />
 
-    </GridItem>
+    </Box>
   )
 
 }

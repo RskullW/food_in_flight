@@ -8,7 +8,6 @@ const Footer = () => {
       className="footer" 
       bgColor="rgba(0, 0, 0, 0.8)" 
       position="relative" 
-      bottom="-80px" 
       borderTop="1px solid rgba(0,0,0,0.15)" 
       h="90px"
       padding="10px 20px"

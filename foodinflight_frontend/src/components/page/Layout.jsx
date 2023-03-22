@@ -1,17 +1,20 @@
 import React from 'react'
-import { Box } from '@chakra-ui/react'
-import { Heading } from '@chakra-ui/react'
+import { Box, GridItem } from '@chakra-ui/react'
+import { Heading, Flex } from '@chakra-ui/react'
 import Header from './Header'
 import Footer from './Footer'
+import Navbar from './Navbar'
 
 
 const Layout = ({ children }) => {
     return (
         <Box>
           <Header />
-            <Box>
-                { children }
-            </Box>
+          
+            <Flex mt="70px">
+              <Navbar />
+              { children }
+            </Flex>
           <Footer/>  
         </Box>  
     )

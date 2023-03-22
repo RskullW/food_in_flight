@@ -56,7 +56,7 @@ const PopularCategory = () => {
             <WrapItem 
               className="popular-category__item"
             >
-              <Card maxW="300px" minH="250px" shadow="base">
+              <Card maxW="300px" h="350px" maxH="350px" shadow="base">
                 <CardBody p="0px">
                   <Box>
                     <Link 
@@ -68,7 +68,7 @@ const PopularCategory = () => {
                         <Image 
                           src={product.images[0]?.image}
                           borderRadius="0.375rem 0.375rem 0rem 0rem"
-                          margin="0px 0px 10px 0px"
+                          margin="0px 0px 5px 0px"
                         />
 
                         <Text p="10px 0px 0px 20px">{product.title}</Text>
