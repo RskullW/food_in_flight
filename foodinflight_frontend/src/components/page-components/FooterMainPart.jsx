@@ -51,19 +51,19 @@ const FooterMainPart = () => {
   }, []);
 
   return (
-    <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" margin="70px 20px 20px 20px">
+    <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" m="100px 20px 20px 20px" p="20px 0px 0px 0px" borderTop="1px solid rgba(0, 0, 0, 0.15)">
       <GridItem className="footer__nav-menu">
-        <Heading>Кухни</Heading>
+        <Heading m="0px 0px 15px 0px">Кухни</Heading>
         {
           allCuisines.map((cuisine) => (
-            <List>
+            <List p="5px 0px">
 
               <Link 
                 style={{textDecoration: "none"}}
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/cuisines/${cuisine.slug}`}
               >
 
-                <ListItem margin="20px 0px">
+                <ListItem>
                   {cuisine.title}
                 </ListItem>
                   
@@ -75,17 +75,17 @@ const FooterMainPart = () => {
       </GridItem>
 
       <GridItem className="footer__nav-menu">
-        <Heading>Компания</Heading>
-        <List>
-          <ListItem>
+        <Heading m="0px 0px 15px 0px">Компания</Heading>
+        <List >
+          <ListItem p="5px 0px">
             <Link>Наша Кухня</Link>
           </ListItem>
-          <ListItem>
+          <ListItem p="5px 0px">
             <Link>Оплата</Link>
           </ListItem>
-          <ListItem>
+          <ListItem p="5px 0px">
             <Link>Контакты</Link>
-          </ListItem>
+          </ListItem >
         </List>
       </GridItem>
 
@@ -93,11 +93,35 @@ const FooterMainPart = () => {
         <Wrap>
           <Heading>Заказывайте через мобильное приложение</Heading>
           <Text>Получай подарок к каждому заказу</Text>
-          <Button className="footer__nav-links-app">Загрузить в App Store</Button>
-          <Button className="footer__nav-links-app">Загрузить в Google Play</Button>
-          <IconButton className="footer__nav-links-socials"></IconButton>
-          <IconButton className="footer__nav-links-socials"></IconButton>
-          <IconButton className="footer__nav-links-socials"></IconButton>
+          <Button 
+            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+          >
+            Загрузить в App Store
+          </Button>
+
+          <Button 
+            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+          >
+            Загрузить в Google Play
+          </Button>
+
+          <IconButton 
+            bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+          >
+
+          </IconButton>
+
+          <IconButton 
+            bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+          >
+
+          </IconButton>
+          
+          <IconButton 
+            bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+          >
+
+          </IconButton>
         </Wrap>
       </GridItem>
       

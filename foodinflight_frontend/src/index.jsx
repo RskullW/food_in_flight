@@ -57,8 +57,8 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <ChakraProvider>
-      <RouterProvider router={router} />
-    </ChakraProvider>
+  <ChakraProvider>
+    <RouterProvider router={router} />
+  </ChakraProvider>
 );
 

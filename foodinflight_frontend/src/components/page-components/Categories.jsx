@@ -40,7 +40,10 @@ const Categories = () => {
   }, [])
 
   return (
-    <Box className="category" border="2px solid blue" margin="50px 20px 0px 20px">
+    <Box 
+      className="category" 
+      margin="20px 0px 0px 0px"
+    >
       <Center area={`header`}>
         <Heading as="h2">Категории</Heading>
       </Center>
@@ -49,14 +52,14 @@ const Categories = () => {
       {
         allCategories.map((category) => (
           <WrapItem>
-            <Card maxW="300px">
+            <Card maxW="295px" shadow="md">
               <CardBody p="0 !important">
                 <Box>
                   <Link 
                     href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${category.slug}`} 
                     style={{textDecoration: "none"}}
                   >
-                    <Box textAlign="center" textColor="white">
+                    <Box textAlign="center" textColor="whiteAlpha.900">
                       <Image 
                         src={category.image}
                         borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"

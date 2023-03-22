@@ -42,20 +42,22 @@ const PopularCategory = () => {
   }, [])
 
   return (
-    <Box className="popular-category" border="2px solid blue" margin="100px 20px 0px 20px">
+    <Box className="popular-category" margin="50px 0px 0px 0px">
 
-      <Center className="popular-category__header" area={`header`}>
-        <Heading as="h2">Популярное</Heading>
+      <Center className="popular-category__header">
+        <Heading as="h2">
+          Популярное
+        </Heading>
       </Center>
 
-      <Wrap justify="center" margin="40px 0px" p="5px">
+      <Wrap justify="center" margin="20px 0px" p="5px">
       {
         allProducts.map((product) => (
           product.is_popular ? (
             <WrapItem 
               className="popular-category__item"
             >
-              <Card maxW="300px" h="350px" maxH="350px" shadow="base">
+              <Card maxW="296px" h="320px" maxH="350px" shadow="lg">
                 <CardBody p="0px">
                   <Box>
                     <Link 
@@ -67,22 +69,29 @@ const PopularCategory = () => {
                         <Image 
                           src={product.images[0]?.image}
                           borderRadius="0.375rem 0.375rem 0rem 0rem"
-                          margin="0px 0px 5px 0px"
+                          margin="0px 0px 3px 0px"
                         />
 
-                        <Text p="10px 0px 0px 20px">{product.title}</Text>
+                        <Text p="10px 0px 0px 10px">{product.title}</Text>
                             
                       </Box>
                     </Link>
                   </Box>
                 </CardBody>
 
-                <CardFooter alignItems="center">
+                <CardFooter alignItems="center" padding="0px 10px 10px 10px">
                   <Text>{product.price}₽</Text>
 
                   <Spacer/>
 
-                  <Button>В корзину</Button>
+                  <Button 
+                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                    textColor="whiteAlpha.900"
+                    _hover={{bgColor: "none", bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
+                  >
+                    В корзину
+                  </Button>
+
                 </CardFooter>
 
               </Card>

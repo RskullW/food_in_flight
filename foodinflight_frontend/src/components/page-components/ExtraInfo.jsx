@@ -9,20 +9,26 @@ import {
 
 const ExtraInfo = () => {
   return (
-    <Box className="extra-info" margin="50px 20px 20px 20px">
+    <Box className="extra-info" margin="100px 20px 20px 20px">
+      
       <Box 
-      className="extra-info__image-block" 
-      justify="center" border="5px solid pink" 
-      position="relative"
+        className="extra-info__image-block" 
+        justify="center"
+        position="relative"
+        borderRadius="20px"
       >
-        <Image src="/icons/extra-info_image.jpeg" objectFit="cover" maxH="400px" w="100%" />
+        <Image src="/icons/extra-info_image.jpeg" objectFit="cover" maxH="400px" w="100%" borderRadius="15px"/>
 
-        <Box textAlign="center" position="absolute" top="20%" left="25%">
-          <Text> Во главе каждой из наших кухонь стоят повара, которые живут своей работой, вкладывают душу.</Text>
+        <Box textAlign="center" position="absolute" top="50%" bottom="50%" left="25%" right="25%">
+          <Text fontSize="xl" textShadow="xl" color="whiteAlpha.900"> Во главе каждой из наших кухонь стоят повара, которые живут своей работой, вкладывают душу.</Text>
         </Box>
 
         <Box textAlign="center" position="absolute" top="80%" left="45%">
-          <Button>Узнать больше</Button>
+          <Button
+            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+            textColor="whiteAlpha.900"
+            _hover={{bgColor: "none", bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
+          >Узнать больше</Button>
         </Box>
         
       </Box>
