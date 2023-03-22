@@ -9,13 +9,14 @@ const Header = () => {
   return (
     <Flex
       className="header"  
-      position="fixed" 
+      position="fixed"
+      top='0' 
       zIndex="100000" 
       bgGradient="linear(to-t, #7928CA, #7b68ee)" 
       h="70px" 
       w="100%"
       borderBottom="1px solid rgba(0, 0, 0, 0.15)" 
-      padding="10px 20px"
+      p="0px 20px"
     >
       <Center 
         className="header__logo" 

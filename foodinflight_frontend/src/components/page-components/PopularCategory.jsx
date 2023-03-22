@@ -12,7 +12,6 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Divider,
   Spacer
 } from "@chakra-ui/react";
 
@@ -56,11 +55,11 @@ const PopularCategory = () => {
             <WrapItem 
               className="popular-category__item"
             >
-              <Card maxW="300px" minH="250px" shadow="base">
+              <Card maxW="300px" h="350px" maxH="350px" shadow="base">
                 <CardBody p="0px">
                   <Box>
                     <Link 
-                      href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/products/${product.slug}`} 
+                      href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}`} 
                       style={{textDecoration: "none"}}
                     >
                       <Box textAlign="left">
@@ -68,7 +67,7 @@ const PopularCategory = () => {
                         <Image 
                           src={product.images[0]?.image}
                           borderRadius="0.375rem 0.375rem 0rem 0rem"
-                          margin="0px 0px 10px 0px"
+                          margin="0px 0px 5px 0px"
                         />
 
                         <Text p="10px 0px 0px 20px">{product.title}</Text>
