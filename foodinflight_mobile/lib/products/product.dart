@@ -8,7 +8,7 @@ class Product {
   final bool IsPopular;
   final String Slug;
   final ProductCategory Type;
-  final String Cuisine;
+  final List<String> Cuisine;
   final String Name;
   final String Description;
   final String Composition;
@@ -20,7 +20,7 @@ class Product {
   final double Carbohydrates;
   final String ImageUrl;
   final String Category;
-  final String GroupCategory;
+  final List<String> GroupCategory;
 
   Product({
     required this.IsActive,
@@ -43,14 +43,26 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
-    final category =
+    final type =
         json['type'] == 'F' ? ProductCategory.FOOD : ProductCategory.DRINK;
+
+    final groupCategories = <String>[];
+    if (json['group_categories'] != null) {
+      for (final category in json['group_categories']) {
+        final title = category['title'];
+        if (title != null) {
+          groupCategories.add(utf8.decode(title.codeUnits));
+        }
+      }
+    }
 
     return Product(
       IsActive: true,
       IsPopular: json['is_popular'],
       Slug: json['slug'],
-      Cuisine: utf8.decode(json['cuisine']['title'].codeUnits),
+      Cuisine: [
+        'MEM',
+      ], //utf8.decode(json['cuisine']['title'].codeUnits) ?? 'TEST',
       Name: utf8.decode(json['title'].codeUnits),
       Description: utf8.decode(json['description'].codeUnits),
       Composition: utf8.decode(json['composition'].codeUnits),
@@ -60,11 +72,13 @@ class Product {
       Proteins: json['proteins'].toDouble(),
       Fats: json['fats'].toDouble(),
       Carbohydrates: json['carbohydrates'].toDouble(),
-      ImageUrl: json['images'][0]['image'],
-      Type: category,
-      Category: utf8.decode(json['category']['title'].codeUnits),
-      GroupCategory:
-          utf8.decode(json['group_categories'][0]['title'].codeUnits),
+      ImageUrl: json['images'].isNotEmpty
+          ? json['images'][0]['image'] ??
+              "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png"
+          : "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png",
+      Type: type,
+      Category: utf8.decode((json['category']['title']).codeUnits),
+      GroupCategory: groupCategories,
     );
   }
 }

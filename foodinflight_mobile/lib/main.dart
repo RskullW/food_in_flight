@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/cart_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
+import 'package:mobile/screens/menu_screen.dart';
 import 'package:mobile/screens/more_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
 import 'package:mobile/utils/internet_connectivity_checker.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/home': (context) => HomeScreen(),
         '/more': (context) => MyMoreScreen(),
         '/cart_screen': (context) => CartScreen(),
+        '/menu_screen': (context) => MenuScreen(),
       },
     );
   }

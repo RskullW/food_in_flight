@@ -9,12 +9,12 @@ import 'package:mobile/products/product.dart';
 import 'package:mobile/products/product_grid.dart';
 import 'package:mobile/components/colors.dart';
 
-class HomeScreen extends StatefulWidget {
+class MenuScreen extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _MenuScreenState createState() => _MenuScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _MenuScreenState extends State<MenuScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isSearchOpen = false;
   TextEditingController _searchController = TextEditingController();
@@ -166,7 +166,7 @@ class _HomeScreenState extends State<HomeScreen> {
       key: _scaffoldKey,
       body: body,
       appBar: _buildAppBar(),
-      bottomNavigationBar: MyBottomAppBar("Home"),
+      bottomNavigationBar: MyBottomAppBar("Menu"),
       backgroundColor: colorBackgroundScreen,
     );
   }
