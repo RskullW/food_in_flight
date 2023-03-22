@@ -1,6 +1,6 @@
 import React from 'react'
 import { Box, Heading } from '@chakra-ui/react'
-import Layout from '../components/Layout'
+import Layout from '../components/page/Layout'
 
 const AboutPage = () => {
     return (
