@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_key_in_widget_constructors
 
 import 'dart:convert';
-import 'package:mobile/products/categories.dart';
+import 'package:mobile/products/product_type.dart';
 
 class Product {
   final bool IsActive;
   final bool IsPopular;
   final String Slug;
-  final ProductCategory Type;
-  final List<String> Cuisine;
+  final ProductType Type;
+  final String Cuisine;
   final String Name;
   final String Description;
   final String Composition;
@@ -43,10 +43,11 @@ class Product {
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
-    final type =
-        json['type'] == 'F' ? ProductCategory.FOOD : ProductCategory.DRINK;
+    final type = json['type'] == 'F' ? ProductType.FOOD : ProductType.DRINK;
 
     final groupCategories = <String>[];
+    String cuisine = 'Американская';
+
     if (json['group_categories'] != null) {
       for (final category in json['group_categories']) {
         final title = category['title'];
@@ -56,13 +57,19 @@ class Product {
       }
     }
 
+    if (json['cuisine'] != null) {
+      final title = json['cuisine']['title'];
+
+      if (title != null) {
+        cuisine = title;
+      }
+    }
+
     return Product(
       IsActive: true,
       IsPopular: json['is_popular'],
       Slug: json['slug'],
-      Cuisine: [
-        'MEM',
-      ], //utf8.decode(json['cuisine']['title'].codeUnits) ?? 'TEST',
+      Cuisine: cuisine,
       Name: utf8.decode(json['title'].codeUnits),
       Description: utf8.decode(json['description'].codeUnits),
       Composition: utf8.decode(json['composition'].codeUnits),
@@ -79,32 +86,6 @@ class Product {
       Type: type,
       Category: utf8.decode((json['category']['title']).codeUnits),
       GroupCategory: groupCategories,
-    );
-  }
-}
-
-class Product_Category {
-  final String Url;
-  final String Slug;
-  final String Title;
-  final String Image;
-  final String? Icon;
-
-  Product_Category({
-    required this.Url,
-    required this.Slug,
-    required this.Title,
-    required this.Image,
-    this.Icon,
-  });
-
-  factory Product_Category.fromJson(Map<String, dynamic> json) {
-    return Product_Category(
-      Url: json['url'],
-      Slug: json['slug'],
-      Title: json['title'],
-      Image: json['image'],
-      Icon: json['icon'],
     );
   }
 }

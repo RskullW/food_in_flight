@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
-import 'package:mobile/products/categories.dart';
+import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 
 class ProductGrid extends StatelessWidget {
@@ -28,13 +28,13 @@ class ProductGrid extends StatelessWidget {
               String description;
 
               switch (product.Type) {
-                case ProductCategory.DRINK:
+                case ProductType.DRINK:
                   double liters = product.Weight / 1000;
                   description = liters.toStringAsFixed(
                           liters.truncateToDouble() == liters ? 0 : 1) +
                       'л';
                   break;
-                case ProductCategory.FOOD:
+                case ProductType.FOOD:
                   int grams = product.Weight.toInt();
                   description = grams > 1000
                       ? (grams ~/ 1000).toString() + 'кг'
@@ -88,12 +88,18 @@ class ProductGrid extends StatelessWidget {
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              product.Name,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                                color: colorNameProduct,
+                            SizedBox(
+                              height: 72,
+                              child: Text(
+                                '\n${product.Name}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  color: colorNameProduct,
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 3,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                             SizedBox(height: 8),

@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
-import 'package:mobile/products/categories.dart';
+import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/products/product_grid.dart';
 import 'package:mobile/components/colors.dart';
@@ -21,6 +21,8 @@ class _MenuScreenState extends State<MenuScreen> {
   List<Product> _products = [];
   List<Product> _productsSearchList = [];
   List<String> _categories = [];
+  Color circle = colorAppBar;
+  bool isLoading = true;
 
   Future<List<Product>> fetchProducts() async {
     final http.Response response =
@@ -46,6 +48,10 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Future<void> _loadProducts() async {
+    setState(() {
+      isLoading = true;
+    });
+
     final products = await fetchProducts();
 
     final categories = <String>{};
@@ -58,6 +64,7 @@ class _MenuScreenState extends State<MenuScreen> {
       _products = products;
       _productsSearchList = List<Product>.from(_products);
       _categories = categories.toList();
+      isLoading = false;
     });
   }
 
@@ -83,8 +90,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
           if (!_isSearchOpen) {
             _searchController.clear();
-            _productsSearchList =
-                List<Product>.from(_products); // TODO: Optimaze
+            _productsSearchList = List<Product>.from(_products);
           }
         });
       },
@@ -160,7 +166,8 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget _buildAllBars() {
-    var body = _buildBody();
+    var body =
+        isLoading ? Center(child: CircularProgressIndicator()) : _buildBody();
 
     return Scaffold(
       key: _scaffoldKey,

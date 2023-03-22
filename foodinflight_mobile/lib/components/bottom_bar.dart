@@ -120,7 +120,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                   _isSelectHome
                       ? () => _defaultFunction('Home')
                       : () {
-                          Navigator.pushReplacementNamed(context, '/home');
+                          Navigator.pop(context);
                         },
                 ),
               ),
@@ -132,11 +132,10 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                   Text('Меню',
                       style: TextStyle(
                           color: _isSelectMenu ? colorSelectIcon : colorIcon)),
-                  _isSelectMore
+                  _isSelectMenu
                       ? () => _defaultFunction()
                       : () {
-                          Navigator.pushReplacementNamed(
-                              context, '/menu_screen');
+                          Navigator.pushNamed(context, '/menu_screen');
                         },
                 ),
               ),
