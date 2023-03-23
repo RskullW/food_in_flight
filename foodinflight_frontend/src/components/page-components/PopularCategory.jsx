@@ -45,7 +45,7 @@ const PopularCategory = () => {
     <Box className="popular-category" margin="50px 0px 0px 0px">
 
       <Center className="popular-category__header">
-        <Heading as="h2">
+        <Heading as="h1" size="2xl">
           Популярное
         </Heading>
       </Center>
@@ -72,7 +72,7 @@ const PopularCategory = () => {
                           margin="0px 0px 3px 0px"
                         />
 
-                        <Text p="10px 0px 0px 10px">{product.title}</Text>
+                        <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
                             
                       </Box>
                     </Link>
@@ -80,7 +80,7 @@ const PopularCategory = () => {
                 </CardBody>
 
                 <CardFooter alignItems="center" padding="0px 10px 10px 10px">
-                  <Text>{product.price}₽</Text>
+                  <Text fontWeight="700">{product.price}₽</Text>
 
                   <Spacer/>
 
