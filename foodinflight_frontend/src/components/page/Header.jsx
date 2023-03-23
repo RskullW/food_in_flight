@@ -24,7 +24,9 @@ const Header = () => {
         h="100%"
         display="block"
       >
-        <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
+        <a href="http://localhost:3000">
+          <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
+        </a>
       </Center>
 
       <Spacer/>

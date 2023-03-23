@@ -61,7 +61,7 @@ const EnterAlerDialog = () => {
                   <Input type='number' placeholder='Номер телефона'/>
                 </InputGroup>
                 <PasswordInput />
-                <Box >
+                <Box>
                   <Button variant='link'>
                     Ещё не регистрировались?
                   </Button>
