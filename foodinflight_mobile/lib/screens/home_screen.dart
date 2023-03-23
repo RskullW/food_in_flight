@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
+import 'package:mobile/products/categories_grid.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_categories.dart';
@@ -17,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TextEditingController _searchController = TextEditingController();
   List<ProductCategory> _categories = <ProductCategory>[];
-  List<Product> _products = [];
+  bool _isLoading = true;
 
   Future<List<Product>> fetchProducts() async {
     final http.Response response =
@@ -39,6 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    _loadCategories();
   }
 
   Widget _buildLeadingIcon() {
@@ -83,19 +85,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget? _buildBody() {
-    return Center(
-      child: Text(
-        'Товар не найден!',
-        style: TextStyle(
-          fontSize: MediaQuery.of(context).size.width * 0.05,
-          color: colorAppBar,
-        ),
-      ),
-    );
+    var categoriesGrid = CategoriesGrid(categories: _categories);
+
+    return categoriesGrid;
   }
 
   Widget _buildAllBars() {
-    var body = _buildBody();
+    var body =
+        _isLoading ? Center(child: CircularProgressIndicator()) : _buildBody();
 
     return Scaffold(
       key: _scaffoldKey,
@@ -109,5 +106,35 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return _buildAllBars();
+  }
+
+  Future<List<ProductCategory>> fetchCategories() async {
+    final http.Response response =
+        await http.get(Uri.parse('https://foodflight.ru/api/categories'));
+
+    if (response.statusCode == 200) {
+      final category = <ProductCategory>[];
+      final jsonData = jsonDecode(response.body);
+      for (var item in jsonData) {
+        category.add(ProductCategory.fromJson(item));
+      }
+
+      return category;
+    } else {
+      throw Exception('Failed to load categories');
+    }
+  }
+
+  Future<void> _loadCategories() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final categories = await fetchCategories();
+
+    setState(() {
+      _categories = categories;
+      _isLoading = false;
+    });
   }
 }

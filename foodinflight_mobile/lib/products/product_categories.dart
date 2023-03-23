@@ -8,33 +8,19 @@ class ProductCategory {
   final String Slug;
   final String Title;
   final String ImageUrl;
-  List<Product> Products = <Product>[];
 
   ProductCategory({
     required this.Slug,
     required this.ImageUrl,
     required this.Title,
-    required this.Products,
   });
 
-  factory ProductCategory.fromJson(
-      Map<String, dynamic> json, List<Product> products) {
+  factory ProductCategory.fromJson(Map<String, dynamic> json) {
     return ProductCategory(
       Slug: json['slug'],
       Title: utf8.decode(json['title'].codeUnits),
-      ImageUrl: json['images'].isNotEmpty
-          ? json['images'][0]['image'] ??
-              "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png"
-          : "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png",
-      Products: products,
+      ImageUrl:
+          json['image'] ?? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png",
     );
-  }
-
-  void AddProduct(Product product) {
-    Products.add(product);
-  }
-
-  String GetTitle() {
-    return Title;
   }
 }

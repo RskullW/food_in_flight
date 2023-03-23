@@ -147,8 +147,13 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   Widget? _buildBody() {
-    var productGrid =
-        ProductGridWithTitle(products: _products, categories: _categories);
+    var productGrid = ProductGridWithTitle(
+      products: _products,
+      categories: _categories,
+      popularityProducts: _products
+          .where((element) => element.IsPopular && element.IsActive)
+          .toList(),
+    );
 
     return _isSearchOpen
         ? _productsSearchList.isNotEmpty

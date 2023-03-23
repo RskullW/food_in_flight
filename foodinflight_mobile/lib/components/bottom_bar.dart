@@ -120,7 +120,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                   _isSelectHome
                       ? () => _defaultFunction('Home')
                       : () {
-                          Navigator.pop(context);
+                          Navigator.pushReplacementNamed(context, '/home');
                         },
                 ),
               ),

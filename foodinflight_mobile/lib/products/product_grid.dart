@@ -30,9 +30,8 @@ class ProductGrid extends StatelessWidget {
               switch (product.Type) {
                 case ProductType.DRINK:
                   double liters = product.Weight / 1000;
-                  description = liters.toStringAsFixed(
-                          liters.truncateToDouble() == liters ? 0 : 1) +
-                      'л';
+                  description =
+                      '${liters.toStringAsFixed(liters.truncateToDouble() == liters ? 0 : 1)}л';
                   break;
                 case ProductType.FOOD:
                   int grams = product.Weight.toInt();
@@ -158,43 +157,76 @@ class ProductGrid extends StatelessWidget {
 
 class ProductGridWithTitle extends StatelessWidget {
   final List<Product> products;
+  final List<Product> popularityProducts;
   final List<String> categories;
+  final bool IsPopular = true;
 
   const ProductGridWithTitle({
     Key? key,
     required this.products,
     required this.categories,
+    required this.popularityProducts,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    List<Widget> productColumns = [];
+
+    if (popularityProducts.isNotEmpty) {
+      productColumns.add(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+              child: Text(
+                'Популярное',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: colorAppBar,
+                ),
+              ),
+            ),
+            ProductGrid(products: popularityProducts),
+          ],
+        ),
+      );
+    }
+
+    categories.forEach((category) {
+      List<Product> categoryProducts =
+          products.where((product) => product.Category == category).toList();
+
+      if (categoryProducts.isNotEmpty) {
+        productColumns.add(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 16.0, horizontal: 24.0),
+                child: Text(
+                  category,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: colorAppBar,
+                  ),
+                ),
+              ),
+              ProductGrid(products: categoryProducts),
+            ],
+          ),
+        );
+      }
+    });
+
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: categories
-            .map((category) => Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 16.0, horizontal: 24.0),
-                      child: Text(
-                        category,
-                        style: TextStyle(
-                          fontSize: 24.0,
-                          fontWeight: FontWeight.bold,
-                          color: colorAppBar,
-                        ),
-                      ),
-                    ),
-                    ProductGrid(
-                      products: products
-                          .where((product) => product.Category == category)
-                          .toList(),
-                    ),
-                  ],
-                ))
-            .toList(),
+        children: productColumns,
       ),
     );
   }
