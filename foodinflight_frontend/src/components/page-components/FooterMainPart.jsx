@@ -53,7 +53,7 @@ const FooterMainPart = () => {
   return (
     <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" m="100px 20px 20px 20px" p="20px 0px 0px 0px" borderTop="1px solid rgba(0, 0, 0, 0.15)">
       <GridItem className="footer__nav-menu">
-        <Heading m="0px 0px 15px 0px">Кухни</Heading>
+        <Heading as="h3" fontSize="xl" m="0px 0px 15px 0px">Кухни</Heading>
         {
           allCuisines.map((cuisine) => (
             <List p="5px 0px">
@@ -75,7 +75,7 @@ const FooterMainPart = () => {
       </GridItem>
 
       <GridItem className="footer__nav-menu">
-        <Heading m="0px 0px 15px 0px">Компания</Heading>
+        <Heading as="h3" fontSize="xl"  m="0px 0px 15px 0px">Компания</Heading>
         <List >
           <ListItem p="5px 0px">
             <Link>Наша Кухня</Link>
@@ -91,8 +91,15 @@ const FooterMainPart = () => {
 
       <GridItem className="footer__nav-item">
         <Wrap>
-          <Heading>Заказывайте через мобильное приложение</Heading>
+          <Heading 
+            as="h3" 
+            fontSize="lg"
+          >
+            Заказывайте через мобильное приложение
+          </Heading>
+
           <Text>Получай подарок к каждому заказу</Text>
+
           <Button 
             bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
           >

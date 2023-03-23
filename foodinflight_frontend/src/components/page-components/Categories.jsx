@@ -45,7 +45,7 @@ const Categories = () => {
       margin="20px 0px 0px 0px"
     >
       <Center area={`header`}>
-        <Heading as="h2">Категории</Heading>
+        <Heading as="h1" size="2xl">Категории</Heading>
       </Center>
 
       <Wrap justify="center" margin="20px 0px">
@@ -59,7 +59,7 @@ const Categories = () => {
                     href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${category.slug}`} 
                     style={{textDecoration: "none"}}
                   >
-                    <Box textAlign="center" textColor="whiteAlpha.900">
+                    <Box textAlign="center" textColor="whiteAlpha.900" fontSize="lg">
                       <Image 
                         src={category.image}
                         borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"

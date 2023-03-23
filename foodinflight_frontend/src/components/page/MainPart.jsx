@@ -20,8 +20,6 @@ const MainPart = () => {
 
       <ExtraInfo />
 
-      <FooterMainPart />
-
     </Box>
   )
 

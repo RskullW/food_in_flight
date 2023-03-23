@@ -1,9 +1,9 @@
 import React from 'react'
-import { Box, GridItem } from '@chakra-ui/react'
-import { Heading, Flex } from '@chakra-ui/react'
+import { Box, Flex} from '@chakra-ui/react'
 import Header from './Header'
 import Footer from './Footer'
 import Navbar from './Navbar'
+import FooterMainPart from '../page-components/FooterMainPart'
 
 
 const Layout = ({ children }) => {
@@ -22,6 +22,7 @@ const Layout = ({ children }) => {
                 margin="20px"
               >
                 { children }
+                <FooterMainPart />
               </Box>
             </Flex>
           <Footer/>  
