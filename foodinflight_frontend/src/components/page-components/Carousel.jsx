@@ -6,7 +6,7 @@ import {
 
 const Carousel = () => {
   return (
-    <Box className="carousel" border="2px solid blue" margin="20px">
+    <Box className="carousel" border="2px solid blue" margin="20px 0px 50px 0px">
       <Image src="/favicon.ico"></Image>
     </Box>
   )

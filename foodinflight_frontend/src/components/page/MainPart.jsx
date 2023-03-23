@@ -14,8 +14,6 @@ const MainPart = () => {
   return (
     <Box>
 
-      <Carousel />
-
       <Categories />
 
       <PopularCategory />

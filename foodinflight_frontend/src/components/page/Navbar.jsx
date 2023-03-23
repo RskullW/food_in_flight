@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Component } from "react";
 import { GridItem, Box, Link, Text } from "@chakra-ui/react";
+
 
 const Navbar = () => {
   const [allCategories, setAllCategories] = useState([]);
@@ -49,8 +50,9 @@ const Navbar = () => {
 
 
   return (
-    <Box className="nav-bar" width="15%" borderRight="1px solid rgba(0, 0, 0, 0.15)"
+    <Box className="nav-bar" width="15%" borderRight="1px solid rgba(0, 0, 0, 0.1)"
       display={{ base: 'none', lg: 'block' }}
+      bgGradient="linear(to-r, #EEEEEE, #F8F9E2)"
     >
       <Box margin="0px 0px 100px 20px">
         {
