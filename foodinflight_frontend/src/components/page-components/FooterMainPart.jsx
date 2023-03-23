@@ -14,12 +14,15 @@ import {
   List, 
   ListItem, 
   IconButton,
-  Card,
-  CardBody,
-  CardFooter,
-  Divider,
-  Spacer
+  Flex,
+  Spacer,
+  Icon
 } from "@chakra-ui/react";
+
+import { FaTelegramPlane } from "react-icons/fa"
+import { AiFillGithub } from "react-icons/ai"
+import { SlSocialVkontakte } from "react-icons/sl"
+import { BsApple, BsGooglePlay } from "react-icons/bs"
 
 const FooterMainPart = () => {
   const [allCuisines, setAllCuisines] = useState([]);
@@ -51,8 +54,14 @@ const FooterMainPart = () => {
   }, []);
 
   return (
-    <Grid className="footer" gridTemplateColumns="repeat(3,1fr)" m="100px 20px 20px 20px" p="20px 0px 0px 0px" borderTop="1px solid rgba(0, 0, 0, 0.15)">
-      <GridItem className="footer__nav-menu">
+    <Flex 
+      className="footer" 
+      m="100px 20px 20px 20px" 
+      p="20px 0px 0px 0px" 
+      borderTop="1px solid rgba(0, 0, 0, 0.15)"
+    >
+
+      <Flex flexDirection="column" className="footer__nav-menu">
         <Heading as="h3" fontSize="xl" m="0px 0px 15px 0px">Кухни</Heading>
         {
           allCuisines.map((cuisine) => (
@@ -72,9 +81,11 @@ const FooterMainPart = () => {
             </List>
           ))
         }
-      </GridItem>
+      </Flex>
 
-      <GridItem className="footer__nav-menu">
+      <Spacer />
+
+      <Flex flexDirection="column" className="footer__nav-menu">
         <Heading as="h3" fontSize="xl"  m="0px 0px 15px 0px">Компания</Heading>
         <List>
           <ListItem p="5px 0px">
@@ -92,52 +103,96 @@ const FooterMainPart = () => {
             </Link>
           </ListItem >
         </List>
-      </GridItem>
+      </Flex>
 
-      <GridItem className="footer__nav-item">
-        <Wrap>
+      <Spacer />
+
+      <Flex 
+        className="footer__nav-item"
+        flexDirection="column" 
+        textAlign="center" 
+        justifyContent="center" 
+        gap="10px" 
+      >
+        
           <Heading 
             as="h3" 
-            fontSize="lg"
+            fontSize="xl"
           >
-            Заказывайте через мобильное приложение
+            Заказывайте через 
+            <br/>
+            мобильное приложение
           </Heading>
 
           <Text>Получай подарок к каждому заказу</Text>
 
-          <Button 
-            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+          <Flex 
+            flexDirection="column"
+            justifyContent="center" 
+            gap="10px" 
           >
-            Загрузить в App Store
-          </Button>
+            <Button 
+              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+              _hover={{ bgGradient:"linear(to-r, #6E72FC, #AD1DEB)"}}
+              p="0px"
+            >
+              <Box margin="0px 10px 0px 0px">
+                <BsApple/>
+              </Box>
+              
+              
+              <Text color="whiteAlpha.900">
+                Загрузить в App Store
+              </Text>
+            </Button>
 
-          <Button 
-            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-          >
-            Загрузить в Google Play
-          </Button>
+            <Button 
+              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+              _hover={{ bgGradient:"linear(to-r, #6E72FC, #AD1DEB)"}}
+              textAlign="left"
+            >
+              <Box margin="0px 10px 0px 0px">
+                <BsGooglePlay />
+              </Box>
 
-          <IconButton 
-            bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-          >
+              <Text color="whiteAlpha.900">
+                Загрузить в Google Play
+              </Text>
+            </Button>
+          </Flex>
 
-          </IconButton>
+          <Flex justifyContent="center" gap="20px">
+            <IconButton 
+              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+              borderRadius="50%"
+              w="50px"
+              h="50px"
+            >
+              <SlSocialVkontakte color="black" />
+            </IconButton>
 
-          <IconButton 
-            bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-          >
-
-          </IconButton>
+            <IconButton 
+              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+              borderRadius="50%"
+              w="50px"
+              h="50px"
+            >
+              <FaTelegramPlane />
+            </IconButton>
+            
+            <IconButton 
+              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+              borderRadius="50%"
+              w="50px"
+              h="50px"
+            >
+              <AiFillGithub />
+            </IconButton>
+          </Flex>
           
-          <IconButton 
-            bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-          >
-
-          </IconButton>
-        </Wrap>
-      </GridItem>
+      </Flex>
       
-    </Grid>
+    </Flex>
   )
 }
 
