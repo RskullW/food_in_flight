@@ -76,15 +76,20 @@ const FooterMainPart = () => {
 
       <GridItem className="footer__nav-menu">
         <Heading as="h3" fontSize="xl"  m="0px 0px 15px 0px">Компания</Heading>
-        <List >
+        <List>
           <ListItem p="5px 0px">
-            <Link>Наша Кухня</Link>
+            <Link style={{textDecoration: "none"}}>Наша Кухня</Link>
           </ListItem>
           <ListItem p="5px 0px">
-            <Link>Оплата</Link>
+            <Link style={{textDecoration: "none"}}>Оплата</Link>
           </ListItem>
           <ListItem p="5px 0px">
-            <Link>Контакты</Link>
+            <Link 
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/shipping`}
+              style={{textDecoration: "none"}}
+            >
+              Доставка
+            </Link>
           </ListItem >
         </List>
       </GridItem>
