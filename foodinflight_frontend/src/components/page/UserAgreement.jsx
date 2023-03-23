@@ -1,12 +1,21 @@
 import React from "react";
 import {
   Box,
-  Text
+  Text,
+  Button,
+  Link
 } from "@chakra-ui/react"
+import { AiOutlineArrowLeft } from "react-icons/ai"
 
 const UserAgreement = () => {
   return (
     <Box padding='40px'>
+      <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}>
+        <Button size='sm' leftIcon={<AiOutlineArrowLeft />} variant='ghost'>
+          Главная
+        </Button>
+      </Link>
+      <br />
       <Text as='b' fontSize='4xl'>Пользовательское соглашение сервиса по заказу и доставке Продукции</Text>
       <br />
       <br />
