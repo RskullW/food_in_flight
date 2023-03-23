@@ -57,7 +57,16 @@ const PopularCategory = () => {
             <WrapItem 
               className="popular-category__item"
             >
-              <Card maxW="296px" h="320px" maxH="350px" shadow="lg">
+              <Card 
+                maxW="296px" 
+                h="320px" 
+                mb="15px"
+                shadow="lg"
+                transition="200ms ease-out"
+                _hover={{shadow:"md", h:"318px"}}
+                
+              >
+
                 <CardBody p="0px">
                   <Box>
                     <Link 
@@ -70,6 +79,8 @@ const PopularCategory = () => {
                           src={product.images[0]?.image}
                           borderRadius="0.375rem 0.375rem 0rem 0rem"
                           margin="0px 0px 3px 0px"
+                          transition="200ms"
+                          _hover={{opacity:"0.8"}}
                         />
 
                         <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
@@ -84,10 +95,10 @@ const PopularCategory = () => {
 
                   <Spacer/>
 
-                  <Button 
-                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                  <Button
                     textColor="whiteAlpha.900"
-                    _hover={{bgColor: "none", bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
+                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                    _hover={{bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
                   >
                     В корзину
                   </Button>

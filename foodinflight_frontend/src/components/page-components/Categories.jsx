@@ -52,7 +52,12 @@ const Categories = () => {
       {
         allCategories.map((category) => (
           <WrapItem>
-            <Card maxW="295px" shadow="md">
+            <Card 
+              maxW="295px" 
+              shadow="md"
+              _hover={{opacity:"0.8"}}
+            >
+
               <CardBody p="0 !important">
                 <Box>
                   <Link 
@@ -63,7 +68,7 @@ const Categories = () => {
                       <Image 
                         src={category.image}
                         borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"
-                        margin="0px 0px -24px 0px"
+                        margin="0px 0px -27px 0px"
                       />
 
                       {category.title}
