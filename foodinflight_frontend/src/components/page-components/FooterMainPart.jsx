@@ -57,7 +57,7 @@ const FooterMainPart = () => {
     <Flex 
       className="footer" 
       m="100px 20px 20px 20px" 
-      p="20px 0px 0px 0px" 
+      p="20px 0px 10px 0px" 
       borderTop="1px solid rgba(0, 0, 0, 0.15)"
     >
 
@@ -110,9 +110,8 @@ const FooterMainPart = () => {
       <Flex 
         className="footer__nav-item"
         flexDirection="column" 
-        textAlign="center" 
-        justifyContent="center" 
-        gap="10px" 
+        textAlign="left" 
+        gap="20px" 
       >
         
           <Heading 
@@ -131,37 +130,56 @@ const FooterMainPart = () => {
             justifyContent="center" 
             gap="10px" 
           >
-            <Button 
-              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-              _hover={{ bgGradient:"linear(to-r, #6E72FC, #AD1DEB)"}}
-              p="0px"
-            >
-              <Box margin="0px 10px 0px 0px">
-                <BsApple/>
-              </Box>
-              
-              
-              <Text color="whiteAlpha.900">
-                Загрузить в App Store
-              </Text>
-            </Button>
+            <Box>
+              <Link 
+                style={{textDecoration:"none"}}
+                href="https://www.apple.com/ru/app-store/"
+              >
+                <Button 
+                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                  justifyContent="left"
+                  borderRadius="20px"
+                  _hover={{ bgGradient:"linear(to-r, #6E72FC, #AD1DEB)"}}
+                >
+                  
+                  <Box margin="0px 10px 0px 0px">
+                    <BsApple/>
+                  </Box>
+                  
+                  
+                  <Text color="whiteAlpha.900">
+                    Загрузить в App Store
+                  </Text>
 
-            <Button 
-              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-              _hover={{ bgGradient:"linear(to-r, #6E72FC, #AD1DEB)"}}
-              textAlign="left"
-            >
-              <Box margin="0px 10px 0px 0px">
-                <BsGooglePlay />
-              </Box>
+                </Button>
+              </Link>
+            </Box>
+            
+            <Box>
+              <Link
+                style={{textDecoration:"none"}}
+                href="https://play.google.com/store/games?hl=ru&gl=US&pli=1"
+              >
+                <Button 
+                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                  _hover={{ bgGradient:"linear(to-r, #6E72FC, #AD1DEB)"}}
+                  justifyContent="left"
+                  borderRadius="20px"
+                >
+                  <Box margin="0px 10px 0px 0px">
+                    <BsGooglePlay />
+                  </Box>
 
-              <Text color="whiteAlpha.900">
-                Загрузить в Google Play
-              </Text>
-            </Button>
+                  <Text color="whiteAlpha.900">
+                    Загрузить в Google Play
+                  </Text>
+                </Button>
+              </Link>
+            </Box>
+            
           </Flex>
 
-          <Flex justifyContent="center" gap="20px">
+          <Flex justifyContent="left" gap="20px">
             <IconButton 
               bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
               borderRadius="50%"
@@ -180,14 +198,19 @@ const FooterMainPart = () => {
               <FaTelegramPlane />
             </IconButton>
             
-            <IconButton 
-              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-              borderRadius="50%"
-              w="50px"
-              h="50px"
+            <Link
+              href="https://github.com/RskullW/food_in_flight"
             >
-              <AiFillGithub />
-            </IconButton>
+              <IconButton 
+                bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+                borderRadius="50%"
+                w="50px"
+                h="50px"
+              >
+                <AiFillGithub />
+              </IconButton>
+            </Link>
+            
           </Flex>
           
       </Flex>
