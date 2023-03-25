@@ -9,7 +9,6 @@ class UserScreen extends StatefulWidget {
 class _UserScreenState extends State<UserScreen> {
   @override
   Widget build(BuildContext context) {
-    print("START USER_SCREEN");
     return Container();
   }
 }
