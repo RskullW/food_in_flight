@@ -12,6 +12,7 @@ import ContactsPage from './pages/ContactsPage';
 import ShippingPage from './pages/ShippingPage';
 import FeedbackPage from './pages/FeedBackPage';
 import TrademarksPage from './pages/TrademarksPage';
+import GroupCategoryPage from './pages/GroupCategoryPage';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,11 @@ const router = createBrowserRouter([
   {
     path: '/:category',
     element: <CategoryPage/>,
+  },
+
+  {
+    path: '/group_categories',
+    element: <GroupCategoryPage />
   },
 
   {
