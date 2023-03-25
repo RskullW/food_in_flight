@@ -33,16 +33,16 @@ const Footer = () => {
             Контакты
           </Link>
 
-          <Link 
-            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/shipping`}
-          >
-            Доставка
-          </Link>
-
           <Link
             href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/feedback`}
           >
             Обратная связь
+          </Link>
+
+          <Link
+            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/trademarks`}
+          >
+            Товарные знаки
           </Link>
 
         </Flex>

@@ -11,6 +11,7 @@ import ProductPage from './pages/ProductPage';
 import ContactsPage from './pages/ContactsPage';
 import ShippingPage from './pages/ShippingPage';
 import FeedbackPage from './pages/FeedBackPage';
+import TrademarksPage from './pages/TrademarksPage';
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,11 @@ const router = createBrowserRouter([
     path: '/feedback',
     element: <FeedbackPage />,
   },
+
+  {
+    path: '/trademarks',
+    element: <TrademarksPage />
+  }
 ]);
 
 
