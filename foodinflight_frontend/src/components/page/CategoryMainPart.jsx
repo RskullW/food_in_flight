@@ -85,7 +85,7 @@ const CategoryMainPart = () => {
 
         {
           allCategories.map((category) => (
-            (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${category.slug}` === window.location.href) ? (
+            (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}` === window.location.href) ? (
               <Heading 
                 as="h2" 
                 fontSize="2xl"
@@ -102,7 +102,7 @@ const CategoryMainPart = () => {
       <Wrap justify="center" margin="20px 0px" p="5px">
       {
         allProducts.map((product) => (
-          (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}` === window.location.href) ? (
+          (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${product.category.slug}` === window.location.href) ? (
             <Box>
               <WrapItem>
                 <Card 
