@@ -33,7 +33,7 @@ const EnterAlerDialog = () => {
         transition="700ms"
         transitionDelay="bgColor linear"
         _hover={{
-          bgColor:"#F7B42C"
+          bgColor:"#CDCDCD"
         }}
         
       >

@@ -14,7 +14,7 @@ const SearchBar = () => {
           borderRadius="10px"
           type="search" 
           placeholder="Поиск по меню"
-          focusBorderColor="rgba(255, 165, 0, 1)"
+          focusBorderColor="#CDCDCD"
         />
       </FormControl> 
     </Center>

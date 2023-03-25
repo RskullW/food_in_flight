@@ -11,7 +11,7 @@ const AdressBar = () => {
           borderRadius="10px"
           type="search" 
           placeholder="Введите адрес"
-          focusBorderColor="rgba(255, 165, 0, 1)"
+          focusBorderColor="#CDCDCD"
           
         />
       </FormControl>
