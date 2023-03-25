@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/users/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -27,6 +29,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    Provider.of<AuthProvider>(context).LoadData();
+
     return Scaffold(
       backgroundColor: colorSplashScreen,
       body: Center(

@@ -1,13 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isAuthenticated = false;
 
-  bool get isAuthenticated => _isAuthenticated;
-
-  void setAuthenticated(bool value) {
+  Future<void> setAuthenticated(bool value) async {
     _isAuthenticated = value;
+    print("IS_AUTHENTICATED (set): $_isAuthenticated");
+
     notifyListeners();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setBool('isAuthenticated', _isAuthenticated);
+  }
+
+  bool getAuthenticated() {
+    print("IS_AUTHENTICATED (get): $_isAuthenticated");
+
+    return _isAuthenticated;
+  }
+
+  void LoadData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    _isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
   }
 }
 

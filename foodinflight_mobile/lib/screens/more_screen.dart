@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
@@ -13,6 +13,8 @@ class MyMoreScreen extends StatefulWidget {
 }
 
 class _MyMoreScreenState extends State<MyMoreScreen> {
+  bool _isAuthenticated = false;
+
   Widget _buildAllBars() {
     return Scaffold(
       body: _buildBody(),
@@ -20,6 +22,15 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
       bottomNavigationBar: MyBottomAppBar("More"),
       backgroundColor: colorBackgroundScreen,
     );
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _isAuthenticated =
+        Provider.of<AuthProvider>(context, listen: false).getAuthenticated() ==
+            true;
   }
 
   @override
@@ -39,7 +50,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
     return Expanded(
       child: GestureDetector(
         onTap: onPressed != null
-            ? () => onPressed
+            ? () => onPressed()
             : () => print("Click \'${text}\'"),
         child: Container(
           decoration: BoxDecoration(
@@ -228,13 +239,11 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   }
 
   Widget _buildBody() {
-    bool isAuthenticated = Provider.of<AuthProvider>(context).isAuthenticated;
-
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-        _buildConnectToProfileFrom(isAuthenticated),
+        _buildConnectToProfileFrom(_isAuthenticated),
         SizedBox(height: MediaQuery.of(context).size.height * 0.04),
         _buildButtonMore("Мои заказы", colorMoreScreenAppBar, colorBlack,
             colorAppBar, null, Icons.arrow_forward_ios_sharp, colorAppBar),
@@ -253,18 +262,28 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
           Icons.arrow_forward_ios_sharp,
           colorAppBar,
         ),
-        isAuthenticated
+        _isAuthenticated
             ? _buildButtonMore(
                 "Выйти из профиля",
                 colorMoreScreenAppBar,
                 colorBlack,
                 colorBottomPanelProduct,
-                null,
+                () => ProcessButtonExitProfile(),
                 Icons.exit_to_app,
                 colorBottomPanelProduct)
             : Container(),
         _buildUnderPanelMoreScreen(),
       ],
+    );
+  }
+
+  Future<void> ProcessButtonExitProfile() async {
+    await Provider.of<AuthProvider>(context, listen: false)
+        .setAuthenticated(false);
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      '/home',
+      (route) => false,
     );
   }
 
