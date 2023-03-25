@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
+import 'package:provider/provider.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<Product> products;

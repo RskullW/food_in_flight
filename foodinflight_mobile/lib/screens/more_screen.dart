@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/components/custom_icons.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import 'package:mobile/users/auth_provider.dart';
 
 class MyMoreScreen extends StatefulWidget {
   @override
@@ -130,10 +131,12 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
     ));
   }
 
-  Widget _buildConnectToProfileFrom() {
+  Widget _buildConnectToProfileFrom(bool isAuthenticated) {
     return Expanded(
       child: GestureDetector(
-        onTap: () => print("Click connect to profile'"),
+        onTap: () => isAuthenticated
+            ? Navigator.pushNamed(context, '/user_screen')
+            : null,
         child: Container(
           decoration: BoxDecoration(
             color: colorMoreScreenAppBar,
@@ -164,7 +167,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "USER_NAME",
+                            isAuthenticated ? "USER_NAME" : "Войди, чтобы",
                             style: TextStyle(
                               color: colorAppBar,
                               fontSize:
@@ -173,20 +176,46 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                             ),
                           ),
                           Text(
-                            "Перейти в профиль",
+                            isAuthenticated
+                                ? "Перейти в профиль"
+                                : "совершать заказы",
                             style: TextStyle(
                               color: colorAppBar,
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.04,
+                              fontWeight: isAuthenticated
+                                  ? FontWeight.normal
+                                  : FontWeight.bold,
                             ),
                           ),
                         ],
                       ),
                       Spacer(),
-                      Icon(
-                        Icons.arrow_forward_ios_sharp,
-                        color: colorAppBar,
-                      ),
+                      isAuthenticated
+                          ? Icon(
+                              Icons.arrow_forward_ios_sharp,
+                              color: colorAppBar,
+                            )
+                          : GestureDetector(
+                              onTap: () => Navigator.pushNamed(
+                                  context, '/authorization_screen'),
+                              child: Container(
+                                padding: EdgeInsets.symmetric(
+                                    vertical: 12.0, horizontal: 20.0),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(30.0),
+                                  color: colorBackgroundScreen,
+                                ),
+                                child: Text(
+                                  'Войти',
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w600,
+                                    color: colorAppBar.withBlue(220),
+                                  ),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),
@@ -199,11 +228,13 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   }
 
   Widget _buildBody() {
+    bool isAuthenticated = Provider.of<AuthProvider>(context).isAuthenticated;
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         SizedBox(height: MediaQuery.of(context).size.height * 0.06),
-        _buildConnectToProfileFrom(),
+        _buildConnectToProfileFrom(isAuthenticated),
         SizedBox(height: MediaQuery.of(context).size.height * 0.04),
         _buildButtonMore("Мои заказы", colorMoreScreenAppBar, colorBlack,
             colorAppBar, null, Icons.arrow_forward_ios_sharp, colorAppBar),
@@ -222,14 +253,16 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
           Icons.arrow_forward_ios_sharp,
           colorAppBar,
         ),
-        _buildButtonMore(
-            "Выйти из профиля",
-            colorMoreScreenAppBar,
-            colorBlack,
-            colorBottomPanelProduct,
-            null,
-            Icons.exit_to_app,
-            colorBottomPanelProduct),
+        isAuthenticated
+            ? _buildButtonMore(
+                "Выйти из профиля",
+                colorMoreScreenAppBar,
+                colorBlack,
+                colorBottomPanelProduct,
+                null,
+                Icons.exit_to_app,
+                colorBottomPanelProduct)
+            : Container(),
         _buildUnderPanelMoreScreen(),
       ],
     );
