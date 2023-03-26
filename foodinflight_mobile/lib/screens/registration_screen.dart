@@ -1,23 +1,24 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_build_context_synchronously, unnecessary_null_comparison
+// ignore_for_file: prefer_const_constructors, unrelated_type_equality_checks, use_build_context_synchronously
 
 import 'dart:convert';
 
-import 'package:flutter/material.dart';
-import 'package:mobile/components/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/components/colors.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../users/auth_provider.dart';
 
-class AuthorizationScreen extends StatefulWidget {
+class RegistrationScreen extends StatefulWidget {
   @override
-  _AuthorizationScreenState createState() => _AuthorizationScreenState();
+  _RegistrationScreenState createState() => _RegistrationScreenState();
 }
 
-class _AuthorizationScreenState extends State<AuthorizationScreen> {
-  String _loginUser = "";
-  String _passwordUser = "";
+class _RegistrationScreenState extends State<RegistrationScreen> {
   bool _isLoading = false;
+  String _email = " ";
+  String _password = " ";
+  String _tokenUser = "";
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +61,6 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
     final emailRegExp = RegExp(
       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$",
     );
-
     return !_isLoading
         ? SingleChildScrollView(
             child: Column(
@@ -79,19 +79,18 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                   child: SizedBox(
                     height: 62,
                     child: Text(
-                      'Пожалуйста, введите почту и пароль,\nкоторую указывали при регистрации,\nчтобы авторизоваться',
+                      'РЕГИСТРАЦИЯ',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 16,
+                        fontSize: 24,
                         color: colorAppBar,
                       ),
                       textAlign: TextAlign.center,
-                      maxLines: 3,
+                      maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                 ),
-                SizedBox(height: MediaQuery.of(context).size.width * 0.05),
                 Row(
                   children: [
                     SizedBox(width: MediaQuery.of(context).size.width * 0.1),
@@ -109,14 +108,14 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                                 hintText: 'Введите почту',
                                 border: InputBorder.none,
                               ),
-                              onChanged: (loginUser) {
+                              onChanged: (emailUser) {
                                 setState(() {
-                                  if (loginUser.length < 3 ||
-                                      !emailRegExp.hasMatch(loginUser)) {
-                                    print('Uncorrect login');
+                                  if (emailUser.length < 4 ||
+                                      !emailRegExp.hasMatch(emailUser)) {
+                                    print('Uncorrect email;');
                                   } else {
-                                    print('Correct login');
-                                    _loginUser = loginUser;
+                                    print('Correct mail');
+                                    _email = emailUser;
                                   }
                                 });
                               }),
@@ -154,7 +153,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                                     print('Incorrect password');
                                   } else {
                                     print('Correct password');
-                                    _passwordUser = passwordUser;
+                                    _password = passwordUser;
                                   }
                                 });
                               }),
@@ -167,47 +166,24 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                 SizedBox(
                   height: MediaQuery.of(context).size.width * 0.02,
                 ),
-                Row(
-                  children: [
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.1),
-                    GestureDetector(
-                      onTap: () =>
-                          Navigator.pushNamed(context, '/registration_screen'),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 25.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: colorAppBar,
-                        ),
-                        child: Text(
-                          'Регистрация',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
+                Center(
+                  child: GestureDetector(
+                    onTap: () => ProcessRegistration(),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(
+                          vertical: 12.0, horizontal: 25.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30.0),
+                        color: colorAppBar,
+                      ),
+                      child: Text(
+                        'Зарегистрироваться',
+                        style: TextStyle(
+                          fontSize: 16.0,
                         ),
                       ),
                     ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () => ProcessAuthorization(),
-                      child: Container(
-                        padding: EdgeInsets.symmetric(
-                            vertical: 12.0, horizontal: 25.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30.0),
-                          color: colorAppBar,
-                        ),
-                        child: Text(
-                          'Вход в аккаунт',
-                          style: TextStyle(
-                            fontSize: 16.0,
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: MediaQuery.of(context).size.width * 0.1),
-                  ],
+                  ),
                 ),
               ],
             ),
@@ -217,48 +193,67 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
           );
   }
 
-  Future<void> ProcessAuthorization() async {
-    var tokenUser = await checkLogin();
+  Future<void> ProcessRegistration() async {
+    final passwordRegExp = RegExp(r'^(?=.*?[A-Za-z])(?=.*?[0-9]).{5,}$');
+    final emailRegExp = RegExp(
+      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$",
+    );
 
-    if (tokenUser != null || tokenUser != " ") {
-      await Provider.of<AuthProvider>(context, listen: false)
-          .set(true, tokenUser);
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/home',
-        (route) => false,
-      );
+    if (_password.length < 8 || !passwordRegExp.hasMatch(_password)) {
+      ShowMessage("Пароль должен быть не менее 8 символов!");
+    } else if (_email.length < 4 || !emailRegExp.hasMatch(_email)) {
+      ShowMessage("Неверно указан электронный адрес!");
     } else {
-      ShowMessageAtAuthorization();
+      bool isExistanceLogin = await RegistrationAccount();
+
+      if (isExistanceLogin) {
+        ShowMessage("Аккаунт с такой почтой или логином уже существует!");
+      } else {
+        await Provider.of<AuthProvider>(context, listen: false)
+            .set(true, _tokenUser);
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/home',
+          (route) => false,
+        );
+      }
     }
   }
 
-  void ShowMessageAtAuthorization() {
+  void ShowMessage(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text('Ошибка авторизации. Проверьте почту и пароль'),
+        content: Text(message),
         duration: Duration(seconds: 3),
       ),
     );
   }
 
-  Future<String> checkLogin() async {
+  Future<bool> RegistrationAccount() async {
     setState(() {
       _isLoading = true;
     });
-
     final response = await http.post(
-        Uri.parse('https://foodflight.ru/api/login/'),
-        body: {"username": _loginUser, "password": _passwordUser});
+      Uri.parse('https://foodflight.ru/api/register/'),
+      body: {
+        'username': _email,
+        'email': _email,
+        'password': _password,
+      },
+    );
 
     setState(() {
       _isLoading = false;
     });
-    if (response.statusCode == 200) {
-      final jsonResponse = json.decode(response.body);
-      return jsonResponse['token'];
-    } else {
-      throw Exception('Failed to check login');
+    if (response.statusCode == 201) {
+      final jsonBody = json.decode(response.body);
+      _tokenUser = jsonBody['token'];
+      return false;
+    } else if (response.statusCode == 400) {
+      final jsonBody = json.decode(response.body);
+      ShowMessage("Ошибка при регистрации аккаунта!");
     }
+
+    return true;
   }
 }

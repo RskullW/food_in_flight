@@ -278,8 +278,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   }
 
   Future<void> ProcessButtonExitProfile() async {
-    await Provider.of<AuthProvider>(context, listen: false)
-        .setAuthenticated(false);
+    await Provider.of<AuthProvider>(context, listen: false).set(false, " ");
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/home',

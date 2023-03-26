@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/users/auth_provider.dart';
@@ -16,6 +17,7 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
+    Provider.of<AuthProvider>(context, listen: false).LoadData();
     _controller =
         AnimationController(duration: Duration(seconds: 5), vsync: this);
     _animation = Tween<double>(begin: 0.2, end: 1).animate(_controller)
@@ -29,7 +31,9 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<AuthProvider>(context).LoadData();
+    if (kDebugMode) {
+      print("YOUR TOKEN: ${Provider.of<AuthProvider>(context).getToken()}");
+    }
 
     return Scaffold(
       backgroundColor: colorSplashScreen,
