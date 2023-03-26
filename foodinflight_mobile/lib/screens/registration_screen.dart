@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:mobile/components/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import '../components/gradient_color.dart';
 import '../users/auth_provider.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -26,10 +26,13 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   }
 
   Widget _buildAllBars() {
-    return Scaffold(
-      body: _buildBody(),
-      appBar: _buildAppBar(),
-      backgroundColor: colorBackgroundScreen,
+    return Container(
+      decoration: GetGradientBackgroundScreen(),
+      child: Scaffold(
+        body: _buildBody(),
+        appBar: _buildAppBar(),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 
@@ -210,7 +213,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
         ShowMessage("Аккаунт с такой почтой или логином уже существует!");
       } else {
         await Provider.of<AuthProvider>(context, listen: false)
-            .set(true, _tokenUser);
+            .set(true, _tokenUser, _email);
         Navigator.pushNamedAndRemoveUntil(
           context,
           '/home',

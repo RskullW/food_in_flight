@@ -8,6 +8,7 @@ import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/products/product_grid.dart';
 import 'package:mobile/components/colors.dart';
+import '../components/gradient_color.dart';
 
 class MenuScreen extends StatefulWidget {
   @override
@@ -83,7 +84,12 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Widget _buildTrailingIcon() {
     return IconButton(
-      icon: _isSearchOpen ? Icon(Icons.close) : Icon(Icons.search),
+      icon: _isSearchOpen
+          ? Icon(Icons.close, color: colorBlack)
+          : Icon(
+              Icons.search,
+              color: colorBlack,
+            ),
       onPressed: () {
         setState(() {
           _isSearchOpen = !_isSearchOpen;
@@ -105,13 +111,19 @@ class _MenuScreenState extends State<MenuScreen> {
       controller: _searchController,
       decoration: InputDecoration(
         hintText: 'Введите запрос...',
-        hintStyle: TextStyle(color: colorAppBar),
+        hintStyle: TextStyle(
+          color: colorMoreScreenAppBar,
+          fontWeight: FontWeight.w600,
+        ),
         enabledBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
         focusedBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
       ),
-      style: TextStyle(color: colorAppBar),
+      style: TextStyle(
+        color: colorMoreScreenAppBar,
+        fontWeight: FontWeight.w600,
+      ),
       onChanged: _searchForProducts,
     );
   }
@@ -120,7 +132,8 @@ class _MenuScreenState extends State<MenuScreen> {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
-        backgroundColor: colorBackgroundScreen,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         automaticallyImplyLeading: false,
         title: _isSearchOpen
             ? _buildSearchBar()
@@ -164,6 +177,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   style: TextStyle(
                     fontSize: MediaQuery.of(context).size.width * 0.05,
                     color: colorAppBar,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               )
@@ -174,12 +188,15 @@ class _MenuScreenState extends State<MenuScreen> {
     var body =
         isLoading ? Center(child: CircularProgressIndicator()) : _buildBody();
 
-    return Scaffold(
-      key: _scaffoldKey,
-      body: body,
-      appBar: _buildAppBar(),
-      bottomNavigationBar: MyBottomAppBar("Menu"),
-      backgroundColor: colorBackgroundScreen,
+    return Container(
+      decoration: GetGradientBackgroundScreenOnMenu(),
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: body,
+        appBar: _buildAppBar(),
+        bottomNavigationBar: MyBottomAppBar("Menu"),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 

@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_categories.dart';
 
+import '../components/gradient_color.dart';
+
 class CategoriesGrid extends StatelessWidget {
   final List<ProductCategory> categories;
 
@@ -17,7 +19,7 @@ class CategoriesGrid extends StatelessWidget {
           GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.6,
+              childAspectRatio: 0.8,
             ),
             itemCount: categories.length,
             shrinkWrap: true,
@@ -26,7 +28,7 @@ class CategoriesGrid extends StatelessWidget {
               final category = categories[index];
 
               return Container(
-                margin: EdgeInsets.all(5),
+                margin: EdgeInsets.all(12),
                 decoration: BoxDecoration(
                   color: colorBlack,
                   borderRadius: BorderRadius.circular(20),
@@ -39,60 +41,90 @@ class CategoriesGrid extends StatelessWidget {
                     ),
                   ],
                 ),
-                child: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    print("Clicked category: ${category.Title}");
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                          child: Image.network(
-                            category.ImageUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: colorBackgroundScreen,
-                          borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(20),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 72,
-                              child: Text(
-                                '\n${category.Title}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: colorNameProduct,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                child: _buildStyleProduct(context, category),
               );
             },
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildStyleProduct(BuildContext context, ProductCategory category) {
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: () {
+        print("Clicked category: ${category.Title}");
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.network(
+                    category.ImageUrl,
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 0,
+                  child: Container(
+                    decoration: GetGradientImageItemForCategories(),
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.width * 0.02,
+                  left: 0,
+                  right: 0,
+                  child: Text(
+                    '\n${category.Title}',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: colorNameProduct,
+                    ),
+                    textAlign: TextAlign.center,
+                    maxLines: 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Container(
+          //   padding: EdgeInsets.all(1),
+          //   decoration: BoxDecoration(
+          //     color: Colors.transparent,
+          //     borderRadius: BorderRadius.vertical(
+          //       bottom: Radius.circular(20),
+          //     ),
+          //   ),
+          //   child: Column(
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       SizedBox(
+          //         height: 72,
+          //         child: Text(
+          //           '\n${category.Title}',
+          //           style: TextStyle(
+          //             fontWeight: FontWeight.bold,
+          //             fontSize: 16,
+          //             color: colorNameProduct,
+          //           ),
+          //           textAlign: TextAlign.center,
+          //           maxLines: 3,
+          //           overflow: TextOverflow.ellipsis,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
         ],
       ),
     );

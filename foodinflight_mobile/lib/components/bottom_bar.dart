@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/users/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 class MyBottomAppBar extends StatefulWidget {
   final String _text;
@@ -102,7 +104,8 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
 
   Widget _buildBottomAppBar() {
     return BottomAppBar(
-      color: colorBackgroundScreen,
+      color: Colors.transparent,
+      elevation: 0,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -147,7 +150,12 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                   Text('Корзина',
                       style: TextStyle(
                           color: _isSelectCart ? colorSelectIcon : colorIcon)),
-                  () => Navigator.pushNamed(context, '/cart_screen'),
+                  () => Navigator.pushNamed(
+                      context,
+                      Provider.of<AuthProvider>(context, listen: false)
+                              .getAuthenticated()
+                          ? '/cart_screen'
+                          : '/authorization_screen'),
                 ),
               ),
               Expanded(

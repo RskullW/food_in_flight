@@ -6,6 +6,8 @@ import 'package:mobile/components/colors.dart';
 import 'package:mobile/components/custom_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/users/auth_provider.dart';
+import '../components/gradient_color.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MyMoreScreen extends StatefulWidget {
   @override
@@ -16,11 +18,14 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   bool _isAuthenticated = false;
 
   Widget _buildAllBars() {
-    return Scaffold(
-      body: _buildBody(),
-      appBar: _buildAppBar(),
-      bottomNavigationBar: MyBottomAppBar("More"),
-      backgroundColor: colorBackgroundScreen,
+    return Container(
+      decoration: GetGradientBackgroundScreenOnMenu(),
+      child: Scaffold(
+        body: _buildBody(),
+        appBar: _buildAppBar(),
+        bottomNavigationBar: MyBottomAppBar("More"),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 
@@ -54,7 +59,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
             : () => print("Click \'${text}\'"),
         child: Container(
           decoration: BoxDecoration(
-            color: colorBackgroundScreen,
+            color: colorBackgroundScreen.withOpacity(0.1),
             borderRadius: BorderRadius.zero,
           ),
           child: FractionallySizedBox(
@@ -130,7 +135,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
         Spacer(),
         Spacer(),
         Text(
-          'Version 00.01.0.a (101)',
+          'Version 00.05.0.a (110)',
           style: TextStyle(
               fontFamily: 'Roboto-Black',
               color: colorAppBar.withOpacity(0.6),
@@ -150,7 +155,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
             : null,
         child: Container(
           decoration: BoxDecoration(
-            color: colorMoreScreenAppBar,
+            color: colorMoreScreenAppBar.withOpacity(0.6),
             borderRadius: BorderRadius.circular(35),
           ),
           child: FractionallySizedBox(
@@ -178,7 +183,11 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            isAuthenticated ? "USER_NAME" : "Войди, чтобы",
+                            isAuthenticated
+                                ? Provider.of<AuthProvider>(context,
+                                        listen: false)
+                                    .getLogin()
+                                : "Войди, чтобы",
                             style: TextStyle(
                               color: colorAppBar,
                               fontSize:
@@ -215,7 +224,8 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                                     vertical: 12.0, horizontal: 20.0),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(30.0),
-                                  color: colorBackgroundScreen,
+                                  color:
+                                      colorBottomPanelProduct.withOpacity(0.2),
                                 ),
                                 child: Text(
                                   'Войти',
@@ -278,7 +288,8 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   }
 
   Future<void> ProcessButtonExitProfile() async {
-    await Provider.of<AuthProvider>(context, listen: false).set(false, " ");
+    await Provider.of<AuthProvider>(context, listen: false)
+        .set(false, " ", " ");
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/home',
@@ -290,7 +301,8 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
-        backgroundColor: colorBackgroundScreen,
+        elevation: 0,
+        backgroundColor: Colors.transparent,
         automaticallyImplyLeading: false,
         title: Text(
           "Меню приложения",

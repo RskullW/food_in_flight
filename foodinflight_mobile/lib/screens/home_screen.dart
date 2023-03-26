@@ -8,6 +8,7 @@ import 'package:mobile/products/categories_grid.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_categories.dart';
+import '../components/gradient_color.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -66,7 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
-          backgroundColor: colorBackgroundScreen,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
           automaticallyImplyLeading: false,
           title: Text('FOOD IN FLIGHT',
               style: TextStyle(
@@ -94,12 +96,15 @@ class _HomeScreenState extends State<HomeScreen> {
     var body =
         _isLoading ? Center(child: CircularProgressIndicator()) : _buildBody();
 
-    return Scaffold(
-      key: _scaffoldKey,
-      body: body,
-      appBar: _buildAppBar(),
-      bottomNavigationBar: MyBottomAppBar("Home"),
-      backgroundColor: colorBackgroundScreen,
+    return Container(
+      decoration: GetGradientBackgroundScreenOnMenu(),
+      child: Scaffold(
+        key: _scaffoldKey,
+        body: body,
+        appBar: _buildAppBar(),
+        bottomNavigationBar: MyBottomAppBar("Home"),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 

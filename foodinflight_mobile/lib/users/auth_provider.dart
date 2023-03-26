@@ -1,15 +1,20 @@
+import 'dart:math';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider with ChangeNotifier {
   bool _isAuthenticated = false;
   String _tokenUser = "";
+  String _loginUser = "";
 
-  Future<void> set(bool isAuthenticated, String token) async {
+  Future<void> set(bool isAuthenticated, String token, String login) async {
     _isAuthenticated = isAuthenticated;
     _tokenUser = token;
+    _loginUser = login;
 
-    print("IS_AUTHENTICATED (set): $_isAuthenticated");
+    if (kDebugMode) print("IS_AUTHENTICATED (set): $_isAuthenticated");
 
     notifyListeners();
 
@@ -19,20 +24,27 @@ class AuthProvider with ChangeNotifier {
 
     if (_isAuthenticated) {
       await prefs.setString("tokenUser", _tokenUser);
+      await prefs.setString("loginUser", _loginUser);
     } else {
       await prefs.remove("tokenUser");
+      await prefs.remove("loginUser");
     }
   }
 
   bool getAuthenticated() {
-    print("IS_AUTHENTICATED (get): $_isAuthenticated");
+    if (kDebugMode) print("IS_AUTHENTICATED (get): $_isAuthenticated");
 
     return _isAuthenticated;
   }
 
   String getToken() {
-    print("IS_TOKEN (get): $_isAuthenticated");
+    if (kDebugMode) print("IS_TOKEN (get): $_isAuthenticated");
     return _tokenUser;
+  }
+
+  String getLogin() {
+    if (kDebugMode) ("IS_NAME (get): $_loginUser");
+    return _loginUser;
   }
 
   void LoadData() async {
@@ -41,6 +53,7 @@ class AuthProvider with ChangeNotifier {
 
     if (_isAuthenticated) {
       _tokenUser = prefs.getString("tokenUser") ?? "";
+      _loginUser = prefs.getString("loginUser") ?? "";
     }
   }
 }

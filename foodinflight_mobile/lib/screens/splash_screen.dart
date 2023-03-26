@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/users/auth_provider.dart';
 import 'package:provider/provider.dart';
+import '../components/gradient_color.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -35,15 +36,18 @@ class _SplashScreenState extends State<SplashScreen>
       print("YOUR TOKEN: ${Provider.of<AuthProvider>(context).getToken()}");
     }
 
-    return Scaffold(
-      backgroundColor: colorSplashScreen,
-      body: Center(
-        child: Opacity(
-            opacity: _animation.value,
-            child: Transform.scale(
-              scale: 0.7,
-              child: Image.asset('assets/images/logo.png'),
-            )),
+    return Container(
+      decoration: GetGradientBackgroundScreen(),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: Center(
+          child: Opacity(
+              opacity: _animation.value,
+              child: Transform.scale(
+                scale: 0.7,
+                child: Image.asset('assets/images/logo.png'),
+              )),
+        ),
       ),
     );
   }

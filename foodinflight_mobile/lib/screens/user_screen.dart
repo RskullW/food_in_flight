@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/users/user.dart';
 
 class UserScreen extends StatefulWidget {
   @override

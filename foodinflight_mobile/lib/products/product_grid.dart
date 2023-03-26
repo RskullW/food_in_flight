@@ -6,6 +6,8 @@ import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 import 'package:provider/provider.dart';
 
+import '../components/gradient_color.dart';
+
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
 
@@ -19,7 +21,7 @@ class ProductGrid extends StatelessWidget {
           GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,
-              childAspectRatio: 0.6,
+              childAspectRatio: 0.75,
             ),
             itemCount: products.length,
             shrinkWrap: true,
@@ -44,114 +46,142 @@ class ProductGrid extends StatelessWidget {
                   description = 'NaN';
               }
               return Container(
-                margin: EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                  color: colorBlack,
-                  borderRadius: BorderRadius.circular(20),
-                  boxShadow: [
-                    BoxShadow(
-                      color: colorBlack.withOpacity(0.12),
-                      spreadRadius: 1,
-                      blurRadius: 5,
-                      offset: Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: InkWell(
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onTap: () {
-                    print("hello world");
-                  },
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                          child: Image.network(
-                            product.ImageUrl,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
-                      Container(
-                        padding: EdgeInsets.all(1),
-                        decoration: BoxDecoration(
-                          color: colorBackgroundScreen,
-                          borderRadius: BorderRadius.vertical(
-                            bottom: Radius.circular(20),
-                          ),
-                        ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(
-                              height: 72,
-                              child: Text(
-                                '\n${product.Name}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 16,
-                                  color: colorNameProduct,
-                                ),
-                                textAlign: TextAlign.center,
-                                maxLines: 3,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            SizedBox(height: 8),
-                            Text(
-                              '${product.Price}₽',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: colorPriceProduct,
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Text(
-                              description,
-                              style: TextStyle(
-                                color: colorPriceProduct,
-                              ),
-                            ),
-                            SizedBox(height: 6),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                ElevatedButton(
-                                  onPressed: () {
-                                    print("Clicked \'${product.Name}\'");
-                                  },
-                                  child: Icon(
-                                    Icons.add_shopping_cart,
-                                    color: colorIconCart,
-                                  ),
-                                  style: ElevatedButton.styleFrom(
-                                    shape: StadiumBorder(),
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 10,
-                                      vertical: 12,
-                                    ),
-                                    backgroundColor: colorBottomPanelProduct,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 6),
-                          ],
-                        ),
+                  margin: EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                    color: colorBlack,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: colorBlack.withOpacity(0.12),
+                        spreadRadius: 1,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
                       ),
                     ],
                   ),
-                ),
-              );
+                  child: _buildStyleProduct(context, product, description));
             },
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildStyleProduct(
+      BuildContext context, Product product, String description) {
+    return InkWell(
+      highlightColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      onTap: () {
+        print("hello world");
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(20),
+                    bottom: Radius.circular(20),
+                  ),
+                  child: Image.network(
+                    product.ImageUrl,
+                    fit: BoxFit.cover,
+                    height: double.infinity,
+                    width: double.infinity,
+                  ),
+                ),
+                Positioned.fill(
+                  bottom: 0,
+                  child: Container(
+                    decoration: GetGradientImageItemForProducts(),
+                  ),
+                ),
+                Positioned(
+                  top: MediaQuery.of(context).size.width * 0.02,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    child: Text(
+                      '${product.Name}',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: colorNameProduct,
+                      ),
+                      textAlign: TextAlign.center,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  bottom: MediaQuery.of(context).size.width * 0.01,
+                  left: MediaQuery.of(context).size.width * 0.03,
+                  right: MediaQuery.of(context).size.width * 0.02,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            '${product.Price}₽',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: colorNameProduct,
+                              fontSize:
+                                  MediaQuery.of(context).size.width * 0.05,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            '${product.Weight} г',
+                            style: TextStyle(
+                              color: colorNameProduct,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      _buildButtonAddToCart(),
+                    ],
+                  ),
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButtonAddToCart() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            print("Clicked \'Add to cart\'");
+          },
+          child: Icon(
+            Icons.add_shopping_cart,
+            color: colorIconCart,
+          ),
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            padding: EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 12,
+            ),
+            backgroundColor: Colors.white.withOpacity(0.05),
+            elevation: 0,
+          ),
+        ),
+      ],
     );
   }
 }
@@ -186,7 +216,17 @@ class ProductGridWithTitle extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 24.0,
                   fontWeight: FontWeight.bold,
-                  color: colorAppBar,
+                  color: colorDisplayNameCategory,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(
+                        0,
+                        0,
+                      ),
+                      blurRadius: 2.0,
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -213,7 +253,17 @@ class ProductGridWithTitle extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
-                    color: colorAppBar,
+                    color: colorDisplayNameCategory,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(
+                          0,
+                          0,
+                        ),
+                        blurRadius: 2.0,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ],
                   ),
                 ),
               ),

@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-
+import '../components/gradient_color.dart';
 import '../users/auth_provider.dart';
 
 class AuthorizationScreen extends StatefulWidget {
@@ -25,10 +25,13 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
   }
 
   Widget _buildAllBars() {
-    return Scaffold(
-      body: _buildBody(),
-      appBar: _buildAppBar(),
-      backgroundColor: colorBackgroundScreen,
+    return Container(
+      decoration: GetGradientBackgroundScreen(),
+      child: Scaffold(
+        body: _buildBody(),
+        appBar: _buildAppBar(),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 
@@ -222,7 +225,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
 
     if (tokenUser != null || tokenUser != " ") {
       await Provider.of<AuthProvider>(context, listen: false)
-          .set(true, tokenUser);
+          .set(true, tokenUser, _loginUser);
       Navigator.pushNamedAndRemoveUntil(
         context,
         '/home',

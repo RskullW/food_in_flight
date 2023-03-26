@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
+import '../components/gradient_color.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -13,6 +14,8 @@ class _CartScreenState extends State<CartScreen> {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         title: Text(
           "Корзина",
           style: TextStyle(
@@ -48,11 +51,14 @@ class _CartScreenState extends State<CartScreen> {
   }
 
   Widget _buildAllBars() {
-    return Scaffold(
-      body: Container(),
-      appBar: _buildAppBar(),
-      bottomNavigationBar: Container(),
-      backgroundColor: colorBackgroundScreen,
+    return Container(
+      decoration: GetGradientBackgroundScreen(),
+      child: Scaffold(
+        body: Container(),
+        appBar: _buildAppBar(),
+        bottomNavigationBar: Container(),
+        backgroundColor: Colors.transparent,
+      ),
     );
   }
 
