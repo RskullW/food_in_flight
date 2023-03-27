@@ -42,7 +42,7 @@ const CuisinesMainPart = () => {
           const productsJSON = await productsResponse.json();
           const filteredProducts = [];
           productsJSON.forEach((product) => {
-            var filteredId = -1;
+            let filteredId = -1;
             for (let i = 0; i < product.group_categories.length; i++) {
               if (product.group_categories[i]?.slug === groupCategoryName) {
                 filteredId = i;
