@@ -47,12 +47,12 @@ const FooterMainPart = () => {
         setCuisinesError(true);
       }
 
-      console.log(cuisinesResponse);
     }
 
     getCuisinesData();
   }, []);
 
+  console.log("TEST1_1");
   return (
     <Flex 
       className="footer" 
@@ -68,8 +68,9 @@ const FooterMainPart = () => {
             <List p="5px 0px">
 
               <Link 
-                style={{textDecoration: "none"}}
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/cuisines/${cuisine.slug}`}
+                style={{textDecoration: "none"}}
+
               >
 
                 <ListItem>

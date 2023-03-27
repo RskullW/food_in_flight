@@ -12,6 +12,8 @@ import ContactsPage from './pages/ContactsPage';
 import ShippingPage from './pages/ShippingPage';
 import FeedbackPage from './pages/FeedBackPage';
 import TrademarksPage from './pages/TrademarksPage';
+import GroupCategoryPage from './pages/GroupCategoryPage';
+import CuisinesPage from './pages/CuisinesPage';
 
 const router = createBrowserRouter([
   {
@@ -30,8 +32,18 @@ const router = createBrowserRouter([
   },
 
   {
-    path: '/:category',
+    path: '/categories/:category',
     element: <CategoryPage/>,
+  },
+
+  {
+    path: '/group_categories/:group_category',
+    element: <GroupCategoryPage />
+  },
+
+  {
+    path: '/cuisines/:cuisineName',
+    element: <CuisinesPage />
   },
 
   {

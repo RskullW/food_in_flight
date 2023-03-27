@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import {
   Box,
   Text,
@@ -18,8 +19,8 @@ import {BiArrowBack} from "react-icons/bi"
 
 const CategoryMainPart = () => {
 
-  const [allCategories, setAllCategories] = useState([]);
-  const [categoriesError, setCategoriesError] = useState(false);
+  const [allGroupCategories, setAllGroupCategories] = useState([]);
+  const [groupCategoriesError, setGroupCategoriesError] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
 
@@ -43,27 +44,28 @@ const CategoryMainPart = () => {
       }
     }
 
-    const getCategories = async () => {
-      const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
+    const getGroupCategories = async () => {
+      const groupCategoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/group_categories/`, {
         method: "GET",
-        mode: 'cors',
+        mode: "cors",
         headers: {
           "Content-Type": "application/json"
         }
       })
 
-
-      if (categoriesResponse.status === 200) {
-        const categoriesData = await categoriesResponse.json();
-        setAllCategories(categoriesData);
+      if (groupCategoriesResponse.status === 200) {
+        const groupCategoriesData = await groupCategoriesResponse.json();
+        setAllGroupCategories(groupCategoriesData);
       } else {
-        setCategoriesError(true);
+        setGroupCategoriesError(true);
       }
     }
 
     getData();
-    getCategories();
+    getGroupCategories();
   }, [])
+
+  const { group_categories } = useParams();
 
   return (
     <Box margin="10px 0px 0px 0px">
@@ -84,8 +86,8 @@ const CategoryMainPart = () => {
         </Link>
 
         {
-          allCategories.map((category) => (
-            (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}` === window.location.href) ? (
+          allGroupCategories.map((category) => (
+            (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/group_categories/${category.slug}` === window.location.href) ? (
               <Heading 
                 as="h2" 
                 fontSize="2xl"
@@ -102,7 +104,8 @@ const CategoryMainPart = () => {
       <Wrap justify="center" margin="20px 0px" p="5px">
       {
         allProducts.map((product) => (
-          (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${product.category.slug}` === window.location.href) ? (
+          (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/group_categories/${product.group_categories.slug}` === window.location.href) 
+          ? (
             <Box>
               <WrapItem>
                 <Card 
