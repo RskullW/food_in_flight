@@ -37,7 +37,7 @@ const router = createBrowserRouter([
   },
 
   {
-    path: '/group_categories/:group_category',
+    path: '/group_categories/:groupCategoryName',
     element: <GroupCategoryPage />
   },
 

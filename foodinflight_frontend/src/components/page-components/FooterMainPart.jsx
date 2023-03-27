@@ -52,7 +52,7 @@ const FooterMainPart = () => {
     getCuisinesData();
   }, []);
 
-  console.log("TEST1_1");
+
   return (
     <Flex 
       className="footer" 

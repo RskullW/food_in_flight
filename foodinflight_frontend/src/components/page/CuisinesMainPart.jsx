@@ -28,7 +28,7 @@ const CuisinesMainPart = () => {
   const { cuisineName } = useParams();
 
   useEffect(() => {
-    const getProductsWithCertainCategory = async () => {
+    const getProductsWithCertainCuisine = async () => {
       try {
         const productsResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/products/`, {
           method: 'GET',
@@ -73,7 +73,7 @@ const CuisinesMainPart = () => {
       }
     };
 
-    getProductsWithCertainCategory();
+    getProductsWithCertainCuisine();
     getCuisinesData();
   }, [cuisineName]);
 
