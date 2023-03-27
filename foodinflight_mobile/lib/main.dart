@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/products/product.dart';
 import 'package:mobile/screens/authorization_screen.dart';
 import 'package:mobile/screens/cart_screen.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/menu_screen.dart';
 import 'package:mobile/screens/more_screen.dart';
+import 'package:mobile/screens/product_screen.dart';
 import 'package:mobile/screens/registration_screen.dart';
 import 'package:mobile/screens/user_screen.dart';
 import 'package:mobile/screens/product_categories_screen.dart';
@@ -49,6 +51,12 @@ class MyApp extends StatelessWidget {
                 as Map<String, dynamic>?;
             final categoryTitle = arguments?['categoryTitle'] as String?;
             return CategoryProductsScreen(categoryTitle: categoryTitle);
+          },
+          '/product_screen': (context) {
+            final arguments = ModalRoute.of(context)?.settings.arguments
+                as Map<String, dynamic>?;
+            final product = arguments?['product'] as Product?;
+            return ProductScreen(product: product);
           },
         },
       ),

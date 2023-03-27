@@ -73,7 +73,11 @@ class ProductGrid extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {
-        print("hello world");
+        Navigator.pushNamed(
+          context,
+          '/product_screen',
+          arguments: {'product': product},
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
