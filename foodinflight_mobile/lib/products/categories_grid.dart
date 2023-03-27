@@ -55,7 +55,11 @@ class CategoriesGrid extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {
-        print("Clicked category: ${category.Title}");
+        Navigator.pushNamed(
+          context,
+          '/product_categories_screen',
+          arguments: {'categoryTitle': category.Title},
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

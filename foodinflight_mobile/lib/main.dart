@@ -6,7 +6,7 @@ import 'package:mobile/screens/menu_screen.dart';
 import 'package:mobile/screens/more_screen.dart';
 import 'package:mobile/screens/registration_screen.dart';
 import 'package:mobile/screens/user_screen.dart';
-import 'package:mobile/screens/category_products.dart';
+import 'package:mobile/screens/product_categories_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
 import 'package:mobile/users/auth_provider.dart';
 import 'package:mobile/utils/internet_connectivity_checker.dart';
@@ -44,6 +44,12 @@ class MyApp extends StatelessWidget {
           '/user_screen': (context) => UserScreen(),
           '/authorization_screen': (context) => AuthorizationScreen(),
           '/registration_screen': (context) => RegistrationScreen(),
+          '/product_categories_screen': (context) {
+            final arguments = ModalRoute.of(context)?.settings.arguments
+                as Map<String, dynamic>?;
+            final categoryTitle = arguments?['categoryTitle'] as String?;
+            return CategoryProductsScreen(categoryTitle: categoryTitle);
+          },
         },
       ),
     );

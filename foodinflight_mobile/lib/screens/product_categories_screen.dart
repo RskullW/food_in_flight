@@ -1,21 +1,26 @@
-// ignore_for_file: prefer_const_constructors, sort_child_properties_last, use_key_in_widget_constructors
+// ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:flutter/material.dart';
-import 'package:mobile/components/bottom_bar.dart';
+import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
-import 'package:mobile/products/product_grid.dart';
-import 'package:mobile/components/colors.dart';
 import '../components/gradient_color.dart';
+import 'package:http/http.dart' as http;
 
-class MenuScreen extends StatefulWidget {
+import '../products/product_grid.dart';
+
+class CategoryProductsScreen extends StatefulWidget {
+  final String? categoryTitle;
+
+  CategoryProductsScreen({this.categoryTitle});
   @override
-  _MenuScreenState createState() => _MenuScreenState();
+  _CategoryProductsScreenState createState() => _CategoryProductsScreenState();
 }
 
-class _MenuScreenState extends State<MenuScreen> {
+class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
+  @override
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _isSearchOpen = false;
   TextEditingController _searchController = TextEditingController();
@@ -62,9 +67,11 @@ class _MenuScreenState extends State<MenuScreen> {
     }
 
     setState(() {
-      _products = products;
+      _products = products
+          .where((product) => product.Category == widget.categoryTitle)
+          .toList();
       _productsSearchList = List<Product>.from(_products);
-      _categories = categories.toList();
+      _categories.add(widget.categoryTitle ?? "Продукты:");
       isLoading = false;
     });
   }
@@ -76,10 +83,6 @@ class _MenuScreenState extends State<MenuScreen> {
               product.Name.toLowerCase().contains(query.toLowerCase()))
           .toList();
     });
-  }
-
-  Widget _buildLeadingIcon() {
-    return Image.asset('assets/images/icon.png');
   }
 
   Widget _buildTrailingIcon() {
@@ -137,7 +140,7 @@ class _MenuScreenState extends State<MenuScreen> {
       child: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: true,
         title: _isSearchOpen
             ? _buildSearchBar()
             : Text('FOOD IN FLIGHT',
@@ -146,15 +149,6 @@ class _MenuScreenState extends State<MenuScreen> {
                   fontWeight: FontWeight.bold,
                 )),
         centerTitle: true,
-        leading: _isSearchOpen
-            ? null
-            : Row(
-                children: [
-                  Flexible(
-                    child: _buildLeadingIcon(),
-                  ),
-                ],
-              ),
         actions: <Widget>[
           _buildTrailingIcon(),
         ],
@@ -164,12 +158,12 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Widget? _buildBody() {
     var productGrid = ProductGridWithTitle(
-      isHavePopularProduct: true,
       products: _products,
       categories: _categories,
       popularityProducts: _products
           .where((element) => element.IsPopular && element.IsActive)
           .toList(),
+      isHavePopularProduct: false,
     );
 
     return _isSearchOpen
@@ -198,7 +192,6 @@ class _MenuScreenState extends State<MenuScreen> {
         key: _scaffoldKey,
         body: body,
         appBar: _buildAppBar(),
-        bottomNavigationBar: MyBottomAppBar("Menu"),
         backgroundColor: Colors.transparent,
       ),
     );

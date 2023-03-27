@@ -190,51 +190,19 @@ class ProductGridWithTitle extends StatelessWidget {
   final List<Product> products;
   final List<Product> popularityProducts;
   final List<String> categories;
-  final bool IsPopular = true;
+  final bool isHavePopularProduct;
 
   const ProductGridWithTitle({
     Key? key,
     required this.products,
     required this.categories,
     required this.popularityProducts,
+    required this.isHavePopularProduct,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     List<Widget> productColumns = [];
-
-    if (popularityProducts.isNotEmpty) {
-      productColumns.add(
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
-              child: Text(
-                'Популярное',
-                style: TextStyle(
-                  fontSize: 24.0,
-                  fontWeight: FontWeight.bold,
-                  color: colorDisplayNameCategory,
-                  shadows: [
-                    Shadow(
-                      offset: Offset(
-                        0,
-                        0,
-                      ),
-                      blurRadius: 2.0,
-                      color: Colors.black.withOpacity(0.5),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            ProductGrid(products: popularityProducts),
-          ],
-        ),
-      );
-    }
 
     categories.forEach((category) {
       List<Product> categoryProducts =
@@ -253,7 +221,7 @@ class ProductGridWithTitle extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 24.0,
                     fontWeight: FontWeight.bold,
-                    color: colorDisplayNameCategory,
+                    color: Colors.white,
                     shadows: [
                       Shadow(
                         offset: Offset(
@@ -274,6 +242,64 @@ class ProductGridWithTitle extends StatelessWidget {
       }
     });
 
+    if (popularityProducts.isNotEmpty && isHavePopularProduct) {
+      productColumns.add(
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 16.0, horizontal: 24.0),
+              child: Text(
+                'Популярное',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: [
+                    Shadow(
+                      offset: Offset(
+                        0,
+                        0,
+                      ),
+                      blurRadius: 2.0,
+                      color: Colors.black.withOpacity(0.5),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            ProductGrid(products: popularityProducts),
+          ],
+        ),
+      );
+    } else if (!isHavePopularProduct &&
+        !popularityProducts.isNotEmpty &&
+        productColumns.isEmpty) {
+      return Center(
+        child: Center(
+          child: Text(
+            'Товаров в категории "${categories[0]}"\n не найдено!\nЗагляните чуть позже ;-)',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              shadows: [
+                Shadow(
+                  offset: Offset(
+                    0,
+                    0,
+                  ),
+                  blurRadius: 2.0,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
