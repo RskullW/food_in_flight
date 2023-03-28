@@ -16,6 +16,7 @@ import {
 } from "@chakra-ui/react"
 
 import {BiArrowBack} from "react-icons/bi"
+import AddToCartButton from "../page-components/AddToCartButton";
 
 const CategoryMainPart = () => {
 
@@ -169,13 +170,8 @@ const CategoryMainPart = () => {
                     <Text fontWeight="500" fontSize="24px">{product.price}₽</Text>
                   </Box>
 
-                  <Button
-                    textColor="whiteAlpha.900"
-                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                    _hover={{bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
-                  >
-                    В корзину
-                  </Button>
+                  <AddToCartButton />
+                  
                 </Flex>
 
               </Flex>

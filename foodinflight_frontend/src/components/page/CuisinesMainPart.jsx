@@ -99,15 +99,13 @@ const CuisinesMainPart = () => {
 
         {
           allCuisines.map((cuisine) => (
-            
-              <Heading
-                as="h2"
-                fontSize="2xl"
-                p="10px 0px 0px 0px"
-              >
-                {cuisine.title}
-              </Heading>
-            
+            <Heading
+              as="h2"
+              fontSize="2xl"
+              p="10px 0px 0px 0px"
+            >
+              {cuisine.title}
+            </Heading>
           ))
         }
 

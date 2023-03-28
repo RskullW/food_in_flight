@@ -14,6 +14,7 @@ import {
   CardFooter,
   Spacer
 } from "@chakra-ui/react";
+import AddToCartButton from "./AddToCartButton";
 
 const PopularCategory = () => {
   const [isLoading, setIsLoading] = useState([]);
@@ -95,13 +96,7 @@ const PopularCategory = () => {
 
                 <Spacer/>
 
-                <Button
-                  textColor="whiteAlpha.900"
-                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                  _hover={{bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
-                >
-                  В корзину
-                </Button>
+                <AddToCartButton />
 
               </CardFooter>
 
