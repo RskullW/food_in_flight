@@ -1,10 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
-import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 import '../components/gradient_color.dart';
 import 'package:http/http.dart' as http;

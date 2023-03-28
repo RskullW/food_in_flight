@@ -62,6 +62,20 @@ BoxDecoration GetGradientImageItemForProducts() {
   );
 }
 
+BoxDecoration GetGradientImageItemForImageOneProduct() {
+  return BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        colorBottomPanelProduct.withOpacity(0.42),
+        Colors.transparent,
+        colorBottomPanelProduct.withOpacity(0.42),
+      ],
+    ),
+  );
+}
+
 BoxDecoration GetGradientImageItemForCategories() {
   return BoxDecoration(
     gradient: LinearGradient(

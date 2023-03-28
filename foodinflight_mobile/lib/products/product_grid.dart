@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
+import 'package:mobile/screens/product_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../components/gradient_color.dart';
@@ -73,10 +74,26 @@ class ProductGrid extends StatelessWidget {
       highlightColor: Colors.transparent,
       splashColor: Colors.transparent,
       onTap: () {
-        Navigator.pushNamed(
+        Navigator.push(
           context,
-          '/product_screen',
-          arguments: {'product': product},
+          PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) =>
+                ProductScreen(product: product),
+            transitionDuration: Duration(milliseconds: 150),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              var begin = 0.0;
+              var end = 1.0;
+              var tween = Tween(begin: begin, end: end);
+              var curvedAnimation =
+                  CurvedAnimation(parent: animation, curve: Curves.easeInOut);
+
+              return ScaleTransition(
+                scale: tween.animate(curvedAnimation),
+                child: child,
+              );
+            },
+          ),
         );
       },
       child: Column(
@@ -208,44 +225,6 @@ class ProductGridWithTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> productColumns = [];
 
-    categories.forEach((category) {
-      List<Product> categoryProducts =
-          products.where((product) => product.Category == category).toList();
-
-      if (categoryProducts.isNotEmpty) {
-        productColumns.add(
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 24.0),
-                child: Text(
-                  category,
-                  style: TextStyle(
-                    fontSize: 24.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    shadows: [
-                      Shadow(
-                        offset: Offset(
-                          0,
-                          0,
-                        ),
-                        blurRadius: 2.0,
-                        color: Colors.black.withOpacity(0.5),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              ProductGrid(products: categoryProducts),
-            ],
-          ),
-        );
-      }
-    });
-
     if (popularityProducts.isNotEmpty && isHavePopularProduct) {
       productColumns.add(
         Column(
@@ -304,6 +283,44 @@ class ProductGridWithTitle extends StatelessWidget {
         ),
       );
     }
+
+    categories.forEach((category) {
+      List<Product> categoryProducts =
+          products.where((product) => product.Category == category).toList();
+
+      if (categoryProducts.isNotEmpty) {
+        productColumns.add(
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    vertical: 16.0, horizontal: 24.0),
+                child: Text(
+                  category,
+                  style: TextStyle(
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    shadows: [
+                      Shadow(
+                        offset: Offset(
+                          0,
+                          0,
+                        ),
+                        blurRadius: 2.0,
+                        color: Colors.black.withOpacity(0.5),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              ProductGrid(products: categoryProducts),
+            ],
+          ),
+        );
+      }
+    });
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

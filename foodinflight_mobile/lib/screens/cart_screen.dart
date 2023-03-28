@@ -10,6 +10,7 @@ class CartScreen extends StatefulWidget {
 class _CartScreenState extends State<CartScreen> {
   late int _numberStatusCreationOrder;
   GlobalKey<_CartScreenState> _orderLineKey = GlobalKey<_CartScreenState>();
+
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
