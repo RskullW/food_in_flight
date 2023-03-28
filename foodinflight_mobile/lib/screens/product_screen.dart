@@ -6,13 +6,14 @@ import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/products/product_categories.dart';
 import 'package:mobile/products/product_type.dart';
+import '../components/cart.dart';
 import '../components/gradient_color.dart';
 import 'package:http/http.dart' as http;
 
 import '../products/product_grid.dart';
 
 class ProductScreen extends StatefulWidget {
-  final Product? product;
+  Product? product;
 
   ProductScreen({this.product});
   @override
@@ -20,6 +21,25 @@ class ProductScreen extends StatefulWidget {
 }
 
 class _ProductScreenState extends State<ProductScreen> {
+  final Product _templateProduct = Product(
+      IsActive: false,
+      IsPopular: false,
+      Slug: "",
+      Type: ProductType.DRINK,
+      Cuisine: "",
+      Name: "",
+      Description: "",
+      Composition: "",
+      Price: 0,
+      Weight: 0,
+      Calories: 0,
+      Proteins: 0,
+      Fats: 0,
+      Carbohydrates: 0,
+      ImageUrl: "",
+      Category: "",
+      GroupCategory: [""],
+      IsAddToCart: false);
   @override
   Widget build(BuildContext context) {
     return _buildAllBars();
@@ -41,77 +61,100 @@ class _ProductScreenState extends State<ProductScreen> {
   Widget _buildBottomAppBar() {
     int grams = widget.product?.Weight.toInt() ?? 10;
     final String description = grams > 1000 ? '${grams ~/ 1000}кг' : '$gramsг';
+    widget.product?.IsAddToCart =
+        Cart.checkThisProduct(widget.product ?? _templateProduct);
 
-    return BottomAppBar(
-      color: Colors.transparent,
-      elevation: 0,
-      child: Row(
-        children: [
-          Padding(
-            padding:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.05),
-            child: Text(
-              "${widget.product?.Price.toInt() ?? "15"} ₽",
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: MediaQuery.of(context).size.width * 0.07),
+    return StatefulBuilder(builder: (context, setState) {
+      return BottomAppBar(
+        color: Colors.transparent,
+        elevation: 0,
+        child: Row(
+          children: [
+            Padding(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.05),
+              child: Text(
+                "${widget.product?.Price.toInt() ?? "15"} ₽",
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: MediaQuery.of(context).size.width * 0.07),
+              ),
             ),
-          ),
-          Padding(
-            padding:
-                EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.1),
-            child: Text(
-              description,
-              textAlign: TextAlign.start,
-              style: TextStyle(
-                  color: Colors.white70,
-                  fontWeight: FontWeight.bold,
-                  fontSize: MediaQuery.of(context).size.width * 0.035),
+            Padding(
+              padding: EdgeInsets.only(
+                  left: MediaQuery.of(context).size.width * 0.1),
+              child: Text(
+                description,
+                textAlign: TextAlign.start,
+                style: TextStyle(
+                    color: Colors.white70,
+                    fontWeight: FontWeight.bold,
+                    fontSize: MediaQuery.of(context).size.width * 0.035),
+              ),
             ),
-          ),
-          SizedBox(
-            width: MediaQuery.of(context).size.width * 0.07,
-          ),
-          GestureDetector(
-            onTap: () => print("Add to cart"),
-            child: Padding(
-              padding: EdgeInsets.symmetric(
-                  vertical: MediaQuery.of(context).size.width * 0.05),
-              child: Container(
-                height: 56.0,
-                decoration: GetGradientImageItemForCategories(),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Center(
-                    child: Text(
-                      'Добавить в корзину',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 16.0,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.07,
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (widget.product != null) {
+                    Cart.toggleProduct(widget.product!);
+                    widget.product!.IsAddToCart =
+                        Cart.checkThisProduct(widget.product!);
+                    print(
+                        "WIDGET_PRODUCT!_ISADD_TO_CART: ${widget.product!.IsAddToCart}");
+                  }
+                });
+              },
+              child: Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: MediaQuery.of(context).size.width * 0.05),
+                child: Container(
+                  height: 56.0,
+                  decoration: GetGradientImageItemForCategories(),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Center(
+                      child: Text(
+                        widget.product!.IsAddToCart
+                            ? "Убрать из корзины"
+                            : 'Добавить в корзину',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-      ),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          centerTitle: true,
+          leading: GestureDetector(
+            child: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/menu_screen'),
+          )),
     );
   }
 

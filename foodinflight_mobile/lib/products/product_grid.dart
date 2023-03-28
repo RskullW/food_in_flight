@@ -2,16 +2,15 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/components/cart.dart';
 import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/screens/product_screen.dart';
-import 'package:provider/provider.dart';
 
 import '../components/gradient_color.dart';
 
 class ProductGrid extends StatelessWidget {
   final List<Product> products;
-
   const ProductGrid({Key? key, required this.products}) : super(key: key);
 
   @override
@@ -168,7 +167,7 @@ class ProductGrid extends StatelessWidget {
                           ),
                         ],
                       ),
-                      _buildButtonAddToCart(),
+                      _buildButtonAddToCart(product),
                     ],
                   ),
                 )
@@ -180,30 +179,40 @@ class ProductGrid extends StatelessWidget {
     );
   }
 
-  Widget _buildButtonAddToCart() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        ElevatedButton(
-          onPressed: () {
-            print("Clicked \'Add to cart\'");
-          },
-          child: Icon(
-            Icons.add_shopping_cart,
-            color: colorIconCart,
-          ),
-          style: ElevatedButton.styleFrom(
-            shape: StadiumBorder(),
-            padding: EdgeInsets.symmetric(
-              horizontal: 10,
-              vertical: 12,
+  Widget _buildButtonAddToCart(Product product) {
+    product.IsAddToCart = Cart.checkThisProduct(product);
+    return StatefulBuilder(builder: (context, setState) {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                product.IsAddToCart
+                    ? product.IsAddToCart = Cart.removeProduct(product)
+                    : product.IsAddToCart = Cart.addProduct(product);
+                product.IsAddToCart = Cart.checkThisProduct(product);
+              });
+            },
+            child: Icon(
+              product.IsAddToCart
+                  ? Icons.remove_shopping_cart
+                  : Icons.add_shopping_cart,
+              color: colorIconCart,
             ),
-            backgroundColor: Colors.white.withOpacity(0.05),
-            elevation: 0,
+            style: ElevatedButton.styleFrom(
+              shape: StadiumBorder(),
+              padding: EdgeInsets.symmetric(
+                horizontal: 10,
+                vertical: 12,
+              ),
+              backgroundColor: Colors.white.withOpacity(0.05),
+              elevation: 0,
+            ),
           ),
-        ),
-      ],
-    );
+        ],
+      );
+    });
   }
 }
 

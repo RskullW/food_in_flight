@@ -22,6 +22,8 @@ class Product {
   final String Category;
   final List<String> GroupCategory;
 
+  bool IsAddToCart = false;
+
   Product({
     required this.IsActive,
     required this.IsPopular,
@@ -40,6 +42,7 @@ class Product {
     required this.ImageUrl,
     required this.Category,
     required this.GroupCategory,
+    required this.IsAddToCart,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -86,6 +89,7 @@ class Product {
       Type: type,
       Category: utf8.decode((json['category']['title']).codeUnits),
       GroupCategory: groupCategories,
+      IsAddToCart: false,
     );
   }
 }
