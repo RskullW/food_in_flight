@@ -15,55 +15,70 @@ import {
 } from "@chakra-ui/react"
 
 import {BiArrowBack} from "react-icons/bi"
+import { useParams } from "react-router-dom";
 
 const CategoryMainPart = () => {
 
+  const [isLoading, setIsLoading] = useState(false);
   const [allCategories, setAllCategories] = useState([]);
   const [categoriesError, setCategoriesError] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
 
-  
+  const { categoryName } = useParams();
 
   useEffect(() => {
-    const getData = async() => {
-      const productsResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/products/`, {
-        method: 'GET',
-        mode: 'cors',
-        headers: {
-          "Content-Type": "application/json"
+    const getProductsWithCertainCategory = async() => {
+      try {
+        const productsResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/products/`, {
+          method: 'GET',
+          mode: 'cors',
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+  
+        if (productsResponse.status === 200) {
+          const productsJSON = await productsResponse.json();
+          const filteredProducts = productsJSON.filter((product) => product.category.slug === categoryName);
+          setAllProducts(filteredProducts);
+        } else {
+          setProductsError(true);
         }
-      })
-
-      if (productsResponse.status === 200) {
-        const productsData = await productsResponse.json();
-        setAllProducts(productsData);
-      } else {
-        setProductsError(true);
+      } catch (error) {
+        setCategoriesError(true);
       }
+      
     }
 
     const getCategories = async () => {
-      const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
-        method: "GET",
-        mode: 'cors',
-        headers: {
-          "Content-Type": "application/json"
+      setIsLoading(true);
+      try {
+        const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
+          method: "GET",
+          mode: 'cors',
+          headers: {
+            "Content-Type": "application/json"
+          }
+        })
+  
+  
+        if (categoriesResponse.status === 200) {
+          const categoriesJSON = await categoriesResponse.json();
+          const filteredCategoryName = categoriesJSON.filter((name) => name.slug === categoryName);
+          setAllCategories(filteredCategoryName);
+        } else {
+          setCategoriesError(true);
         }
-      })
-
-
-      if (categoriesResponse.status === 200) {
-        const categoriesData = await categoriesResponse.json();
-        setAllCategories(categoriesData);
-      } else {
+      } catch (error) {
         setCategoriesError(true);
       }
+      
     }
 
-    getData();
+    getProductsWithCertainCategory();
     getCategories();
-  }, [])
+  }, [categoryName])
 
   return (
     <Box margin="10px 0px 0px 0px">
@@ -85,7 +100,6 @@ const CategoryMainPart = () => {
 
         {
           allCategories.map((category) => (
-            (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}` === window.location.href) ? (
               <Heading 
                 as="h2" 
                 fontSize="2xl"
@@ -93,7 +107,6 @@ const CategoryMainPart = () => {
               >
                 {category.title}
               </Heading>
-            ) : null
           ))
         } 
 
@@ -102,7 +115,6 @@ const CategoryMainPart = () => {
       <Wrap justify="center" margin="20px 0px" p="5px">
       {
         allProducts.map((product) => (
-          (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${product.category.slug}` === window.location.href) ? (
             <Box>
               <WrapItem>
                 <Card 
@@ -156,7 +168,6 @@ const CategoryMainPart = () => {
               </WrapItem>
             </Box>
             
-          ) : null
         ))
       }
       </Wrap>

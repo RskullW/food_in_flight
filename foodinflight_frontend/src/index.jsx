@@ -32,12 +32,12 @@ const router = createBrowserRouter([
   },
 
   {
-    path: '/categories/:category',
+    path: '/categories/:categoryName',
     element: <CategoryPage/>,
   },
 
   {
-    path: '/group_categories/:group_category',
+    path: '/group_categories/:groupCategoryName',
     element: <GroupCategoryPage />
   },
 
