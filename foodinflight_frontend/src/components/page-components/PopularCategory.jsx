@@ -32,7 +32,7 @@ const PopularCategory = () => {
 
       if (productsResponse.status === 200) {
         const productsData = await productsResponse.json();
-        const filteredProducts = productsData.filter((product) => product.is_popula)
+        const filteredProducts = productsData.filter((product) => product.is_popular)
         setAllProducts(filteredProducts);
       } else {
         setProductsError(true);

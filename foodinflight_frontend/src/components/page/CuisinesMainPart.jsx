@@ -63,7 +63,8 @@ const CuisinesMainPart = () => {
 
         if (cuisinesResponse.status === 200) {
           const cuisinesData = await cuisinesResponse.json();
-          setAllCuisines(cuisinesData);
+          const filteredCuisineName = cuisinesData.filter((cuisine) => cuisine.slug === cuisineName);
+          setAllCuisines(filteredCuisineName);
           setIsLoading(false);
         } else {
           setCuisinesError(true);
@@ -98,7 +99,7 @@ const CuisinesMainPart = () => {
 
         {
           allCuisines.map((cuisine) => (
-            (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/cuisines/${cuisine.slug}` === window.location.href) ? (
+            
               <Heading
                 as="h2"
                 fontSize="2xl"
@@ -106,7 +107,7 @@ const CuisinesMainPart = () => {
               >
                 {cuisine.title}
               </Heading>
-            ) : null
+            
           ))
         }
 
