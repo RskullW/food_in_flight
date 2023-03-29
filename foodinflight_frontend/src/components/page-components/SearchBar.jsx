@@ -130,7 +130,7 @@ const SearchBar = () => {
               style={{textDecoration:"none"}}
               display="inline"
               p="10px"
-              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/searchResults?query=${query}`}
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/searchResults/${query}`}
               textColor="whiteAlpha.900"
               bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
               _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
