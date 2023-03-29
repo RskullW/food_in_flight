@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
 import {
   Box,
   Text,
@@ -20,12 +21,10 @@ import AddToCartButton from "../page-components/AddToCartButton";
 
 const CategoryMainPart = () => {
 
-  const [allCategories, setAllCategories] = useState([]);
-  const [categoriesError, setCategoriesError] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
 
-  
+  const { productName } = useParams();
 
   useEffect(() => {
     const getData = async() => {
@@ -39,32 +38,14 @@ const CategoryMainPart = () => {
 
       if (productsResponse.status === 200) {
         const productsData = await productsResponse.json();
-        setAllProducts(productsData);
+        const filteredProducts = productsData.filter((product) => product.slug === productName);
+        setAllProducts(filteredProducts);
       } else {
         setProductsError(true);
       }
     }
 
-    const getCategories = async () => {
-      const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
-        method: "GET",
-        mode: 'cors',
-        headers: {
-          "Content-Type": "application/json"
-        }
-      })
-
-
-      if (categoriesResponse.status === 200) {
-        const categoriesData = await categoriesResponse.json();
-        setAllCategories(categoriesData);
-      } else {
-        setCategoriesError(true);
-      }
-    }
-
     getData();
-    getCategories();
   }, [])
 
   return (
@@ -90,8 +71,6 @@ const CategoryMainPart = () => {
       <Flex justify="flex-start" margin="20px 0px" p="0px 0px 0px 20px">
       {
         allProducts.map((product) => (
-          (`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}` === window.location.href) ? (
-            
             <Flex gap="50px">
               <Box 
                 className="product__image-block"
@@ -177,7 +156,6 @@ const CategoryMainPart = () => {
               </Flex>
             </Flex>
             
-          ) : null
         ))
       }
       </Flex>

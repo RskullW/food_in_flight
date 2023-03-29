@@ -41,13 +41,13 @@ const CategoryMainPart = () => {
   
         if (productsResponse.status === 200) {
           const productsJSON = await productsResponse.json();
-          const filteredProducts = productsJSON.filter((product) => product.category.slug === categoryName);
+          const filteredProducts = productsJSON.filter((product) => product.category?.slug === categoryName);
           setAllProducts(filteredProducts);
         } else {
           setProductsError(true);
         }
       } catch (error) {
-        setCategoriesError(true);
+        setProductsError(true);
       }
       
     }
@@ -79,6 +79,7 @@ const CategoryMainPart = () => {
 
     getProductsWithCertainCategory();
     getCategories();
+    console.log(allProducts);
   }, [categoryName])
 
   return (
