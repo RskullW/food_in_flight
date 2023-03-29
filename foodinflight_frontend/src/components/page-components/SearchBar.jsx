@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FormControl, Input, Center, List, ListItem, Box, Link, Flex, Text, Spacer, Image } from "@chakra-ui/react";
+import { FormControl, Input, Center, List, ListItem, Box, Link, Flex, Text, Spacer, Image, Button, textDecoration } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi"
 
 const SearchBar = () => {
@@ -40,13 +40,20 @@ const SearchBar = () => {
     setQuery(value);
     let filteredProducts = [];
     console.log(allProducts);
-    if (allProducts && allProducts.length > 0) {
+    if (allProducts.length) {
       filteredProducts = allProducts.filter((product) =>
       product.title.toLowerCase().includes(value.toLowerCase())
       );
-    }
+    } 
     
     setResults(filteredProducts);
+  }
+
+  const handlePressKey = (event) => {
+    if (event.key === 'Enter') {
+      //заменить на страницу результатов поиска после её создания
+      window.location.href = `${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`
+    }
   }
 
   return (
@@ -55,6 +62,7 @@ const SearchBar = () => {
         <Input 
           value={query}
           onChange={handleSearch}
+          onKeyPress={handlePressKey}
           h="50px"
           bgColor="white"
           borderRadius="10px"
@@ -73,8 +81,10 @@ const SearchBar = () => {
             left="0px"
             zIndex="10000"
             w="450px"
+            p="10px"
           >
-            {results.map((product) => (
+            {results.slice(0, 7).map((product) => (
+              
               <Link
                 style={{textDecoration:"none"}}
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}`}
@@ -83,12 +93,12 @@ const SearchBar = () => {
                   key={product.id}
                   alignItems="center"
                   p="10px 10px"
-                  gap="20px"
+                  gap="10px"
                 >
-                  <Box
+                  <Flex
                     maxH="50px"
                     maxW="50px"
-                    
+                    justifyContent="flex-start"
                   >
                     <Image
                       src={product.images[0]?.image}
@@ -96,27 +106,43 @@ const SearchBar = () => {
                       w="100%"
                       borderRadius="0.375rem"
                     />
-                  </Box>
+                  </Flex>
 
-                  <Spacer />
+                
 
-                  <Box fontSize="14px">
+                  <Flex fontSize="14px" justifyContent="flex-start">
                     <Text>
                       {product.title}
                     </Text>
-                  </Box>
+                  </Flex>
 
                   <Spacer />
 
-                  <Box>
+                  <Flex justifyContent="flex-start">
                     <Text fontSize="18px">{product.price}₽</Text>
-                  </Box>
+                  </Flex>
                 
-              </Flex>
+                </Flex>
               </Link>
               
             ) 
             )}
+
+            <Link
+              style={{textDecoration:"none"}}
+              display="inline"
+              p="10px"
+              //заменить на страницу результатов поиска после её создания
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
+              textColor="whiteAlpha.900"
+              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+              _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+              borderRadius="10px"
+              textAlign="center"
+            >
+              Все результаты
+            </Link>
+            
           </Flex>
           
         ) : null
