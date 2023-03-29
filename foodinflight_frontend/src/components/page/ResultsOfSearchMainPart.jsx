@@ -92,11 +92,11 @@ const ResultsOfSearchMainPart = () => {
                 <WrapItem>
                   <Card 
                     maxW="296px" 
-                    h="320px" 
+                    h="340px" 
                     mb="15px"
                     shadow="lg"
                     transition="200ms ease-out"
-                    _hover={{shadow:"md", h:"318px"}}
+                    _hover={{shadow:"md", h:"338px"}}
                   >
 
                     <CardBody p="0px">
@@ -114,7 +114,11 @@ const ResultsOfSearchMainPart = () => {
                               _hover={{opacity:"0.8"}}
                             />
 
-                            <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
+                            <Flex flexDirection="column">
+                              <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
+                              <Spacer/>
+                              <Text p="5px 0px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
+                            </Flex>
                                         
                           </Box>
                         </Link>
