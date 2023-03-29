@@ -1,6 +1,6 @@
 import React from "react";
 import { Text, Image, Flex, Center, Spacer } from "@chakra-ui/react";
-import EnterAlerDialog from "../page-components/EnterAlertDialog";
+import EnterAlertDialog from "../page-components/EnterAlertDialog";
 import SearchBar from "../page-components/SearchBar";
 import AdressBar from "../page-components/AdressBar";
 
@@ -40,7 +40,7 @@ const Header = () => {
       <Spacer/>
 
       <Center className="header__adress-bar" w="200px">
-        <EnterAlerDialog/>
+        <EnterAlertDialog/>
       </Center>
     </Flex>
   )

@@ -60,7 +60,7 @@ const SearchBar = () => {
           borderRadius="10px"
           type="search" 
           placeholder="Поиск по меню"
-          focusBorderColor="rgba(255, 255, 255, 1)"
+          focusBorderColor="#CDCDCD"
         />
         {results.length && query.length ? (
           <Flex

@@ -7,7 +7,7 @@ import {
 const Shipping = () => {
   return (
     <Box>
-      <Text>Информацию о доставке писать сюда</Text>
+      <Text>Доюавить карту</Text>
     </Box>
   )
 }
