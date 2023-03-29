@@ -101,7 +101,7 @@ const SearchBar = () => {
                     justifyContent="flex-start"
                   >
                     <Image
-                      src={product.images[0]?.image}
+                      src={(product.images[0]?.image == null ? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png" : product.images[0]?.image)}
                       objectFit="cover"
                       w="100%"
                       borderRadius="0.375rem"

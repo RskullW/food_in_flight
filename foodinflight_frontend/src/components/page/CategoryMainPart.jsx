@@ -137,8 +137,10 @@ const CategoryMainPart = () => {
                     >
                       <Box textAlign="left">
                         <Image 
-                          src={product.images[0]?.image}
+                          src={(product.images[0]?.image == null ? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png" : product.images[0]?.image)}
                           borderRadius="0.375rem 0.375rem 0rem 0rem"
+                          objectFit="cover"
+                          maxH="200px"
                           margin="0px 0px 3px 0px"
                           transition="200ms"
                           _hover={{opacity:"0.8"}}
