@@ -81,7 +81,7 @@ const SearchBar = () => {
             w="450px"
             p="10px"
           >
-            {results.slice(0, 7).map((product) => (
+            {results.slice(0, 7).map((product) => ( 
               
               <Link
                 style={{textDecoration:"none"}}
