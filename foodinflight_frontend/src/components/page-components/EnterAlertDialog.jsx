@@ -16,8 +16,9 @@ import {
   Box,
 } from '@chakra-ui/react'
 import PasswordInput from "./EnterPassword";
+import RegisterAlertDialog from "./RegisterAlertDialog";
 
-const EnterAlerDialog = () => {
+const EnterAlertDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef()
 
@@ -62,9 +63,7 @@ const EnterAlerDialog = () => {
                 </InputGroup>
                 <PasswordInput />
                 <Box>
-                  <Button variant='link'>
-                    Ещё не регистрировались?
-                  </Button>
+                  <RegisterAlertDialog />
                   <Button variant='link' marginLeft='55'>
                     Забыли пароль?
                   </Button>
@@ -87,4 +86,4 @@ const EnterAlerDialog = () => {
   )
 }
 
-export default EnterAlerDialog
+export default EnterAlertDialog
