@@ -44,6 +44,23 @@ BoxDecoration GetGradientBackgroundItem() {
   );
 }
 
+BoxDecoration GetGradientInCartPlusItem() {
+  return BoxDecoration(
+    gradient: LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        colorAppBar.withOpacity(0.1),
+        colorBottomPanelProduct.withOpacity(0.1),
+      ],
+    ),
+    borderRadius: BorderRadius.vertical(
+      bottom: Radius.circular(40),
+      top: Radius.circular(40),
+    ),
+  );
+}
+
 BoxDecoration GetGradientImageItemForProducts() {
   return BoxDecoration(
     gradient: LinearGradient(

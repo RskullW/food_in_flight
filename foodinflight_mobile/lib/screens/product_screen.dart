@@ -60,7 +60,22 @@ class _ProductScreenState extends State<ProductScreen> {
 
   Widget _buildBottomAppBar() {
     int grams = widget.product?.Weight.toInt() ?? 10;
-    final String description = grams > 1000 ? '${grams ~/ 1000}кг' : '$gramsг';
+    String description;
+    switch (widget.product!.Type) {
+      case ProductType.DRINK:
+        double liters = widget.product!.Weight / 1000;
+        description =
+            '${liters.toStringAsFixed(liters.truncateToDouble() == liters ? 0 : 1)}л';
+        break;
+      case ProductType.FOOD:
+        int grams = widget.product!.Weight.toInt();
+        description = grams > 1000
+            ? (grams ~/ 1000).toString() + 'кг'
+            : grams.toString() + 'г';
+        break;
+      default:
+        description = 'NaN';
+    }
     widget.product?.IsAddToCart =
         Cart.checkThisProduct(widget.product ?? _templateProduct);
 
@@ -104,8 +119,6 @@ class _ProductScreenState extends State<ProductScreen> {
                     Cart.toggleProduct(widget.product!);
                     widget.product!.IsAddToCart =
                         Cart.checkThisProduct(widget.product!);
-                    print(
-                        "WIDGET_PRODUCT!_ISADD_TO_CART: ${widget.product!.IsAddToCart}");
                   }
                 });
               },

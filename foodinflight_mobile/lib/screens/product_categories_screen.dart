@@ -158,9 +158,8 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
     var productGrid = ProductGridWithTitle(
       products: _products,
       categories: _categories,
-      popularityProducts: _products
-          .where((element) => element.IsPopular && element.IsActive)
-          .toList(),
+      popularityProducts:
+          _products.where((element) => element.IsActive).toList(),
       isHavePopularProduct: false,
     );
 

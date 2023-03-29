@@ -28,7 +28,6 @@ class _MenuScreenState extends State<MenuScreen> {
   Future<List<Product>> fetchProducts() async {
     final http.Response response =
         await http.get(Uri.parse('https://foodflight.ru/api/products'));
-
     if (response.statusCode == 200) {
       final products = <Product>[];
       final jsonData = jsonDecode(response.body);

@@ -7,7 +7,6 @@ import 'package:mobile/screens/menu_screen.dart';
 import 'package:mobile/screens/more_screen.dart';
 import 'package:mobile/screens/product_screen.dart';
 import 'package:mobile/screens/registration_screen.dart';
-import 'package:mobile/screens/user_screen.dart';
 import 'package:mobile/screens/product_categories_screen.dart';
 import 'package:mobile/screens/splash_screen.dart';
 import 'package:mobile/users/auth_provider.dart';
@@ -43,7 +42,6 @@ class MyApp extends StatelessWidget {
           '/cart_screen': (context) => CartScreen(),
           '/menu_screen': (context) => MenuScreen(),
           '/category_products': (context) => CategoryProductsScreen(),
-          '/user_screen': (context) => UserScreen(),
           '/authorization_screen': (context) => AuthorizationScreen(),
           '/registration_screen': (context) => RegistrationScreen(),
           '/product_categories_screen': (context) {

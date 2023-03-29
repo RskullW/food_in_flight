@@ -29,7 +29,6 @@ class ProductGrid extends StatelessWidget {
             itemBuilder: (context, index) {
               final product = products[index];
               String description;
-
               switch (product.Type) {
                 case ProductType.DRINK:
                   double liters = product.Weight / 1000;
@@ -38,9 +37,8 @@ class ProductGrid extends StatelessWidget {
                   break;
                 case ProductType.FOOD:
                   int grams = product.Weight.toInt();
-                  description = grams > 1000
-                      ? (grams ~/ 1000).toString() + 'кг'
-                      : grams.toString() + 'г';
+                  description =
+                      grams >= 1000 ? '${grams ~/ 1000}кг' : '$gramsг';
                   break;
                 default:
                   description = 'NaN';
@@ -159,7 +157,7 @@ class ProductGrid extends StatelessWidget {
                           ),
                           SizedBox(height: 6),
                           Text(
-                            '${product.Weight} г',
+                            description,
                             style: TextStyle(
                               color: colorNameProduct,
                               fontWeight: FontWeight.bold,
@@ -179,6 +177,15 @@ class ProductGrid extends StatelessWidget {
     );
   }
 
+  Widget _getIconAddOrRemoveCart(Product product) {
+    return Icon(
+      product.IsAddToCart
+          ? Icons.remove_shopping_cart
+          : Icons.add_shopping_cart,
+      color: colorIconCart,
+    );
+  }
+
   Widget _buildButtonAddToCart(Product product) {
     product.IsAddToCart = Cart.checkThisProduct(product);
     return StatefulBuilder(builder: (context, setState) {
@@ -188,18 +195,11 @@ class ProductGrid extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                product.IsAddToCart
-                    ? product.IsAddToCart = Cart.removeProduct(product)
-                    : product.IsAddToCart = Cart.addProduct(product);
+                Cart.toggleProduct(product);
                 product.IsAddToCart = Cart.checkThisProduct(product);
               });
             },
-            child: Icon(
-              product.IsAddToCart
-                  ? Icons.remove_shopping_cart
-                  : Icons.add_shopping_cart,
-              color: colorIconCart,
-            ),
+            child: _getIconAddOrRemoveCart(product),
             style: ElevatedButton.styleFrom(
               shape: StadiumBorder(),
               padding: EdgeInsets.symmetric(

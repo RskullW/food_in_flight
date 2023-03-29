@@ -1,19 +1,35 @@
 import 'package:mobile/products/product.dart';
 
-class Cart {
-  static List<Product> _products = [];
-  static List<Function> _listeners = [];
+class ProductInCart {
+  late Product product;
+  int numbersOfCount = 1;
 
-  static bool addProduct(Product product) {
-    _products.add(product);
+  ProductInCart({required Product Product}) {
+    this.product = Product;
+  }
+}
+
+class Cart {
+  static List<ProductInCart> _productsInCart = [];
+  static List<Function> _listeners = [];
+  static int get NumProducts => _productsInCart.length;
+
+  static void removeAllProducts() {
+    _productsInCart.clear();
+    _notifyListeners();
+  }
+
+  static bool _addProduct(Product product) {
+    _productsInCart.add(ProductInCart(Product: product));
     _notifyListeners();
     return true;
   }
 
-  static bool removeProduct(Product product) {
-    final index = _products.indexWhere((p) => p.Name == product.Name);
+  static bool _removeProduct(Product product) {
+    final index =
+        _productsInCart.indexWhere((p) => p.product.Name == product.Name);
     if (index != -1) {
-      _products.removeAt(index);
+      _productsInCart.removeAt(index);
       _notifyListeners();
     }
     return false;
@@ -21,19 +37,17 @@ class Cart {
 
   static bool toggleProduct(Product product) {
     if (Cart.checkThisProduct(product)) {
-      Cart.removeProduct(product);
+      Cart._removeProduct(product);
       return false;
     } else {
-      Cart.addProduct(product);
+      Cart._addProduct(product);
       return true;
     }
   }
 
   static bool checkThisProduct(Product product) {
-    return _products.any((p) => p.Name == product.Name);
+    return _productsInCart.any((p) => p.product.Name == product.Name);
   }
-
-  static int get NumProducts => _products.length;
 
   static void addListener(Function callback) {
     _listeners.add(callback);
@@ -47,5 +61,13 @@ class Cart {
     for (Function callback in _listeners) {
       callback();
     }
+  }
+
+  static void updateCart() {
+    _notifyListeners();
+  }
+
+  static List<ProductInCart> GetProducts() {
+    return _productsInCart;
   }
 }

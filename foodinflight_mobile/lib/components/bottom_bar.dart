@@ -173,6 +173,8 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
   }
 
   void _buildCountProductsInCart() {
+    print("TEST: ${Cart.NumProducts} ");
+
     if (Cart.NumProducts > 0) {
       setState(() {
         iconCart = Positioned(

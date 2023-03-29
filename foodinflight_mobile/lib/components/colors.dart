@@ -14,3 +14,5 @@ const Color colorSplashScreen = Color.fromRGBO(46, 46, 46, 1);
 const Color colorMoreScreenAppBar = Color.fromRGBO(42, 42, 43, 1);
 const Color colorGreyWithLowOpacity = Color.fromRGBO(61, 61, 61, 0.27);
 const Color colorDisplayNameCategory = Color.fromRGBO(215, 9, 188, 1);
+const Color colorSelectItemInCart = Color.fromRGBO(173, 7, 151, 1);
+const Color colorNotSelectItemInCart = Color.fromRGBO(124, 13, 110, 1);

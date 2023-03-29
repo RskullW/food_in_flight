@@ -150,9 +150,6 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   Widget _buildConnectToProfileFrom(bool isAuthenticated) {
     return Expanded(
       child: GestureDetector(
-        onTap: () => isAuthenticated
-            ? Navigator.pushNamed(context, '/user_screen')
-            : null,
         child: Container(
           decoration: BoxDecoration(
             color: colorMoreScreenAppBar.withOpacity(0.6),
@@ -193,19 +190,6 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.04,
                               fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          Text(
-                            isAuthenticated
-                                ? "Перейти в профиль"
-                                : "совершать заказы",
-                            style: TextStyle(
-                              color: colorAppBar,
-                              fontSize:
-                                  MediaQuery.of(context).size.width * 0.04,
-                              fontWeight: isAuthenticated
-                                  ? FontWeight.normal
-                                  : FontWeight.bold,
                             ),
                           ),
                         ],
@@ -288,8 +272,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
   }
 
   Future<void> ProcessButtonExitProfile() async {
-    await Provider.of<AuthProvider>(context, listen: false)
-        .set(false, " ", " ");
+    await Provider.of<AuthProvider>(context, listen: false).deleteToken();
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/home',

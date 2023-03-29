@@ -1,8 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class AuthProvider with ChangeNotifier {
   bool _isAuthenticated = false;
@@ -47,6 +47,33 @@ class AuthProvider with ChangeNotifier {
     return _loginUser;
   }
 
+  Future<void> deleteToken() async {
+    if (_tokenUser.isNotEmpty) {
+      final url = Uri.parse('https://foodflight.ru/api/logoutall/');
+      Map<String, String> headers = {
+        'ContentType': 'application/json',
+        'Authorization': 'Token $_tokenUser',
+      };
+
+      final response = await http.post(url, headers: headers);
+      if (response.statusCode == 204) {
+        print('Logout all successful');
+      } else {
+        print('Logout all failed with status code ${response.statusCode}');
+      }
+
+      notifyListeners();
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      _loginUser = _tokenUser = "";
+      _isAuthenticated = false;
+      await prefs.setBool('isAuthenticated', false);
+      await prefs.remove("tokenUser");
+      await prefs.remove("loginUser");
+    }
+  }
+
   void LoadData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _isAuthenticated = prefs.getBool('isAuthenticated') ?? false;
@@ -57,12 +84,3 @@ class AuthProvider with ChangeNotifier {
     }
   }
 }
-
-/* 
-
-  Сохранить информацию об авторизации пользователя
-  Provider.of<AuthProvider>(context, listen: false).setAuthenticated(true);
-
-  Получить инфомацию: авторизован пользователь или нет
-  bool isAuthenticated = Provider.of<AuthProvider>(context).isAuthenticated;
-*/

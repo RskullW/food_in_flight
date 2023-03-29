@@ -101,34 +101,6 @@ class CategoriesGrid extends StatelessWidget {
               ],
             ),
           ),
-          // Container(
-          //   padding: EdgeInsets.all(1),
-          //   decoration: BoxDecoration(
-          //     color: Colors.transparent,
-          //     borderRadius: BorderRadius.vertical(
-          //       bottom: Radius.circular(20),
-          //     ),
-          //   ),
-          //   child: Column(
-          //     crossAxisAlignment: CrossAxisAlignment.center,
-          //     children: [
-          //       SizedBox(
-          //         height: 72,
-          //         child: Text(
-          //           '\n${category.Title}',
-          //           style: TextStyle(
-          //             fontWeight: FontWeight.bold,
-          //             fontSize: 16,
-          //             color: colorNameProduct,
-          //           ),
-          //           textAlign: TextAlign.center,
-          //           maxLines: 3,
-          //           overflow: TextOverflow.ellipsis,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
         ],
       ),
     );

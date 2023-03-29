@@ -87,7 +87,7 @@ class Product {
               "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png"
           : "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png",
       Type: type,
-      Category: utf8.decode((json['category']['title']).codeUnits),
+      Category: utf8.decode((json['category']?['title']).codeUnits),
       GroupCategory: groupCategories,
       IsAddToCart: false,
     );
