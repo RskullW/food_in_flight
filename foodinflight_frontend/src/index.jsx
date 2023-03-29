@@ -14,6 +14,7 @@ import FeedbackPage from './pages/FeedBackPage';
 import TrademarksPage from './pages/TrademarksPage';
 import GroupCategoryPage from './pages/GroupCategoryPage';
 import CuisinesPage from './pages/CuisinesPage';
+import ResultsOfSearchPage from './pages/ResultsOfSearchPage';
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const router = createBrowserRouter([
   {
     path: '/categories/:categoryName',
     element: <CategoryPage/>,
+  },
+
+  {
+    path: '/searchResults/:queryName',
+    element: <ResultsOfSearchPage />,
   },
 
   {

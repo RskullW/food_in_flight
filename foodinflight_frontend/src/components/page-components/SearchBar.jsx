@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { FormControl, Input, Center, List, ListItem, Box, Link, Flex, Text, Spacer, Image, Button, textDecoration } from "@chakra-ui/react";
 import { BiSearch } from "react-icons/bi"
+import { useParams } from "react-router-dom";
 
 const SearchBar = () => {
 
-  const [isLoading, setIsLoading] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
   const [query, setQuery] = useState(''); 
@@ -39,7 +39,6 @@ const SearchBar = () => {
     const { value } = event.target;
     setQuery(value);
     let filteredProducts = [];
-    console.log(allProducts);
     if (allProducts.length) {
       filteredProducts = allProducts.filter((product) =>
       product.title.toLowerCase().includes(value.toLowerCase())
@@ -50,9 +49,8 @@ const SearchBar = () => {
   }
 
   const handlePressKey = (event) => {
-    if (event.key === 'Enter') {
-      //заменить на страницу результатов поиска после её создания
-      window.location.href = `${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`
+    if (event.key === 'Enter' && event.target.value) {
+      window.location.href = `${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/searchResults/${event.target.value}`
     }
   }
 
@@ -132,8 +130,7 @@ const SearchBar = () => {
               style={{textDecoration:"none"}}
               display="inline"
               p="10px"
-              //заменить на страницу результатов поиска после её создания
-              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/searchResults?query=${query}`}
               textColor="whiteAlpha.900"
               bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
               _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
