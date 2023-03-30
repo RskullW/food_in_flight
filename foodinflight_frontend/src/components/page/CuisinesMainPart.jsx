@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import AddToCartButton from "../page-components/AddToCartButton";
 import {
   Box,
   Text,
@@ -159,13 +160,7 @@ const CuisinesMainPart = () => {
 
                     <Spacer />
 
-                    <Button
-                      textColor="whiteAlpha.900"
-                      bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                      _hover={{ bgGradient: "linear(to-t, #6E72FC, #AD1DEB)" }}
-                    >
-                      В корзину
-                    </Button>
+                    <AddToCartButton />
 
                   </CardFooter>
 
