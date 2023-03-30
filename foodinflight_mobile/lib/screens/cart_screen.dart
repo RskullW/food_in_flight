@@ -14,8 +14,7 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  int _numberStatusCreationOrder = 0;
-  bool _isEmptyCart = false;
+  ValueNotifier<int> _numberStatusCreationOrder = ValueNotifier<int>(1);
   List<ProductInCart> _productsInCart = [];
 
   PreferredSizeWidget _buildAppBar() {
@@ -41,137 +40,196 @@ class _CartScreenState extends State<CartScreen> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _numberStatusCreationOrder = 0;
-  }
-
   Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _buildStatusOrder(),
-          _buildTitleOrders(),
-          _buildOrders(),
-        ],
-      ),
-    );
+    List<Widget> firstPage = [
+      _buildStatusOrder(),
+      _buildTitleOrders(),
+      _buildOrders()
+    ];
+    List<Widget> secondPage = [_buildStatusOrder(), _buildOrders()];
+    List<Widget> thirdPage = [_buildStatusOrder(), _buildTitleOrders()];
+
+    return ValueListenableBuilder(
+        valueListenable: _numberStatusCreationOrder,
+        builder: (BuildContext context, int value, Widget? child) {
+          return SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: value == 1
+                    ? firstPage
+                    : value == 2
+                        ? secondPage
+                        : thirdPage),
+          );
+        });
   }
 
   Widget _buildStatusOrder() {
-    return Stack(
-      children: [
-        Positioned(
-            top: MediaQuery.of(context).size.height * 0.073,
-            bottom: MediaQuery.of(context).size.height * 0.073,
-            left: MediaQuery.of(context).size.width * 0.17,
-            right: MediaQuery.of(context).size.width * 0.17,
-            child: Container(
-              decoration: BoxDecoration(
-                  shape: BoxShape.rectangle,
-                  color: colorMoreScreenAppBar.withOpacity(0.3)),
-            )),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.08,
-              width: MediaQuery.of(context).size.width * 0.052,
-            ),
-            Text(
-              "Мой заказ",
-              style: TextStyle(
-                color: colorSelectItemInCart,
-                fontWeight: FontWeight.bold,
+    return ValueListenableBuilder(
+        valueListenable: _numberStatusCreationOrder,
+        builder: (BuildContext context, int value, Widget? child) {
+          return Stack(
+            children: [
+              Positioned(
+                  top: MediaQuery.of(context).size.height * 0.073,
+                  bottom: MediaQuery.of(context).size.height * 0.073,
+                  left: MediaQuery.of(context).size.width * 0.17,
+                  right: MediaQuery.of(context).size.width * 0.17,
+                  child: Container(
+                    decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: colorMoreScreenAppBar.withOpacity(0.3)),
+                  )),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.08,
+                    width: MediaQuery.of(context).size.width * 0.052,
+                  ),
+                  Text(
+                    "Мой заказ",
+                    style: TextStyle(
+                      color: value >= 1
+                          ? colorSelectItemInCart
+                          : colorSelectItemInCart,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.215,
+                  ),
+                  Text(
+                    "Детали",
+                    style: TextStyle(
+                      color: value >= 2
+                          ? colorSelectItemInCart
+                          : colorNotSelectItemInCart,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.24,
+                  ),
+                  Text(
+                    "Оплата",
+                    style: TextStyle(
+                      color: value >= 3
+                          ? colorSelectItemInCart
+                          : colorNotSelectItemInCart,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  Spacer(),
+                ],
               ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.215,
-            ),
-            Text(
-              "Детали",
-              style: TextStyle(
-                color: colorNotSelectItemInCart,
-                fontWeight: FontWeight.bold,
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.15,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: value >= 1
+                          ? colorSelectItemInCart
+                          : colorNotSelectItemInCart,
+                    ),
+                    child: Text(
+                      "1",
+                      style: TextStyle(
+                        color: colorMoreScreenAppBar,
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: value >= 2
+                          ? colorSelectItemInCart
+                          : colorNotSelectItemInCart,
+                    ),
+                    child: Text(
+                      "2",
+                      style: TextStyle(
+                        color: colorMoreScreenAppBar,
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.3,
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(7),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: value >= 3
+                          ? colorSelectItemInCart
+                          : colorNotSelectItemInCart,
+                    ),
+                    child: Text(
+                      "3",
+                      style: TextStyle(
+                        color: colorMoreScreenAppBar,
+                        fontSize: MediaQuery.of(context).size.width * 0.035,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
               ),
+            ],
+          );
+        });
+  }
+
+  Widget _buildBottomAppBar() {
+    return BottomAppBar(
+      color: Colors.transparent,
+      elevation: 0,
+      child: InkWell(
+        onTap: () {
+          _numberStatusCreationOrder.value++;
+        },
+        splashColor: Colors.transparent,
+        highlightColor: Colors.transparent,
+        child: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.05,
+              vertical: MediaQuery.of(context).size.height * 0.03),
+          child: Container(
+            height: 56.0,
+            decoration: GetGradientImageItemForCategories(),
+            alignment: Alignment.center,
+            child: ValueListenableBuilder(
+              valueListenable: _numberStatusCreationOrder,
+              builder: (BuildContext context, int value, Widget? child) {
+                return Text(
+                  "${value == 1 ? "Далее" : value == 2 ? "Перейти к оплате" : "Оплатить"}",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                );
+              },
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.24,
-            ),
-            Text(
-              "Оплата",
-              style: TextStyle(
-                color: colorNotSelectItemInCart,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Spacer(),
-          ],
+          ),
         ),
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.15,
-            ),
-            Container(
-              padding: EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: colorSelectItemInCart,
-              ),
-              child: Text(
-                "1",
-                style: TextStyle(
-                  color: colorMoreScreenAppBar,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-            ),
-            Container(
-              padding: EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: colorNotSelectItemInCart,
-              ),
-              child: Text(
-                "2",
-                style: TextStyle(
-                  color: colorMoreScreenAppBar,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.3,
-            ),
-            Container(
-              padding: EdgeInsets.all(7),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: colorNotSelectItemInCart,
-              ),
-              child: Text(
-                "3",
-                style: TextStyle(
-                  color: colorMoreScreenAppBar,
-                  fontSize: MediaQuery.of(context).size.width * 0.035,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 
@@ -383,7 +441,6 @@ class _CartScreenState extends State<CartScreen> {
     _productsInCart = Cart.GetProducts();
 
     if (_productsInCart.isEmpty) {
-      _isEmptyCart = true;
       ordersContainer = Column(
         children: [
           SizedBox(
@@ -402,7 +459,6 @@ class _CartScreenState extends State<CartScreen> {
         ],
       );
     } else {
-      _isEmptyCart = false;
       productsColumn.addAll(_productsInCart.map((productInCart) => Column(
             children: [
               SizedBox(
@@ -447,9 +503,9 @@ class _CartScreenState extends State<CartScreen> {
     return Container(
       decoration: GetGradientBackgroundScreen(),
       child: Scaffold(
+        bottomNavigationBar: _buildBottomAppBar(),
         body: _buildBody(),
         appBar: _buildAppBar(),
-        // bottomNavigationBar: Container(),
         backgroundColor: Colors.transparent,
       ),
     );
