@@ -57,9 +57,11 @@ class AuthProvider with ChangeNotifier {
 
       final response = await http.post(url, headers: headers);
       if (response.statusCode == 204) {
-        print('Logout all successful');
+        if (kDebugMode) ('Logout all successful');
       } else {
-        print('Logout all failed with status code ${response.statusCode}');
+        if (kDebugMode) {
+          print('Logout all failed with status code ${response.statusCode}');
+        }
       }
 
       notifyListeners();

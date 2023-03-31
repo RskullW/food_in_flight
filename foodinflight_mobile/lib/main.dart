@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/maps/map_screen.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/screens/authorization_screen.dart';
 import 'package:mobile/screens/cart_screen.dart';
@@ -44,6 +45,7 @@ class MyApp extends StatelessWidget {
           '/category_products': (context) => CategoryProductsScreen(),
           '/authorization_screen': (context) => AuthorizationScreen(),
           '/registration_screen': (context) => RegistrationScreen(),
+          '/map_screen': (context) => MapScreen(),
           '/product_categories_screen': (context) {
             final arguments = ModalRoute.of(context)?.settings.arguments
                 as Map<String, dynamic>?;

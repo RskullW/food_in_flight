@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:mobile/components/display_message.dart';
 import 'package:provider/provider.dart';
 import '../components/gradient_color.dart';
 import '../users/auth_provider.dart';
@@ -114,11 +115,8 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                               ),
                               onChanged: (loginUser) {
                                 setState(() {
-                                  if (loginUser.length < 3 ||
-                                      !emailRegExp.hasMatch(loginUser)) {
-                                    print('Uncorrect login');
-                                  } else {
-                                    print('Correct login');
+                                  if (loginUser.length >= 3 &&
+                                      emailRegExp.hasMatch(loginUser)) {
                                     _loginUser = loginUser;
                                   }
                                 });
@@ -154,9 +152,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                                 setState(() {
                                   if (passwordUser.length < 8 ||
                                       !passwordRegExp.hasMatch(passwordUser)) {
-                                    print('Incorrect password');
                                   } else {
-                                    print('Correct password');
                                     _passwordUser = passwordUser;
                                   }
                                 });
@@ -232,17 +228,8 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
         (route) => false,
       );
     } else {
-      ShowMessageAtAuthorization();
+      ShowMessage(context, "Ошибка авторизации. Проверьте почту и пароль");
     }
-  }
-
-  void ShowMessageAtAuthorization() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Ошибка авторизации. Проверьте почту и пароль'),
-        duration: Duration(seconds: 3),
-      ),
-    );
   }
 
   Future<String> checkLogin() async {

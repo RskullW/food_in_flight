@@ -1,9 +1,11 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/users/auth_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'cart.dart';
+import 'display_message.dart';
 
 class MyBottomAppBar extends StatefulWidget {
   final String _text;
@@ -40,8 +42,6 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
   );
 
   _MyBottomAppBarState({String text = 'Home'}) {
-    _defaultFunction();
-
     switch (text) {
       case 'Offer':
         _isSelectOffer = true;
@@ -102,11 +102,6 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
         _isSelectHome = true;
         break;
     }
-  }
-
-  void _defaultFunction([String? text]) {
-    final message = text ?? 'Default pressed';
-    print('Pressed $message');
   }
 
   Widget _getIcon(Icon icon, MainAxisSize mainAxisSize, Color color, Text text,
@@ -173,8 +168,6 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
   }
 
   void _buildCountProductsInCart() {
-    print("TEST: ${Cart.NumProducts} ");
-
     if (Cart.NumProducts > 0) {
       setState(() {
         iconCart = Positioned(
@@ -239,7 +232,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                         color: _isSelectHome ? colorSelectIcon : colorIcon,
                       )),
                   _isSelectHome
-                      ? () => _defaultFunction('Home')
+                      ? () => ShowMessage(context, "(DebugMode): SELECT_HOME")
                       : () {
                           Navigator.pushReplacementNamed(context, '/home');
                         },
@@ -254,7 +247,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                       style: TextStyle(
                           color: _isSelectMenu ? colorSelectIcon : colorIcon)),
                   _isSelectMenu
-                      ? () => _defaultFunction()
+                      ? () => ShowMessage(context, "(DebugMode): SELECT_MENU")
                       : () {
                           Navigator.pushNamed(context, '/menu_screen');
                         },
@@ -271,7 +264,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                   Text('Акции',
                       style: TextStyle(
                           color: _isSelectOffer ? colorSelectIcon : colorIcon)),
-                  () => _defaultFunction('Offers'),
+                  () => ShowMessage(context, "В разработке"),
                 ),
               ),
               Expanded(
@@ -283,7 +276,7 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
                       style: TextStyle(
                           color: _isSelectMore ? colorSelectIcon : colorIcon)),
                   _isSelectMore
-                      ? () => _defaultFunction()
+                      ? () => ShowMessage(context, "(DebugMode): SELECT_MORE")
                       : () {
                           Navigator.pushNamed(context, '/more');
                         },

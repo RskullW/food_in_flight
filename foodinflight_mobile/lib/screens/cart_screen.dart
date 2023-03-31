@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/maps/map_screen.dart';
 import '../components/cart.dart';
+import '../components/display_message.dart';
 import '../components/gradient_color.dart';
-import '../products/product.dart';
-
-// return StatefulBuilder(builder: (context, setState) { });
+import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -14,8 +15,14 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  ValueNotifier<int> _numberStatusCreationOrder = ValueNotifier<int>(1);
+  String _userName = "";
+  String _phoneNumber = "";
+  String _numberApartment = "";
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  final ValueNotifier<int> _numberStatusCreationOrder = ValueNotifier<int>(1);
   List<ProductInCart> _productsInCart = [];
+  late YandexMapController _controller;
 
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
@@ -46,8 +53,16 @@ class _CartScreenState extends State<CartScreen> {
       _buildTitleOrders(),
       _buildOrders()
     ];
-    List<Widget> secondPage = [_buildStatusOrder(), _buildOrders()];
-    List<Widget> thirdPage = [_buildStatusOrder(), _buildTitleOrders()];
+    List<Widget> secondPage = [
+      _buildStatusOrder(),
+      _buildAdress(),
+      _buildPersonalInformation(),
+    ];
+    List<Widget> thirdPage = [
+      _buildStatusOrder(),
+      _buildUnderLine(),
+      _buildPaymentSystem()
+    ];
 
     return ValueListenableBuilder(
         valueListenable: _numberStatusCreationOrder,
@@ -60,6 +75,355 @@ class _CartScreenState extends State<CartScreen> {
                     : value == 2
                         ? secondPage
                         : thirdPage),
+          );
+        });
+  }
+
+  Widget _buildPaymentSystem() {
+    return ValueListenableBuilder(
+      valueListenable: _numberStatusCreationOrder,
+      builder: (BuildContext context, int value, Widget? child) {
+        return Column(
+          children: [
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.1),
+                  child: Text(
+                    "К сожалению, нет возможности\nподключить систему оплаты,\nпоэтому каждое нажатие на 'Далее'\nбудет симулировать запросы\n на сервер:",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: MediaQuery.of(context).size.height * 0.02,
+                      color: Colors.white.withAlpha(200),
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 4,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+            _buildUnderLine(),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+            _buildText("1. Ожидает оплаты",
+                fontSize: MediaQuery.of(context).size.height * 0.017),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            _buildText("2. Оплачен",
+                fontSize: MediaQuery.of(context).size.height * 0.017,
+                fontWeight: value <= 3 ? FontWeight.normal : FontWeight.bold),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            _buildText("3. Готовится",
+                fontSize: MediaQuery.of(context).size.height * 0.017,
+                fontWeight: value <= 4 ? FontWeight.normal : FontWeight.bold),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            _buildText("4. В доставке",
+                fontSize: MediaQuery.of(context).size.height * 0.017,
+                fontWeight: value <= 5 ? FontWeight.normal : FontWeight.bold),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.01,
+            ),
+            _buildText("5. Доставлен",
+                fontSize: MediaQuery.of(context).size.height * 0.017,
+                fontWeight: value <= 6 ? FontWeight.normal : FontWeight.bold),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 0.05,
+            ),
+            _buildUnderLine(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _buildText(String message,
+      {double fontSize = 0,
+      FontWeight fontWeight = FontWeight.bold,
+      TextAlign textAling = TextAlign.center}) {
+    return Row(
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width * 0.04),
+          child: Text(
+            message,
+            textAlign: textAling,
+            style: TextStyle(
+              fontSize: fontSize,
+              color: Colors.white.withAlpha(200),
+              fontWeight: fontWeight,
+            ),
+            maxLines: 3,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAdress() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.width * 0.05,
+            ),
+            _getThemeText("Адрес доставки",
+                fontSize: MediaQuery.of(context).size.width * 0.05),
+          ],
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.03,
+        ),
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.height * 0.03,
+            ),
+            _getWidgetMap(),
+          ],
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.03,
+        ),
+        Row(children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.height * 0.03,
+          ),
+          _getThemeText("Номер квартиры",
+              fontSize: MediaQuery.of(context).size.width * 0.035,
+              fontWeight: FontWeight.normal),
+        ]),
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.height * 0.03,
+            ),
+            Expanded(
+              child: TextFormField(
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(
+                      RegExp(r"^\+?[0123456789]{1,13}$")),
+                  LengthLimitingTextInputFormatter(4),
+                ],
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: MediaQuery.of(context).size.width * 0.035),
+                decoration: InputDecoration(
+                  hintMaxLines: 2,
+                  hintText:
+                      'Если вы проживаете в частном доме, то оставьте поле пустым',
+                  hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: MediaQuery.of(context).size.width * 0.035),
+                  border: InputBorder.none,
+                ),
+                onChanged: (numberApartment) {
+                  setState(() {
+                    _numberApartment = numberApartment;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        _buildUnderLine(),
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.height * 0.03,
+            ),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPersonalInformation() {
+    final RegExp nameRegExp = RegExp(r'^[a-zA-ZА-Яа-я ]+$');
+    final RegExp phoneNumberRegExp = RegExp(r"^\+?[+0123456789]{1,13}$");
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.015,
+        ),
+        Row(children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.height * 0.03,
+          ),
+          _getThemeText("Контакты",
+              fontSize: MediaQuery.of(context).size.width * 0.05),
+        ]),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.01,
+        ),
+        Row(children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.height * 0.03,
+          ),
+          _getThemeText("Получатель",
+              fontSize: MediaQuery.of(context).size.width * 0.035,
+              fontWeight: FontWeight.normal),
+        ]),
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.height * 0.03,
+            ),
+            Expanded(
+              child: TextFormField(
+                controller: _nameController,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(nameRegExp),
+                  LengthLimitingTextInputFormatter(16),
+                ],
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: MediaQuery.of(context).size.width * 0.035),
+                decoration: InputDecoration(
+                  hintText: 'Как вас зовут?',
+                  hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: MediaQuery.of(context).size.width * 0.035),
+                  border: InputBorder.none,
+                ),
+                onChanged: (userName) {
+                  setState(() {
+                    if (nameRegExp.hasMatch(userName)) {
+                      _userName = userName;
+                    }
+                  });
+                },
+              ),
+            ),
+            _buildUnderLine(),
+          ],
+        ),
+        SizedBox(
+          height: MediaQuery.of(context).size.height * 0.015,
+        ),
+        Row(children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.height * 0.03,
+          ),
+          _getThemeText("Телефон",
+              fontSize: MediaQuery.of(context).size.width * 0.035,
+              fontWeight: FontWeight.normal),
+        ]),
+        Row(
+          children: [
+            SizedBox(
+              width: MediaQuery.of(context).size.height * 0.03,
+            ),
+            Expanded(
+              child: TextFormField(
+                initialValue: '+7',
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(phoneNumberRegExp),
+                  LengthLimitingTextInputFormatter(12),
+                ],
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontSize: MediaQuery.of(context).size.width * 0.035),
+                decoration: InputDecoration(
+                  hintText: '+7',
+                  hintStyle: TextStyle(
+                      color: Colors.grey,
+                      fontSize: MediaQuery.of(context).size.width * 0.035),
+                  border: InputBorder.none,
+                ),
+                onChanged: (numberPhone) {
+                  setState(() {
+                    _phoneNumber = numberPhone;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        _buildUnderLine(),
+      ],
+    );
+  }
+
+  Widget _getThemeText(String message,
+      {double fontSize = 0, FontWeight fontWeight = FontWeight.bold}) {
+    return Text(
+      message,
+      style: TextStyle(
+          fontWeight: fontWeight,
+          color: Colors.white.withAlpha(200),
+          fontSize: fontSize),
+    );
+  }
+
+  Widget _getWidgetMap() {
+    return ValueListenableBuilder(
+        valueListenable: MapScreen.STREET,
+        builder: (BuildContext context, String value, Widget? child) {
+          return InkWell(
+            borderRadius: BorderRadius.circular(20),
+            onTap: () => setState(() {
+              Navigator.pushNamed(context, '/map_screen');
+            }),
+            child: Row(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: MediaQuery.of(context).size.width * 0.3,
+                  decoration: GetGradientBackgroundItem(),
+                  child: Icon(
+                    MapScreen.STREET.value.length > 1
+                        ? Icons.mode_edit
+                        : Icons.add,
+                    size: MediaQuery.of(context).size.width * 0.15,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.02,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.15,
+                  width: MediaQuery.of(context).size.width * 0.6,
+                  decoration: GetGradientBackgroundItem(),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          MapScreen.STREET.value.length > 1
+                              ? MapScreen.STREET.value
+                              : "Добавьте адрес",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: MediaQuery.of(context).size.width * 0.035,
+                            color: Colors.white70,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          maxLines: 3,
+                        ),
+                      ]),
+                ),
+              ],
+            ),
           );
         });
   }
@@ -199,37 +563,81 @@ class _CartScreenState extends State<CartScreen> {
     return BottomAppBar(
       color: Colors.transparent,
       elevation: 0,
-      child: InkWell(
-        onTap: () {
-          _numberStatusCreationOrder.value++;
-        },
-        splashColor: Colors.transparent,
-        highlightColor: Colors.transparent,
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width * 0.05,
-              vertical: MediaQuery.of(context).size.height * 0.03),
-          child: Container(
-            height: 56.0,
-            decoration: GetGradientImageItemForCategories(),
-            alignment: Alignment.center,
-            child: ValueListenableBuilder(
-              valueListenable: _numberStatusCreationOrder,
-              builder: (BuildContext context, int value, Widget? child) {
-                return Text(
-                  "${value == 1 ? "Далее" : value == 2 ? "Перейти к оплате" : "Оплатить"}",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.0,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+      child: ValueListenableBuilder(
+          valueListenable: _numberStatusCreationOrder,
+          builder: (BuildContext context, int value, Widget? child) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                InkWell(
+                  onTap: () {
+                    if (Cart.NumProducts > 0) {
+                      if (value >= 2 && value <= 5) {
+                        if ((_phoneNumber.length != 12 ||
+                                _phoneNumber[0] != '+') ||
+                            _userName.length <= 1) {
+                          ShowMessage(context,
+                              "Некорректный ввод имени или номера телефона");
+                        } else if (MapScreen.STREET.value.length <= 1) {
+                          ShowMessage(context, "Укажите адрес доставки");
+                        } else {
+                          if (_numberApartment.isNotEmpty && value == 2) {
+                            MapScreen.STREET.value =
+                                '$_numberApartment, ${MapScreen.STREET.value}';
+                          }
+                          _numberStatusCreationOrder.value++;
+                        }
+                      } else if (value >= 1 && value <= 6) {
+                        _numberStatusCreationOrder.value++;
+                      } else if (value > 6) {
+                        Cart.removeAllProducts();
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, '/home', (route) => false);
+                      }
+                    } else {
+                      ShowMessage(context,
+                          "Корзина пуста, необходимо добавить какой-либо товар");
+                    }
+                  },
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05,
+                        vertical: MediaQuery.of(context).size.height * 0.03),
+                    child: Container(
+                      height: 56.0,
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      decoration: GetGradientImageItemForCategories(),
+                      alignment: Alignment.center,
+                      child: Text(
+                        value == 1
+                            ? "Далее • ${Cart.GetPrices()} ₽"
+                            : value == 2
+                                ? "Перейти к оплате • ${Cart.GetPrices()} ₽"
+                                : value == 3
+                                    ? "Оплатить"
+                                    : value == 4
+                                        ? "Запрос 'Готовится'"
+                                        : value == 5
+                                            ? "Запрос 'В доставке'"
+                                            : value == 6
+                                                ? "Доставлен"
+                                                : "Выйти в меню",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ),
-                );
-              },
-            ),
-          ),
-        ),
-      ),
+                ),
+              ],
+            );
+          }),
     );
   }
 

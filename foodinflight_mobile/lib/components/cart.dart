@@ -14,6 +14,13 @@ class Cart {
   static List<Function> _listeners = [];
   static int get NumProducts => _productsInCart.length;
 
+  static double GetPrices() {
+    return _productsInCart.fold<double>(
+        0.0,
+        (total, product) =>
+            total + (product.product.Price * product.numbersOfCount));
+  }
+
   static void removeAllProducts() {
     _productsInCart.clear();
     _notifyListeners();

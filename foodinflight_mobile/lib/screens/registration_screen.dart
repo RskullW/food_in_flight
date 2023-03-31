@@ -113,11 +113,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               ),
                               onChanged: (emailUser) {
                                 setState(() {
-                                  if (emailUser.length < 4 ||
-                                      !emailRegExp.hasMatch(emailUser)) {
-                                    print('Uncorrect email;');
-                                  } else {
-                                    print('Correct mail');
+                                  if (emailUser.length >= 4 &&
+                                      emailRegExp.hasMatch(emailUser)) {
                                     _email = emailUser;
                                   }
                                 });
@@ -151,11 +148,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               obscureText: true,
                               onChanged: (passwordUser) {
                                 setState(() {
-                                  if (passwordUser.length < 8 ||
-                                      !passwordRegExp.hasMatch(passwordUser)) {
-                                    print('Incorrect password');
-                                  } else {
-                                    print('Correct password');
+                                  if (passwordUser.length >= 8 &&
+                                      passwordRegExp.hasMatch(passwordUser)) {
                                     _password = passwordUser;
                                   }
                                 });

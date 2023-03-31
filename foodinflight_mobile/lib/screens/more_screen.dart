@@ -6,6 +6,7 @@ import 'package:mobile/components/colors.dart';
 import 'package:mobile/components/custom_icons.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/users/auth_provider.dart';
+import '../components/display_message.dart';
 import '../components/gradient_color.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,6 +17,7 @@ class MyMoreScreen extends StatefulWidget {
 
 class _MyMoreScreenState extends State<MyMoreScreen> {
   bool _isAuthenticated = false;
+  Future<void>? _launched;
 
   Widget _buildAllBars() {
     return Container(
@@ -56,7 +58,8 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
       child: GestureDetector(
         onTap: onPressed != null
             ? () => onPressed()
-            : () => print("Click \'${text}\'"),
+            : () => ShowMessage(context,
+                'MORE_SCREEN._BUILD_BUTTON_MORE.EXPANDED.GESTUREDETECTOR.ONTAP.ACTION = ONTAP'),
         child: Container(
           decoration: BoxDecoration(
             color: colorBackgroundScreen.withOpacity(0.1),
@@ -114,7 +117,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
           width: MediaQuery.of(context).size.width * 0.09,
         ),
         GestureDetector(
-          onTap: () => print('Clicked \'Vkontakte\''),
+          onTap: () => _launchSite("vk.com", path: "5fs4d3j2"),
           child: CustomIcons.GetIcon(
               'vkontakte',
               MediaQuery.of(context).size.width * 0.065,
@@ -125,7 +128,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
           width: MediaQuery.of(context).size.width * 0.02,
         ),
         GestureDetector(
-          onTap: () => print('Clicked \'Instagram\''),
+          onTap: () => _launchSite('instagram.com'),
           child: CustomIcons.GetIcon(
               'instagram',
               MediaQuery.of(context).size.width * 0.065,
@@ -135,7 +138,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
         Spacer(),
         Spacer(),
         Text(
-          'Version 00.05.0.a (110)',
+          'Version 00.50.0.r (130)',
           style: TextStyle(
               fontFamily: 'Roboto-Black',
               color: colorAppBar.withOpacity(0.6),
@@ -184,7 +187,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                                 ? Provider.of<AuthProvider>(context,
                                         listen: false)
                                     .getLogin()
-                                : "Войди, чтобы",
+                                : "Войти",
                             style: TextStyle(
                               color: colorAppBar,
                               fontSize:
@@ -196,10 +199,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                       ),
                       Spacer(),
                       isAuthenticated
-                          ? Icon(
-                              Icons.arrow_forward_ios_sharp,
-                              color: colorAppBar,
-                            )
+                          ? SizedBox()
                           : GestureDetector(
                               onTap: () => Navigator.pushNamed(
                                   context, '/authorization_screen'),
@@ -239,20 +239,45 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
         SizedBox(height: MediaQuery.of(context).size.height * 0.06),
         _buildConnectToProfileFrom(_isAuthenticated),
         SizedBox(height: MediaQuery.of(context).size.height * 0.04),
-        _buildButtonMore("Мои заказы", colorMoreScreenAppBar, colorBlack,
-            colorAppBar, null, Icons.arrow_forward_ios_sharp, colorAppBar),
-        _buildButtonMore("Акции", colorMoreScreenAppBar, colorBlack,
-            colorAppBar, null, Icons.arrow_forward_ios_sharp, colorAppBar),
-        _buildButtonMore("Вакансии", colorMoreScreenAppBar, colorBlack,
-            colorAppBar, null, Icons.arrow_forward_ios_sharp, colorAppBar),
-        _buildButtonMore("Перейти на сайт", colorMoreScreenAppBar, colorBlack,
-            colorAppBar, null, Icons.arrow_forward_ios_sharp, colorAppBar),
         _buildButtonMore(
-          "Подробнее о приложении",
+            "Мои заказы",
+            colorMoreScreenAppBar,
+            colorBlack,
+            colorAppBar,
+            () => ShowMessage(context, "В разработке"),
+            Icons.arrow_forward_ios_sharp,
+            colorAppBar),
+        _buildButtonMore(
+            "Акции",
+            colorMoreScreenAppBar,
+            colorBlack,
+            colorAppBar,
+            () => ShowMessage(context, "В разработке"),
+            Icons.arrow_forward_ios_sharp,
+            colorAppBar),
+        _buildButtonMore(
+            "Перейти на сайт",
+            colorMoreScreenAppBar,
+            colorBlack,
+            colorAppBar,
+            () => _launchSite("foodflight.ru"),
+            Icons.arrow_forward_ios_sharp,
+            colorAppBar),
+        _buildButtonMore(
+          "Ссылка на репозиторий: ",
           colorMoreScreenAppBar,
           colorBlack,
           colorAppBar,
-          null,
+          () => _launchSite("github.com", path: "RskullW"),
+          Icons.arrow_forward_ios_sharp,
+          colorAppBar,
+        ),
+        _buildButtonMore(
+          "Команда разработчиков: ",
+          colorMoreScreenAppBar,
+          colorBlack,
+          colorAppBar,
+          () => _launchSite("foodflight.ru", path: "more/developers"),
           Icons.arrow_forward_ios_sharp,
           colorAppBar,
         ),
@@ -269,6 +294,29 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
         _buildUnderPanelMoreScreen(),
       ],
     );
+  }
+
+  void _launchSite(String url, {String path = ""}) {
+    final Uri toLaunch = Uri(scheme: 'https', host: url, path: path);
+    _launchInBrowser(toLaunch);
+    FutureBuilder<void>(future: _launched, builder: _launchStatus);
+  }
+
+  Widget _launchStatus(BuildContext context, AsyncSnapshot<void> snapshot) {
+    if (snapshot.hasError) {
+      return Text('Error: ${snapshot.error}');
+    } else {
+      return const Text('');
+    }
+  }
+
+  Future<void> _launchInBrowser(Uri url) async {
+    if (!await launchUrl(
+      url,
+      mode: LaunchMode.externalApplication,
+    )) {
+      throw Exception('Could not launch $url');
+    }
   }
 
   Future<void> ProcessButtonExitProfile() async {
