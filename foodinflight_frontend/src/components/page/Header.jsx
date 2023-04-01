@@ -19,34 +19,40 @@ const Header = () => {
       borderBottom="1px solid rgba(0, 0, 0, 0.15)" 
       p="0px 20px"
     >
-      <Center 
-        className="header__logo" 
-        minW="120px"
-        h="100%"
-        display="block"
+
+      <Flex
+        justifyContent="space-between"
+        
       >
-        <a href="http://localhost:3000">
-          <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
-        </a>
-      </Center>
+        <Center 
+          className="header__logo" 
+          minW="120px"
+          h="100%"
+          display="block"
+          margin="0px 90px 0px 0px"
+        >
+          <a href="http://localhost:3000">
+            <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
+          </a>
+        </Center>
 
-      <Spacer/>
+        <SearchBar/>
 
-      <SearchBar/>
-
-      <Spacer/>
-
-      <AdressBar/>
-
-      <Spacer/>
-
-      <CartButton />
-
-      <Spacer />
+      </Flex>
       
-      <Center className="header__adress-bar" w="200px">
-        <EnterAlertDialog/>
-      </Center>
+
+      <Spacer/>
+
+      <Flex>
+        <CartButton />
+        
+        <Center className="header__adress-bar" w="200px" m="0px 90px 0px 90px">
+          <EnterAlertDialog/>
+        </Center>
+
+      </Flex>
+
+      
     </Flex>
   )
 }
