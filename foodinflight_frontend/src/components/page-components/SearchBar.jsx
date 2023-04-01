@@ -55,7 +55,7 @@ const SearchBar = () => {
   }
 
   return (
-    <Center w="400px">
+    <Center w="300px">
       <FormControl>
         <Input 
           value={query}

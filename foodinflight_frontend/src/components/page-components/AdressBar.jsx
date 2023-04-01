@@ -3,7 +3,7 @@ import { FormControl, Input, Center } from "@chakra-ui/react";
 
 const AdressBar = () => {
   return (
-    <Center w="400px">
+    <Center w="300px">
       <FormControl _focus={{borderColor:"rgba(255, 165, 0, 1)"}}>
         <Input
           h="50px"

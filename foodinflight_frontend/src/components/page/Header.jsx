@@ -3,6 +3,7 @@ import { Text, Image, Flex, Center, Spacer } from "@chakra-ui/react";
 import EnterAlertDialog from "../page-components/EnterAlertDialog";
 import SearchBar from "../page-components/SearchBar";
 import AdressBar from "../page-components/AdressBar";
+import CartButton from "../page-components/CartButton";
 
 
 const Header = () => {
@@ -39,6 +40,10 @@ const Header = () => {
 
       <Spacer/>
 
+      <CartButton />
+
+      <Spacer />
+      
       <Center className="header__adress-bar" w="200px">
         <EnterAlertDialog/>
       </Center>
