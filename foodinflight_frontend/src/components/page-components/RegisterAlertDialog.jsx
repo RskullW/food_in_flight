@@ -13,10 +13,16 @@ import {
   InputGroup,
   Input,
   Box,
-  Stack
+  Stack,
+  Text,
+  InputRightElement,
+  Flex,
+  Link
 } from '@chakra-ui/react'
 
 const RegisterAlertDialog = () => {
+  const [show, setShow] = React.useState(false)
+  const handleClick = () => setShow(!show)
   const { isOpen, onOpen, onClose } = useDisclosure()
   const cancelRef = React.useRef();
   const [dataError, setDataError] = useState(null);
@@ -66,7 +72,7 @@ const RegisterAlertDialog = () => {
       setCheckedEmail(value);
       setEmailError(null);
     } else {
-      setEmailError('Название почты введено неверно. Пример: abc@mail.ru');
+      setEmailError(`Название почты введено неверно. Пример: abc@mail.ru`);
     }
   }
 
@@ -76,7 +82,7 @@ const RegisterAlertDialog = () => {
       setCheckedPassword(value);
       setPasswordError(null);
     } else {
-      setPasswordError('Пароль введён неверно. Проверьте используемые символы. Длина пароля не менее 8 символов');
+      setPasswordError('Пароль введён неверно. Проверьте используемые символы. Пароль должен содержать буквы латинского алфавита и цифры. Длина пароля не менее 8 символов');
     }
   }
 
@@ -90,17 +96,22 @@ const RegisterAlertDialog = () => {
     }
   }
 
+
+
   const setNewUser = async () => {
     if (emailError) {
-      setDataError();
+      setDataError(emailError);
+      console.log(dataError);
       return emailError;
     }
     else if (passwordError) {
-      setDataError();
+      setDataError(passwordError);
+      console.log(dataError);
       return passwordError;
     }
     else if (repeatedPasswordError) {
-      setDataError();
+      setDataError(repeatedPasswordError);
+      console.log(dataError);
       return repeatedPasswordError;
     }
 
@@ -120,6 +131,7 @@ const RegisterAlertDialog = () => {
 
       if (userInfo.status === 201) {
         const userToken = userInfoJSON.token;
+        setDataError(null);
       }
 
       if (userInfo.status === 400) {
@@ -127,10 +139,15 @@ const RegisterAlertDialog = () => {
         return dataError;
       }
 
+
     } catch (error) {
       setDataError(error);
     }
   }
+
+  
+
+
 
   return (
     <>
@@ -140,6 +157,7 @@ const RegisterAlertDialog = () => {
 
       <AlertDialog
         motionPreset="slideInRight"
+        w="5000px"
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
@@ -147,11 +165,13 @@ const RegisterAlertDialog = () => {
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
+
             <Center>
-              <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
+              <AlertDialogHeader fontSize='3xl' fontWeight='bold' display='inline-block' alignContent='center'>
                 Регистрация
               </AlertDialogHeader>
             </Center>
+
             <AlertDialogBody>
               <Stack spacing='10px'>
 
@@ -160,15 +180,55 @@ const RegisterAlertDialog = () => {
                   onChange={inputEmail}
                 />
 
-                <Input
-                  placeholder='Введите пароль (не менее 8 символов)'
-                  onChange={inputPassword}
-                />
+                <InputGroup>
+                  <Input
+                    type={show ? 'text' : 'password'}
+                    placeholder='Введите пароль (не менее 8 символов)'
+                    onChange={inputPassword}
+                  />
+                  <InputRightElement width='5rem'>
+                    <Button h='1.75rem' size='md' onClick={handleClick}>
+                      {show ? 'Скрыть' : 'Показать'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                
 
-                <Input
-                  placeholder='Повторите пароль'
-                  onChange={repeatPassword}
-                />
+                <InputGroup>
+                  <Input
+                    type={show ? 'text' : 'password'}
+                    placeholder='Повторите пароль'
+                    onChange={repeatPassword}
+                  />
+                  <InputRightElement width='5rem'>
+                    <Button h='1.75rem' size='md' onClick={handleClick}>
+                      {show ? 'Скрыть' : 'Показать'}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+
+                <Box>
+                  {
+                    dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword ? (
+                      <Text>{dataError}</Text>
+                    ) :  (
+                      <Flex flexDirection="column" alignItems="center">
+                        <Text>Регистрация прошла успешно!</Text>
+                        <Link
+                          style={{textDecoration:"none"}}
+                          href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                          borderRadius="20px"
+                          textAlign="center"
+                          p="10px 40px"
+                        >В меню
+                        </Link>
+                      </Flex>
+                    )
+                  }
+                </Box>
 
                 <Button variant='link'>
                   Уже есть аккаунт?
