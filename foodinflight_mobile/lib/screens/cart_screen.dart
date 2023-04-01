@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/components/delivery_type.dart';
+import 'package:mobile/components/state_orders.dart';
 import 'package:mobile/maps/map_screen.dart';
 import '../components/cart.dart';
 import '../components/display_message.dart';
@@ -15,12 +17,14 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  String _userName = "";
-  String _phoneNumber = "";
-  String _numberApartment = "";
-  TextEditingController _nameController = TextEditingController();
-  TextEditingController _phoneController = TextEditingController();
-  final ValueNotifier<int> _numberStatusCreationOrder = ValueNotifier<int>(1);
+  static String _userName = "";
+  static String _phoneNumber = "";
+  static String _numberApartment = "";
+  static TextEditingController _nameController = TextEditingController();
+  static TextEditingController _phoneController = TextEditingController();
+  static final ValueNotifier<int> _numberStatusCreationOrder =
+      ValueNotifier<int>(1);
+  static OrderState _orderState = OrderState();
   List<ProductInCart> _productsInCart = [];
   late YandexMapController _controller;
 
@@ -572,7 +576,7 @@ class _CartScreenState extends State<CartScreen> {
               children: [
                 InkWell(
                   onTap: () {
-                    if (Cart.NumProducts > 0) {
+                    if (Cart.NumProducts > 0 || value > 3) {
                       if (value >= 2 && value <= 5) {
                         if ((_phoneNumber.length != 12 ||
                                 _phoneNumber[0] != '+') ||
@@ -586,12 +590,63 @@ class _CartScreenState extends State<CartScreen> {
                             MapScreen.STREET.value =
                                 '$_numberApartment, ${MapScreen.STREET.value}';
                           }
+
+                          switch (value) {
+                            case 2:
+                              _orderState.CreateOrder(
+                                  context,
+                                  _userName,
+                                  _phoneNumber,
+                                  DeliveryType.PAID,
+                                  MapScreen.STREET.value,
+                                  Cart.GetProducts());
+                              break;
+                            case 3:
+                              _orderState.SetStateOrder(
+                                  context,
+                                  "state",
+                                  DeliveryType.PAID
+                                      .toString()
+                                      .split('.')[1]
+                                      .toUpperCase());
+                              break;
+                            case 4:
+                              Cart.removeAllProducts();
+
+                              _orderState.SetStateOrder(
+                                  context,
+                                  "state",
+                                  DeliveryType.COOKING
+                                      .toString()
+                                      .split('.')[1]
+                                      .toUpperCase());
+                              break;
+                            case 5:
+                              _orderState.SetStateOrder(
+                                  context,
+                                  "state",
+                                  DeliveryType.DELIVERING
+                                      .toString()
+                                      .split('.')[1]
+                                      .toUpperCase());
+                              break;
+                            default:
+                              break;
+                          }
+
                           _numberStatusCreationOrder.value++;
                         }
                       } else if (value >= 1 && value <= 6) {
                         _numberStatusCreationOrder.value++;
+                        _orderState.SetStateOrder(
+                            context,
+                            "state",
+                            DeliveryType.DELIVERED
+                                .toString()
+                                .split('.')[1]
+                                .toUpperCase());
                       } else if (value > 6) {
-                        Cart.removeAllProducts();
+                        _numberStatusCreationOrder.value = 1;
                         Navigator.pushNamedAndRemoveUntil(
                             context, '/home', (route) => false);
                       }

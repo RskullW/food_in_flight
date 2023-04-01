@@ -114,16 +114,17 @@ class _MenuScreenState extends State<MenuScreen> {
       decoration: InputDecoration(
         hintText: 'Введите запрос...',
         hintStyle: TextStyle(
-          color: colorMoreScreenAppBar,
+          color: Colors.white,
           fontWeight: FontWeight.w600,
         ),
+        border: InputBorder.none,
         enabledBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
         focusedBorder:
             UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
       ),
       style: TextStyle(
-        color: colorMoreScreenAppBar,
+        color: Colors.white,
         fontWeight: FontWeight.w600,
       ),
       onChanged: _searchForProducts,

@@ -1,0 +1,8 @@
+enum DeliveryType {
+  PENDING,
+  PAID,
+  COOKING,
+  DELIVERING,
+  DELIVERED,
+  CANCELED,
+}
