@@ -6,7 +6,7 @@ const Footer = () => {
   return(
     <Box 
       className="footer" 
-      bgColor="rgba(0, 0, 0, 0.8)" 
+      bgColor="rgba(0, 0, 0, 1)" 
       position="relative" 
       borderTop="1px solid rgba(0,0,0,0.15)" 
       h="90px"

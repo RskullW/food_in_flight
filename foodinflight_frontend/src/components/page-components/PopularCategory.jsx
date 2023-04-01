@@ -57,6 +57,7 @@ const PopularCategory = () => {
       {
         allProducts.map((product) => ( 
           <WrapItem 
+            key={product.slug}
             className="popular-category__item"
           >
             <Card 

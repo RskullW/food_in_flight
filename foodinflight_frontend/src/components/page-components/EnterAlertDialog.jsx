@@ -75,7 +75,7 @@ const EnterAlertDialog = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 Закрыть
               </Button>
-              <Button colorScheme='green' onClick ml={3}>
+              <Button colorScheme='green' ml={3}>
                 Войти
               </Button>
             </AlertDialogFooter>

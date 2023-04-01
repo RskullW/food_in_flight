@@ -61,14 +61,13 @@ const SearchBar = () => {
           value={query}
           onChange={handleSearch}
           onKeyPress={handlePressKey}
-          autocomplete="off"
+          autoComplete="off"
           h="50px"
           bgColor="white"
           borderRadius="10px"
           type="search" 
           placeholder="Поиск по меню"
           focusBorderColor="#CDCDCD"
-          _
         />
         {results.length && query.length ? (
           <Flex

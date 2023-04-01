@@ -65,7 +65,7 @@ const FooterMainPart = () => {
         <Heading as="h3" fontSize="xl" m="0px 0px 15px 0px">Кухни</Heading>
         {
           allCuisines.map((cuisine) => (
-            <List p="5px 0px">
+            <List p="5px 0px" key={cuisine.slug}>
 
               <Link 
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/cuisines/${cuisine.slug}`}

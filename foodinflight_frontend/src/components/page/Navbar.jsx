@@ -57,7 +57,7 @@ const Navbar = () => {
       <Box margin="0px 0px 100px 20px">
         {
           allCategories.map((category) => (
-            <Box margin="15px 0px">
+            <Box margin="15px 0px" key={category.slug}>
               <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}`}
                 style={{ textDecoration: "none" }}
               >
@@ -71,7 +71,7 @@ const Navbar = () => {
       <Box margin="20px 0px 100px 20px">
         {
           allGroupCategories.map((groupCategory) => (
-            <Box margin="15px 0px">
+            <Box margin="15px 0px" key={groupCategory.slug}>
               <Link
                 style={{ textDecoration: "none" }}
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/group_categories/${groupCategory.slug}`}

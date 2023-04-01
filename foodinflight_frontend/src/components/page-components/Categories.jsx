@@ -51,7 +51,7 @@ const Categories = () => {
       <Wrap justify="center" margin="20px 0px">
       {
         allCategories.map((category) => (
-          <WrapItem>
+          <WrapItem key={category.slug}>
             <Card 
               maxW="295px" 
               shadow="md"
