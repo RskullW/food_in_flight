@@ -23,8 +23,11 @@ import {
 const RegisterAlertDialog = () => {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose} = useDisclosure();
   const cancelRef = React.useRef();
+  const [disabledRegistration, setDisabledRegistration] = useState(false);
+  const [registrationClicked, setRegistrationClicked] = useState(false);
+  const [message, setMessage] = useState('');
   const [dataError, setDataError] = useState(null);
   const [checkedEmail, setCheckedEmail] = useState('');
   const [checkedPassword, setCheckedPassword] = useState('');
@@ -55,13 +58,15 @@ const RegisterAlertDialog = () => {
     if (repeatedPassword.length === password.length) {
       for (let i = 0; i < passwordArray.length; i++) {
         if (repeatedPasswordArray[i] !== passwordArray[i]) {
-          setRepeatedPasswordError('Пароли не совпадают');
+          setMessage('Пароли не совпадают');
+          setRepeatedPasswordError(message);
           return false;
         }
       }
       return true;
     } else {
-      setRepeatedPasswordError('Пароли не совпадают');
+      setMessage('Пароли не совпадают');
+      setRepeatedPasswordError(message);
       return false;
     }
   }
@@ -72,7 +77,8 @@ const RegisterAlertDialog = () => {
       setCheckedEmail(value);
       setEmailError(null);
     } else {
-      setEmailError(`Название почты введено неверно. Пример: abc@mail.ru`);
+      setMessage(`Название почты введено неверно. Пример: abc@mail.ru`)
+      setEmailError(message);
     }
   }
 
@@ -82,7 +88,8 @@ const RegisterAlertDialog = () => {
       setCheckedPassword(value);
       setPasswordError(null);
     } else {
-      setPasswordError('Пароль введён неверно. Проверьте используемые символы. Пароль должен содержать буквы латинского алфавита и цифры. Длина пароля не менее 8 символов');
+      setMessage('Пароль введён неверно. Проверьте используемые символы. Пароль должен содержать буквы латинского алфавита и цифры. Длина пароля не менее 8 символов');
+      setPasswordError(message);
     }
   }
 
@@ -92,29 +99,41 @@ const RegisterAlertDialog = () => {
       setCheckedRepeatedPassword(value);
       setRepeatedPasswordError(null);
     } else {
-      setRepeatedPasswordError('Пароли не совпадают');
+      setMessage('Пароли не совпадают');
+      setRepeatedPasswordError(message);
     }
   }
 
 
 
   const setNewUser = async () => {
+    console.log(registrationClicked);
+    setRegistrationClicked(true);
+    console.log(registrationClicked);
+    setDisabledRegistration(true);
     if (emailError) {
+      setRegistrationClicked(false);
+      setDisabledRegistration(false);
+      setMessage(emailError);
       setDataError(emailError);
-      console.log(dataError);
       return emailError;
     }
     else if (passwordError) {
+      setRegistrationClicked(false);
+      setDisabledRegistration(false);
+      setMessage(passwordError);
       setDataError(passwordError);
-      console.log(dataError);
       return passwordError;
     }
     else if (repeatedPasswordError) {
+      setRegistrationClicked(false);
+      setDisabledRegistration(false);
+      setMessage(repeatedPasswordError);
       setDataError(repeatedPasswordError);
-      console.log(dataError);
       return repeatedPasswordError;
     }
 
+    
 
     try {
       const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/register/`, {
@@ -136,6 +155,8 @@ const RegisterAlertDialog = () => {
 
       if (userInfo.status === 400) {
         setDataError(userInfoJSON.message);
+        setRegistrationClicked(false);
+        setDisabledRegistration(false);
         return dataError;
       }
 
@@ -143,10 +164,9 @@ const RegisterAlertDialog = () => {
     } catch (error) {
       setDataError(error);
     }
+
+    console.log(dataError);
   }
-
-  
-
 
 
   return (
@@ -209,24 +229,28 @@ const RegisterAlertDialog = () => {
 
                 <Box>
                   {
-                    dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword ? (
-                      <Text>{dataError}</Text>
-                    ) :  (
-                      <Flex flexDirection="column" alignItems="center">
-                        <Text>Регистрация прошла успешно!</Text>
-                        <Link
-                          style={{textDecoration:"none"}}
-                          href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
-                          textColor="whiteAlpha.900"
-                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-                          borderRadius="20px"
-                          textAlign="center"
-                          p="10px 40px"
-                        >В меню
-                        </Link>
-                      </Flex>
-                    )
+                    message ? (
+                      dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword || (registrationClicked === false) ? (
+                        <Text>{dataError}</Text>
+                        
+                      ) :  (
+                        <Flex flexDirection="column" alignItems="center">
+                          <Text>Регистрация прошла успешно!</Text>
+                          <Link
+                            style={{textDecoration:"none"}}
+                            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
+                            textColor="whiteAlpha.900"
+                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                            _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                            borderRadius="20px"
+                            textAlign="center"
+                            p="10px 40px"
+                          >В меню
+                          </Link>
+                        </Flex>
+                      )
+                    ) : null
+                    
                   }
                 </Box>
 
@@ -240,7 +264,7 @@ const RegisterAlertDialog = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 Закрыть
               </Button>
-              <Button colorScheme='green' onClick={setNewUser} ml={3}>
+              <Button colorScheme='green' onClick={disabledRegistration ? null : setNewUser} ml={3}>
                 Зарегистрироваться
               </Button>
             </AlertDialogFooter>
