@@ -1,13 +1,13 @@
 import React from 'react';
-import Layout from '../components/Layout';
-import MainContent from '../components/MainContent';
+import Layout from '../components/page/Layout';
+import MainPart from '../components/page/MainPart';
 
 
 const IndexPage = () => {
   
   return (
     <Layout>
-      <MainContent />
+      <MainPart />
     </Layout>
   );
 }

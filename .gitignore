@@ -41,12 +41,14 @@ app.*.map.json
 
 **/.env
 **/.env.local
+**/.env.dev
 foodinflight_backend/media/
 foodinflight_backend/static/
 **/__pycache__/
 foodinflight_frontend/node_modules/
+foodinflight_frontend/build/
 data/
 logs/
 **/virtualenv
-/foodinflight_frontend/package-lock.json
-.vscode/
+**/package-lock.json
+**/.vscode/
