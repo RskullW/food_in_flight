@@ -52,6 +52,7 @@ http {
             uwsgi_pass djangouwsgi;
             include /etc/nginx/uwsgi_params;
         }
+
         location /admin/ {
             uwsgi_pass djangouwsgi;
             include /etc/nginx/uwsgi_params;
@@ -60,10 +61,7 @@ http {
         location /media/  {
             alias /web/media/;
         }
-        #location /static/ {
-        #    autoindex on;
-        #    alias /web/static/;
-        #}
+
         location / {
             autoindex on;
             alias /web/build/;
