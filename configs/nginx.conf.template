@@ -48,16 +48,25 @@ http {
         include /etc/letsencrypt/options-ssl-nginx.conf;
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
-        location /media  {
-            alias /web/media;
+        location /api/ {
+            uwsgi_pass djangouwsgi;
+            include /etc/nginx/uwsgi_params;
         }
-        location /static {
-            alias /web/static;
+        location /admin/ {
+            uwsgi_pass djangouwsgi;
+            include /etc/nginx/uwsgi_params;
         }
 
+        location /media/  {
+            alias /web/media/;
+        }
+        #location /static/ {
+        #    autoindex on;
+        #    alias /web/static/;
+        #}
         location / {
-            uwsgi_pass  djangouwsgi;
-            include     /etc/nginx/uwsgi_params;
+            autoindex on;
+            alias /web/build/;
         }
     }
 }

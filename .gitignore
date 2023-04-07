@@ -45,8 +45,9 @@ foodinflight_backend/media/
 foodinflight_backend/static/
 **/__pycache__/
 foodinflight_frontend/node_modules/
+foodinflight_frontend/build/
 data/
 logs/
 **/virtualenv
 **/package-lock.json
-.vscode/
+**/.vscode/
