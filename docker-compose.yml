@@ -19,7 +19,7 @@ services:
       context: .
       dockerfile: configs/Dockerfile_frontend
     volumes:
-      - ./foodinflight_frontend/build:/app/build
+      - ./foodinflight_frontend/build:/app/build1
 
   foodinflight_backend:
     container_name: foodinflight_backend

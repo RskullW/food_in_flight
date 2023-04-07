@@ -7,5 +7,4 @@ RUN npm install --omit=dev
 
 COPY ./foodinflight_frontend /app
 RUN npm run build
-RUN mv /app/build /app/build1
-CMD ["cp", "-r", "/app/build1", "/app/build"]
+CMD cp -r /app/build/. /app/build1
