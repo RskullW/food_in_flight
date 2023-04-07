@@ -1,0 +1,11 @@
+FROM node:19-alpine
+
+WORKDIR /app
+
+COPY ./foodinflight_frontend/package.json /app/package.json
+RUN npm install --omit=dev
+
+COPY ./foodinflight_frontend /app
+RUN npm run build
+RUN mv /app/build /app/build1
+CMD ["cp", "/app/build1", "/app/build"]
