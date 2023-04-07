@@ -20,6 +20,9 @@ import {
   Link
 } from '@chakra-ui/react'
 
+let userToken = null;
+let userEmail = null;
+
 const RegisterAlertDialog = () => {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
@@ -107,9 +110,7 @@ const RegisterAlertDialog = () => {
 
 
   const setNewUser = async () => {
-    console.log(registrationClicked);
     setRegistrationClicked(true);
-    console.log(registrationClicked);
     setDisabledRegistration(true);
     if (emailError) {
       setRegistrationClicked(false);
@@ -133,8 +134,6 @@ const RegisterAlertDialog = () => {
       return repeatedPasswordError;
     }
 
-    
-
     try {
       const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/register/`, {
         method: 'POST',
@@ -145,12 +144,13 @@ const RegisterAlertDialog = () => {
         }
       })
 
-
       const userInfoJSON = await userInfo.json();
 
       if (userInfo.status === 201) {
-        const userToken = userInfoJSON.token;
+        userToken = userInfoJSON.token;
+        userEmail = userInfoJSON.user.email;
         setDataError(null);
+        window.location.reload();
       }
 
       if (userInfo.status === 400) {
@@ -165,7 +165,6 @@ const RegisterAlertDialog = () => {
       setDataError(error);
     }
 
-    console.log(dataError);
   }
 
 
@@ -177,7 +176,6 @@ const RegisterAlertDialog = () => {
 
       <AlertDialog
         motionPreset="slideInRight"
-        w="5000px"
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
         onClose={onClose}
@@ -233,22 +231,7 @@ const RegisterAlertDialog = () => {
                       dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword || (registrationClicked === false) ? (
                         <Text>{dataError}</Text>
                         
-                      ) :  (
-                        <Flex flexDirection="column" alignItems="center">
-                          <Text>Регистрация прошла успешно!</Text>
-                          <Link
-                            style={{textDecoration:"none"}}
-                            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
-                            textColor="whiteAlpha.900"
-                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                            _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-                            borderRadius="20px"
-                            textAlign="center"
-                            p="10px 40px"
-                          >В меню
-                          </Link>
-                        </Flex>
-                      )
+                      ) :  null
                     ) : null
                     
                   }
@@ -276,3 +259,8 @@ const RegisterAlertDialog = () => {
 }
 
 export default RegisterAlertDialog
+
+export function getUserToken(userToken) {
+  console.log(userToken);
+  return userToken;
+}
