@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Image, Flex, Center, Spacer } from "@chakra-ui/react";
+import { Text, Image, Flex, Center, Spacer, Link } from "@chakra-ui/react";
 import EnterAlertDialog from "../page-components/EnterAlertDialog";
 import SearchBar from "../page-components/SearchBar";
 import AdressBar from "../page-components/AdressBar";
@@ -24,18 +24,19 @@ const Header = () => {
         justifyContent="space-between"
         
       >
-        <Center 
-          className="header__logo" 
-          minW="120px"
-          h="100%"
-          display="block"
-          margin="0px 90px 0px 0px"
+        <Link
+            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/`}
         >
-          <a href="http://localhost:3000">
+          <Center 
+            className="header__logo" 
+            minW="120px"
+            h="100%"
+            display="block"
+            margin="0px 90px 0px 0px"
+          >
             <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
-          </a>
-        </Center>
-
+          </Center>
+        </Link>
         <SearchBar/>
 
       </Flex>
