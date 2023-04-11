@@ -20,6 +20,10 @@ services:
       dockerfile: configs/Dockerfile_frontend
     volumes:
       - ./foodinflight_frontend/build:/app/build1
+    ports:
+      - "3000:3000"
+    networks:
+      - backnet
 
   foodinflight_backend:
     container_name: foodinflight_backend
@@ -53,6 +57,7 @@ services:
     environment:
       - NGINX_HOST=${HOST_DOMAIN}
       - BACKEND_HOSTNAME=foodinflight_backend
+      - FRONTEND_HOSTNAME=foodinflight_frontend
       - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx
       - NGINX_ENVSUBST_OUTPUT_DIR=/etc/nginx
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.template

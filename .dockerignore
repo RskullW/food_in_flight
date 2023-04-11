@@ -1,5 +1,6 @@
 data/
+logs/
 foodinflight_backend/media/
 foodinflight_backend/static/
-logs/
+foodinflight_frontend/build/
 **/virtualenv

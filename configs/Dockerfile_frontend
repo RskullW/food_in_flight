@@ -2,9 +2,10 @@ FROM node:19-alpine
 
 WORKDIR /app
 
-COPY ./foodinflight_frontend/package.json /app/package.json
+COPY ./foodinflight_frontend/package*.json ./
 RUN npm install --omit=dev
 
-COPY ./foodinflight_frontend /app
-RUN npm run build
-CMD cp -r /app/build/. /app/build1
+COPY ./foodinflight_frontend ./
+RUN npm run build --production
+RUN npm install -g serve
+CMD serve -s build
