@@ -18,8 +18,6 @@ services:
     build:
       context: .
       dockerfile: configs/Dockerfile_frontend
-    volumes:
-      - ./foodinflight_frontend/build:/app/build1
     ports:
       - "3000:3000"
     networks:
@@ -34,7 +32,7 @@ services:
       dockerfile: configs/Dockerfile_backend
     volumes:
       - ./foodinflight_backend/media:/app/media
-      - ./foodinflight_frontend/build/static:/app/static # merging static directories
+      - ./foodinflight_backend/static:/app/static
       - ./logs:/logs
     ports:
       - "8001:8001"
@@ -50,7 +48,7 @@ services:
       - ./configs/nginx.conf.template:/etc/nginx/nginx.conf.template
       - ./configs/uwsgi_params:/etc/nginx/uwsgi_params
       - ./foodinflight_backend/media:/web/media
-      - ./foodinflight_frontend/build:/web/build
+      - ./foodinflight_backend/static:/web/static
       - ./data/certbot/conf:/etc/letsencrypt
       - ./data/certbot/www:/var/www/certbot
       - ./logs:/logs

@@ -58,6 +58,10 @@ http {
             include /etc/nginx/uwsgi_params;
         }
 
+        location /django_static/ {
+            alias /web/static/;
+        }
+
         location /media/  {
             alias /web/media/;
         }
