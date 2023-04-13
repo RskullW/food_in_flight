@@ -15,9 +15,11 @@ import {
   InputGroup,
   Stack,
   Box,
-  Text
+  Text,
+  Flex
 } from '@chakra-ui/react'
 import RegisterAlertDialog from "./RegisterAlertDialog";
+import ChangePasswordDialog from "./ChangePasswordDialog";
 
 const EnterAlertDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -105,7 +107,6 @@ const EnterAlertDialog = () => {
       })
 
       const userInfoJSON = await userInfo.json();
-      console.log(userInfoJSON);
 
 
       if (userInfo.status === 200) {
@@ -116,6 +117,7 @@ const EnterAlertDialog = () => {
 
       if (userInfo.status === 400) {
         setDataError("Данные введены неверно");
+        setMessage("Данные введены неверно");
         setInputClicked(false);
         setDisabledInput(false);
         return dataError;
@@ -124,6 +126,7 @@ const EnterAlertDialog = () => {
     } catch (error) {
       setDataError(error);
     }
+
   }
 
 
@@ -136,7 +139,7 @@ const EnterAlertDialog = () => {
           h="50px"
           bgColor="white"
           borderRadius="10px"
-          onClick={logOutUser}
+          onClick={onOpen}
           bgGradient="none"
           transition="700ms"
           transitionDelay="bgColor linear"
@@ -165,7 +168,46 @@ const EnterAlertDialog = () => {
       )
     }  
 
-      <AlertDialog
+    {
+      cookies.access_token ? (
+        <AlertDialog
+        motionPreset='slideInRight'
+        isOpen={isOpen}
+        leastDestructiveRef={cancelRef}
+        onClose={onClose}
+        isCentered
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <Center>
+              <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
+                Выход из аккаунта
+              </AlertDialogHeader>
+            </Center>
+            <AlertDialogBody>
+              <Flex flexDirection="column">
+                <Box>
+                  <Text>Вы действительно хотите выйти?</Text>
+                </Box>
+                <Box>
+                  <ChangePasswordDialog />
+                </Box>
+              </Flex>
+            </AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onClose}>
+                Закрыть
+              </Button>
+              <Button colorScheme='green' onClick={disabledInput ? null : logOutUser} ml={3}>
+                Выйти
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
+      ) : (
+        <AlertDialog
         motionPreset='slideInRight'
         isOpen={isOpen}
         leastDestructiveRef={cancelRef}
@@ -212,12 +254,14 @@ const EnterAlertDialog = () => {
                   }
                 </Box>
 
-                <Box>
+                <Flex justifyContent="space-between">
                   <RegisterAlertDialog />
-                  <Button variant='link' marginLeft='55'>
-                    Забыли пароль?
-                  </Button>
-                </Box>
+
+                  {
+                    cookies.access_token ? <ChangePasswordDialog /> : null
+                  }
+                  
+                </Flex>
               </Stack>
             </AlertDialogBody>
 
@@ -232,6 +276,8 @@ const EnterAlertDialog = () => {
           </AlertDialogContent>
         </AlertDialogOverlay>
       </AlertDialog>
+      )
+    }
     </>
   )
 }

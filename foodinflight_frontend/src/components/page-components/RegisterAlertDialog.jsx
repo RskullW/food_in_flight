@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -16,12 +16,7 @@ import {
   Stack,
   Text,
   InputRightElement,
-  Flex,
-  Link
 } from '@chakra-ui/react'
-
-let userToken = null;
-let userEmail = null;
 
 const RegisterAlertDialog = () => {
   const [show, setShow] = React.useState(false)
@@ -147,8 +142,6 @@ const RegisterAlertDialog = () => {
       const userInfoJSON = await userInfo.json();
 
       if (userInfo.status === 201) {
-        userToken = userInfoJSON.token;
-        userEmail = userInfoJSON.user.email;
         setDataError(null);
         window.location.reload();
       }
@@ -159,8 +152,6 @@ const RegisterAlertDialog = () => {
         setDisabledRegistration(false);
         return dataError;
       }
-
-
     } catch (error) {
       setDataError(error);
     }
@@ -237,10 +228,6 @@ const RegisterAlertDialog = () => {
                   }
                 </Box>
 
-                <Button variant='link'>
-                  Уже есть аккаунт?
-                </Button>
-
               </Stack>
             </AlertDialogBody>
             <AlertDialogFooter>
@@ -259,8 +246,3 @@ const RegisterAlertDialog = () => {
 }
 
 export default RegisterAlertDialog
-
-export function getUserToken(userToken) {
-  console.log(userToken);
-  return userToken;
-}
