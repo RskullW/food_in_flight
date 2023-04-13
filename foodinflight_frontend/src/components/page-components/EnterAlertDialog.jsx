@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Cookies, useCookies } from "react-cookie";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -16,14 +17,7 @@ import {
   Box,
   Text
 } from '@chakra-ui/react'
-import PasswordInput from "./EnterPassword";
 import RegisterAlertDialog from "./RegisterAlertDialog";
-import { getUserToken } from "./RegisterAlertDialog";
-// const userToken = getUserToken();
-// console.log(userToken);
-
-let userToken = null;
-let userExpiry = null;
 
 const EnterAlertDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
@@ -38,6 +32,7 @@ const EnterAlertDialog = () => {
   const [message, setMessage] = useState(null);
   const [inputClicked, setInputClicked] = useState(false);
   const [disabledInput, setDisabledInput] = useState(false);
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
   const data = {
     username: `${checkedEmail}`,
@@ -76,6 +71,11 @@ const EnterAlertDialog = () => {
     }
   }
 
+  const logOutUser = () => {
+    removeCookie("access_token");
+    window.location.reload();
+  }
+
   const logInUser = async () => {
     setInputClicked(true);
     setDisabledInput(true);
@@ -95,7 +95,7 @@ const EnterAlertDialog = () => {
     }
 
     try {
-      const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/login`, {
+      const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/login/`, {
         method: 'POST',
         body: JSON.stringify(data),
         mode: 'cors',
@@ -109,15 +109,13 @@ const EnterAlertDialog = () => {
 
 
       if (userInfo.status === 200) {
-        userToken = userInfoJSON.token;
-        console.log(userToken);
-        userExpiry = userInfoJSON.expiry;
+        setCookie("access_token", userInfoJSON.token);
         setDataError(null);
         window.location.reload();
       }
 
       if (userInfo.status === 400) {
-        setDataError(userInfoJSON.message);
+        setDataError("Данные введены неверно");
         setInputClicked(false);
         setDisabledInput(false);
         return dataError;
@@ -131,22 +129,41 @@ const EnterAlertDialog = () => {
 
   return (
     <>
-      <Button
-        w="200px"
-        h="50px"
-        bgColor="white"
-        borderRadius="10px"
-        onClick={onOpen}
-        bgGradient="none"
-        transition="700ms"
-        transitionDelay="bgColor linear"
-        _hover={{
-          bgColor: "#CDCDCD"
-        }}
-
-      >
-        Войти
-      </Button>
+    {
+      cookies.access_token ? (
+        <Button
+          w="200px"
+          h="50px"
+          bgColor="white"
+          borderRadius="10px"
+          onClick={logOutUser}
+          bgGradient="none"
+          transition="700ms"
+          transitionDelay="bgColor linear"
+          _hover={{
+            bgColor: "#CDCDCD"
+          }}
+        >
+          Выйти
+        </Button>
+      ) : (
+        <Button
+          w="200px"
+          h="50px"
+          bgColor="white"
+          borderRadius="10px"
+          onClick={onOpen}
+          bgGradient="none"
+          transition="700ms"
+          transitionDelay="bgColor linear"
+          _hover={{
+            bgColor: "#CDCDCD"
+          }}
+        >
+          Войти
+        </Button>
+      )
+    }  
 
       <AlertDialog
         motionPreset='slideInRight'
