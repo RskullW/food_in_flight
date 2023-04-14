@@ -25,13 +25,12 @@ const RegisterAlertDialog = () => {
   const cancelRef = React.useRef();
   const [disabledRegistration, setDisabledRegistration] = useState(false);
   const [registrationClicked, setRegistrationClicked] = useState(false);
-  const [message, setMessage] = useState('');
   const [dataError, setDataError] = useState(null);
   const [checkedEmail, setCheckedEmail] = useState('');
   const [checkedPassword, setCheckedPassword] = useState('');
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
-  const [repeatedPasswordError, setRepeatedPasswordError] = useState(null);
+  const [repeatedPasswordError, setRepeatedPasswordError] = useState('Пароли не совпадают');
   const [checkedRepeatedPassword, setCheckedRepeatedPassword] = useState('');
 
   const data = {
@@ -51,20 +50,21 @@ const RegisterAlertDialog = () => {
   }
 
   const validateRepeatedPassword = (password, repeatedPassword) => {
+    if (repeatedPassword === '') {
+      return false;
+    }
     const passwordArray = password.split('');
     const repeatedPasswordArray = repeatedPassword.split('');
     if (repeatedPassword.length === password.length) {
       for (let i = 0; i < passwordArray.length; i++) {
         if (repeatedPasswordArray[i] !== passwordArray[i]) {
-          setMessage('Пароли не совпадают');
-          setRepeatedPasswordError(message);
+          setRepeatedPasswordError('Пароли не совпадают');
           return false;
         }
       }
       return true;
     } else {
-      setMessage('Пароли не совпадают');
-      setRepeatedPasswordError(message);
+      setRepeatedPasswordError('Пароли не совпадают');
       return false;
     }
   }
@@ -75,8 +75,7 @@ const RegisterAlertDialog = () => {
       setCheckedEmail(value);
       setEmailError(null);
     } else {
-      setMessage(`Название почты введено неверно. Пример: abc@mail.ru`)
-      setEmailError(message);
+      setEmailError(`Название почты введено неверно. Пример: abc@mail.ru`);
     }
   }
 
@@ -86,8 +85,7 @@ const RegisterAlertDialog = () => {
       setCheckedPassword(value);
       setPasswordError(null);
     } else {
-      setMessage('Пароль введён неверно. Проверьте используемые символы. Пароль должен содержать буквы латинского алфавита и цифры. Длина пароля не менее 8 символов');
-      setPasswordError(message);
+      setPasswordError('Пароль введён неверно. Проверьте используемые символы. Пароль должен содержать буквы латинского алфавита и цифры. Длина пароля не менее 8 символов');
     }
   }
 
@@ -97,8 +95,7 @@ const RegisterAlertDialog = () => {
       setCheckedRepeatedPassword(value);
       setRepeatedPasswordError(null);
     } else {
-      setMessage('Пароли не совпадают');
-      setRepeatedPasswordError(message);
+      setRepeatedPasswordError('Пароли не совпадают');
     }
   }
 
@@ -110,21 +107,18 @@ const RegisterAlertDialog = () => {
     if (emailError) {
       setRegistrationClicked(false);
       setDisabledRegistration(false);
-      setMessage(emailError);
       setDataError(emailError);
       return emailError;
     }
     else if (passwordError) {
       setRegistrationClicked(false);
       setDisabledRegistration(false);
-      setMessage(passwordError);
       setDataError(passwordError);
       return passwordError;
     }
     else if (repeatedPasswordError) {
       setRegistrationClicked(false);
       setDisabledRegistration(false);
-      setMessage(repeatedPasswordError);
       setDataError(repeatedPasswordError);
       return repeatedPasswordError;
     }
@@ -218,13 +212,9 @@ const RegisterAlertDialog = () => {
 
                 <Box>
                   {
-                    message ? (
-                      dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword || (registrationClicked === false) ? (
-                        <Text>{dataError}</Text>
-                        
-                      ) :  null
-                    ) : null
-                    
+                    dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword || (registrationClicked === false) ? (
+                      <Text>{dataError}</Text>  
+                    ) :  null
                   }
                 </Box>
 

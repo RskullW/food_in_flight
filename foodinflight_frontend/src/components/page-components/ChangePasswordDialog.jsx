@@ -29,7 +29,8 @@ const ChangePasswordDialog = () => {
   const [checkedPassword, setCheckedPassword] = useState('');
   const [oldPassword, setOldPassword] = useState('');
   const [oldPasswordError, setOldPasswordError] = useState(null);
-  const [passwordError, setPasswordError] = useState(null);
+  const [passwordError, setPasswordError] = useState('Новый пароль введён некорректно');
+  const [statusError, setStatusError] = useState(null);
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
 
   const data = {
@@ -97,7 +98,7 @@ const ChangePasswordDialog = () => {
 
       if (userInfo.status === 400) {
         console.log(userInfo.status);
-        setDataError('Данные введены некорректно.');
+        setStatusError('Данные введены некорректно. Проверьте правильность данных.');
         setChangePasswordClicked(false);
         setDisabledChange(false);
       }
@@ -125,7 +126,7 @@ const ChangePasswordDialog = () => {
           <AlertDialogContent>
 
             <Center>
-              <AlertDialogHeader fontSize='3xl' fontWeight='bold' display='inline-block' alignContent='center'>
+              <AlertDialogHeader fontSize='3xl' fontWeight='bold' alignContent='center'>
                 Смена пароля
               </AlertDialogHeader>
             </Center>
@@ -164,6 +165,11 @@ const ChangePasswordDialog = () => {
                   {
                     dataError || !oldPassword || !checkedPassword ? (
                       <Text>{dataError}</Text>
+                    ) : null
+                  }
+                  {
+                    statusError ? (
+                      <Text>{statusError}</Text>
                     ) : null
                   }
                 </Box>
