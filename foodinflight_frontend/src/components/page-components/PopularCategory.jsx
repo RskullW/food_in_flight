@@ -15,7 +15,7 @@ import {
   Spacer,
   Flex
 } from "@chakra-ui/react";
-import AddToCartButton from "./AddToCartButton";
+// import AddToCartButton from "./AddToCartButton";
 
 const PopularCategory = () => {
   const [isLoading, setIsLoading] = useState([]);
@@ -103,7 +103,7 @@ const PopularCategory = () => {
 
                 <Spacer/>
 
-                <AddToCartButton />
+                {/* <AddToCartButton /> */}
 
               </CardFooter>
 

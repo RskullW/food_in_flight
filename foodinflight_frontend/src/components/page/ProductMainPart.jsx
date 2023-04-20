@@ -1,52 +1,53 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom"
+import { CartContext, useCartContext } from "../../contexts/CartContext"
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
 import {
   Box,
   Text,
   Heading,
-  Wrap,
-  WrapItem,
-  Card,
-  CardBody, 
-  CardFooter,
   Link,
   Image,
-  Spacer,
   Button,
   Flex
 } from "@chakra-ui/react"
 
 import {BiArrowBack} from "react-icons/bi"
-import AddToCartButton from "../page-components/AddToCartButton";
 
 const CategoryMainPart = () => {
 
-  const [allProducts, setAllProducts] = useState([]);
-  const [productsError, setProductsError] = useState(false);
-
+  const [product, setProduct] = useState(null);
+  const [isInCart, setIsInCart] = useState(null);
+  const [productError, setProductError] = useState(null);
   const { productName } = useParams();
+  const { onAddToCart, onPlusToCart, onMinusFromCart, onRemoveFromCart, cartProducts, } = useCartContext();
 
   useEffect(() => {
-    const getData = async() => {
-      const productsResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/products/`, {
+    const getData = async () => {
+      const productResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/products/${productName}/`, {
         method: 'GET',
         mode: 'cors',
         headers: {
           "Content-Type": "application/json"
         }
-      })
+      });
 
-      if (productsResponse.status === 200) {
-        const productsData = await productsResponse.json();
-        const filteredProducts = productsData.filter((product) => product.slug === productName);
-        setAllProducts(filteredProducts);
+      if (productResponse.status === 200) {
+        const productData = await productResponse.json();
+        setProduct(productData);
+        setProductError(false);
+
       } else {
-        setProductsError(true);
+        setProductError(true);
       }
     }
 
     getData();
-  }, [])
+
+    const productInCart = cartProducts.find((product) => product.slug === productName);
+    setIsInCart(productInCart ? true : false);
+
+  }, [productError, isInCart, cartProducts])
 
   return (
     <Box margin="10px 0px 0px 0px">
@@ -67,98 +68,138 @@ const CategoryMainPart = () => {
         </Link>
 
       </Box>
-
-      <Flex justify="flex-start" margin="20px 0px" p="0px 0px 0px 20px">
-      {
-        allProducts.map((product) => (
-            <Flex gap="50px">
-              <Box 
-                className="product__image-block"
+      { product ? (
+        <Flex justify="flex-start" margin="20px 0px" p="0px 0px 0px 20px">
+          <Flex gap="50px">
+            <Box 
+              className="product__image-block"
+            >
+              <Image 
+                src={product?.images[0]?.image}
+                borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"
+                h="500px"
+                w="100%"
+                objectFit="cover"
               >
-                <Image 
-                  src={product.images[0]?.image}
-                  borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"
-                  h="500px"
-                  w="100%"
-                  objectFit="cover"
-                >
 
-                </Image>
+              </Image>
+            </Box>
+
+            <Flex
+              className="product__info"
+              flexDirection="column"
+            >
+
+              <Box>
+                <Heading as="h2" fontSize="3xl">
+                  {product.title}
+                </Heading>
+              </Box>
+              
+              <Box p="20px 0px 0px 0px">
+                <Text>
+                  {product.weight} г
+                </Text>
               </Box>
 
-              <Flex
-                className="product__info"
-                flexDirection="column"
-              >
+              <Box p="20px 0px 0px 0px">
+                <Text>
+                  {product.description}
+                </Text>
+              </Box>
+
+              <Box p="20px 0px 0px 0px">
+                <Heading as="h3" fontSize="xl">
+                  Состав
+                </Heading>
+                <Text>
+                  {product.composition}
+                </Text>
+              </Box>
+
+              <Box p="20px 0px 0px 0px">
+                <Heading as="h3" fontSize="xl">
+                  Пищевая ценность на 100 г
+                </Heading>
+              </Box>
+
+              <Flex gap="20px">
+                <Box>
+                  <Text textColor={"gray.400"}>Белки</Text>
+                  <Text>{product.proteins} г</Text>
+                </Box>
+                <Box>
+                  <Text textColor={"gray.400"}>Жиры</Text>
+                  <Text>{product.fats} г</Text>
+                </Box>
+                <Box>
+                  <Text textColor={"gray.400"}>Углеводы</Text>
+                  <Text>{product.carbohydrates} г</Text>
+                </Box>
+                <Box>
+                  <Text textColor={"gray.400"}>Энерг. ценность</Text>
+                  <Text>{product.calories} кКал</Text>
+                </Box>
+              </Flex>
+
+              <Flex gap="50px" p="50px 0px 0px 0px" alignItems="center">
 
                 <Box>
-                  <Heading as="h2" fontSize="3xl">
-                    {product.title}
-                  </Heading>
-                </Box>
-                
-                <Box p="20px 0px 0px 0px">
-                  <Text>
-                    {product.weight} г
-                  </Text>
+                  <Text fontWeight="500" fontSize="24px">{product.price}₽</Text>
                 </Box>
 
-                <Box p="20px 0px 0px 0px">
-                  <Text>
-                    {product.description}
-                  </Text>
-                </Box>
+                <Box 
+                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                  _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                  borderRadius="10px"
+                >
+                  {
+                    isInCart ? (
+                      <Flex 
+                        gap="10px"
+                        alignItems="center"
+                        h="-moz-min-content"
+                      >
 
-                <Box p="20px 0px 0px 0px">
-                  <Heading as="h3" fontSize="xl">
-                    Состав
-                  </Heading>
-                  <Text>
-                    {product.composition}
-                  </Text>
-                </Box>
+                        <Button
+                          onClick={() => onMinusFromCart(productName)}
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                        >
+                          <HiOutlineMinus />
+                        </Button>
 
-                <Box p="20px 0px 0px 0px">
-                  <Heading as="h3" fontSize="xl">
-                    Пищевая ценность на 100 г
-                  </Heading>
-                </Box>
-
-                <Flex gap="20px">
-                  <Box>
-                    <Text textColor={"gray.400"}>Белки</Text>
-                    <Text>{product.proteins} г</Text>
-                  </Box>
-                  <Box>
-                    <Text textColor={"gray.400"}>Жиры</Text>
-                    <Text>{product.fats} г</Text>
-                  </Box>
-                  <Box>
-                    <Text textColor={"gray.400"}>Углеводы</Text>
-                    <Text>{product.carbohydrates} г</Text>
-                  </Box>
-                  <Box>
-                    <Text textColor={"gray.400"}>Энерг. ценность</Text>
-                    <Text>{product.calories} кКал</Text>
-                  </Box>
-                </Flex>
-
-                <Flex gap="50px" p="50px 0px 0px 0px" alignItems="center">
-
-                  <Box>
-                    <Text fontWeight="500" fontSize="24px">{product.price}₽</Text>
-                  </Box>
-
-                  <AddToCartButton />
-                  
-                </Flex>
-
+                          <Text textColor="whiteAlpha.900">
+                            { cartProducts?.find(p => p.slug === productName)?.quantity }
+                          </Text>
+                            
+                          <Button
+                            onClick={() => onPlusToCart(productName)}
+                            textColor="whiteAlpha.900"
+                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                            _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                          >
+                            <HiOutlinePlus />
+                          </Button>
+                        </Flex>
+                      ) : (
+                        <Button 
+                          onClick={() => { onAddToCart(product); setIsInCart(true); }}
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                        >
+                          В корзину
+                        </Button>
+                      )
+                  }
+                </Box>  
               </Flex>
             </Flex>
-            
-        ))
-      }
-      </Flex>
+          </Flex> 
+        </Flex>
+      ) : null }
     </Box>
   )
 }

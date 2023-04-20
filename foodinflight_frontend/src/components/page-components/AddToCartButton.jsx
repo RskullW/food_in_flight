@@ -1,74 +1,63 @@
-import React, { useState } from "react"
-import {
-  Button,
-  Flex,
-  Box,
-  Text
-} from "@chakra-ui/react"
+// import React from "react"
+// import { useCartContext } from "../../contexts/CartContext"
+// import {
+//   Button,
+//   Flex,
+//   Box,
+//   Text
+// } from "@chakra-ui/react"
+// import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
 
-import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
 
-const AddToCartButton = (props) => {
-  const [isClicked, setIsClicked] = useState(0);
+// const AddToCartButton = () => {
+//   const { onAddToCart, onRemoveFromCart, cartProducts, totalPrice, totalQTY } = useCartContext();
 
-  const handleClick = () => {
-    setIsClicked(isClicked + 1);
-  }
+//   return (
+//     <Box 
+//       bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+//       _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+//       borderRadius="10px"
+//     >
+//         <Button 
+//           onClick={onAddToCart(product)}
+//           textColor="whiteAlpha.900"
+//           bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+//           _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+//         >
+//           В корзину
+//         </Button>
 
-  const minusClick = () => {
-    setIsClicked(isClicked - 1);
-  }
+//         <Flex 
+//           gap="10px"
+//           alignItems="center"
+//           h="-moz-min-content"
+//         >
 
-  return (
-    <Box 
-      bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-      _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-      borderRadius="10px"
-    >
-      {isClicked === 0 && (
-        <Button 
-          onClick={handleClick}
-          textColor="whiteAlpha.900"
-          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-        >
-          В корзину
-        </Button>
-      )}
+//           <Button
+//             onClick={onRemoveFromCart}
+//             textColor="whiteAlpha.900"
+//             bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+//             _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+//           >
+//             <HiOutlineMinus />
+//           </Button>
 
-      {isClicked > 0 && 
-      <Flex 
-        gap="10px"
-        alignItems="center"
-        h="-moz-min-content"
-      >
+//           <Text textColor="whiteAlpha.900">
+//             {totalQTY}
+//           </Text>
+              
+//           <Button
+//             onClick={onAddToCart}
+//             textColor="whiteAlpha.900"
+//             bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+//             _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+//           >
+//             <HiOutlinePlus />
+//           </Button>
 
-        <Button
-          onClick={minusClick}
-          textColor="whiteAlpha.900"
-          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-        >
-          <HiOutlineMinus />
-        </Button>
+//         </Flex>
+//     </Box>
+//   )
+// }
 
-        <Text textColor="whiteAlpha.900">
-          {isClicked}
-        </Text>
-          
-        <Button
-          onClick={handleClick}
-          textColor="whiteAlpha.900"
-          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-        >
-          <HiOutlinePlus />
-        </Button>
-
-      </Flex>
-      }
-    </Box>
-  );
-}
-
-export default AddToCartButton
+// export default AddToCartButton

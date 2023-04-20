@@ -17,7 +17,7 @@ import {
 
 import {BiArrowBack} from "react-icons/bi"
 import { useParams } from "react-router-dom";
-import AddToCartButton from "../page-components/AddToCartButton";
+// import AddToCartButton from "../page-components/AddToCartButton";
 
 const CategoryMainPart = () => {
 
@@ -162,7 +162,7 @@ const CategoryMainPart = () => {
 
                   <Spacer/>
 
-                  <AddToCartButton />
+                  {/* <AddToCartButton /> */}
 
                 </CardFooter>
 

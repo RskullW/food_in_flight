@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import AddToCartButton from "../page-components/AddToCartButton";
+// import AddToCartButton from "../page-components/AddToCartButton";
 import {
   Box,
   Text,
@@ -105,6 +105,7 @@ const CuisinesMainPart = () => {
               as="h2"
               fontSize="2xl"
               p="10px 0px 0px 0px"
+              key={cuisine.slug}
             >
               {cuisine.title}
             </Heading>
@@ -116,7 +117,7 @@ const CuisinesMainPart = () => {
       <Wrap justify="center" margin="20px 0px" p="5px">
         {
           productsWithCertainCuisine.map((product) => (
-            <Box>
+            <Box key={product.slug}>
               <WrapItem>
                 <Card
                   maxW="296px"
@@ -160,7 +161,7 @@ const CuisinesMainPart = () => {
 
                     <Spacer />
 
-                    <AddToCartButton />
+                    {/* <AddToCartButton /> */}
 
                   </CardFooter>
 

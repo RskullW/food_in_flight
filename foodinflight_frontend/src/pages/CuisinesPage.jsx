@@ -3,13 +3,11 @@ import Layout from "../components/page/Layout";
 import CuisinesMainPart from "../components/page/CuisinesMainPart";
 
 const CuisinesPage = () => {
-  const foo = (
+  return (
     <Layout>
       <CuisinesMainPart />
     </Layout>
-  )
-
-  return (foo)
+  );
 }
 
-export default CuisinesPage
+export default CuisinesPage;

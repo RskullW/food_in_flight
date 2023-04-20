@@ -16,6 +16,7 @@ import TrademarksPage from './pages/TrademarksPage';
 import GroupCategoryPage from './pages/GroupCategoryPage';
 import CuisinesPage from './pages/CuisinesPage';
 import ResultsOfSearchPage from './pages/ResultsOfSearchPage';
+import { CartContext } from './contexts/CartContext';
 
 const router = createBrowserRouter([
   {
@@ -83,9 +84,11 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ChakraProvider>
-    <CookiesProvider>
-      <RouterProvider router={router} />
-    </CookiesProvider>
+    <CartContext>
+      <CookiesProvider>
+        <RouterProvider router={router} />
+      </CookiesProvider>
+    </CartContext>
   </ChakraProvider>
 );
 
