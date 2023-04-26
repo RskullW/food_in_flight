@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import { useCartContext } from "../../contexts/CartContext";
 import {
   Box,
   Text,
@@ -17,14 +18,14 @@ import {
 } from "@chakra-ui/react"
 
 import { BiArrowBack } from "react-icons/bi"
-import AddToCartButton from "../page-components/AddToCartButton";
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
 
 const ResultsOfSearchMainPart = () => {
 
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
-
+  const { onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts } = useCartContext();
   const { queryName } = useParams();
 
   useEffect(() => {
@@ -52,7 +53,7 @@ const ResultsOfSearchMainPart = () => {
     }
 
     getProducts();
-  }, [])
+  }, [queryName, cartProducts])
 
   return (
     <Box margin="10px 0px 0px 0px">
@@ -132,7 +133,53 @@ const ResultsOfSearchMainPart = () => {
 
                       <Spacer/>
 
-                      <AddToCartButton />
+                      <Box 
+                        bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                        _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                        borderRadius="10px"
+                      >
+                        {
+                          checkProductInCart(product) ? (
+                            <Flex 
+                              gap="10px"
+                              alignItems="center"
+                              h="-moz-min-content"
+                            >
+
+                              <Button
+                                onClick={() => onMinusFromCart(product.slug)}
+                                textColor="whiteAlpha.900"
+                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                              >
+                                <HiOutlineMinus />
+                              </Button>
+
+                                <Text textColor="whiteAlpha.900">
+                                  { cartProducts?.find(p => p.slug === product.slug)?.quantity }
+                                </Text>
+                                  
+                                <Button
+                                  onClick={() => onPlusToCart(product.slug)}
+                                  textColor="whiteAlpha.900"
+                                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                  _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                                >
+                                  <HiOutlinePlus />
+                                </Button>
+                              </Flex>
+                          ) : (
+                                <Button 
+                                  onClick={() => { onAddToCart(product) }}
+                                  textColor="whiteAlpha.900"
+                                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                  _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                                >
+                                  В корзину
+                                </Button>
+                          )
+                        }
+                      </Box>
 
                     </CardFooter>
 
