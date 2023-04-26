@@ -22,8 +22,8 @@ import { useParams } from "react-router-dom";
 const CategoryMainPart = () => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [allCategories, setAllCategories] = useState([]);
-  const [categoriesError, setCategoriesError] = useState(false);
+  const [category, setCategory] = useState([]);
+  const [categoryError, setCategoryError] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
 
@@ -53,10 +53,10 @@ const CategoryMainPart = () => {
       
     }
 
-    const getCategories = async () => {
+    const getCategory = async () => {
       setIsLoading(true);
       try {
-        const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
+        const categoryResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/${categoryName}/`, {
           method: "GET",
           mode: 'cors',
           headers: {
@@ -65,21 +65,20 @@ const CategoryMainPart = () => {
         })
   
   
-        if (categoriesResponse.status === 200) {
-          const categoriesJSON = await categoriesResponse.json();
-          const filteredCategoryName = categoriesJSON.filter((name) => name.slug === categoryName);
-          setAllCategories(filteredCategoryName);
+        if (categoryResponse.status === 200) {
+          const categoryJSON = await categoryResponse.json();
+          setCategory(categoryJSON);
         } else {
-          setCategoriesError(true);
+          setCategoryError(true);
         }
       } catch (error) {
-        setCategoriesError(true);
+        setCategoryError(true);
       }
       
     }
 
     getProductsWithCertainCategory();
-    getCategories();
+    getCategory();
     console.log(allProducts);
   }, [categoryName])
 
@@ -102,7 +101,7 @@ const CategoryMainPart = () => {
         </Link>
 
         {
-          allCategories.map((category) => (
+          category ? (
               <Heading 
                 as="h2" 
                 fontSize="2xl"
@@ -110,7 +109,7 @@ const CategoryMainPart = () => {
               >
                 {category.title}
               </Heading>
-          ))
+          ) : null
         } 
 
       </Box>
