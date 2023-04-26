@@ -31,11 +31,19 @@ export const CartContext = ({ children }) => {
   const onPlusToCart = (id) => {
     setCartProducts(prev => prev.map(item => {
       if (item.slug === id) {
-        return ({...item, quantity: item.quantity + 1 })
-      } 
+        return ({ ...item, quantity: item.quantity + 1 })
+      }
       return item;
     }))
   };
+
+  const countTotalPrice = () => {
+    let totalPrice = 0;
+    for (let p of cartProducts) {
+      totalPrice += p.quantity * p.price;
+    }
+    return totalPrice ? totalPrice : null;
+  }
 
   const onMinusFromCart = (id) => {
     let count = cartProducts.find((product) => product.slug === id).quantity;
@@ -45,23 +53,33 @@ export const CartContext = ({ children }) => {
     } else {
       setCartProducts((prev) => prev.map(item => {
         if (item.slug === id) {
-          return {...item, quantity: item.quantity - 1 };
+          return { ...item, quantity: item.quantity - 1 };
         }
         return item;
       }))
     }
   }
 
+  const removeFromCart = (id) => {
+    setCartProducts((prevProducts) =>
+      prevProducts.filter((product) => product.slug !== id)
+    );
+    localStorage.setItem(
+      "cartProducts",
+      JSON.stringify(cartProducts.filter((product) => product.slug !== id))
+    );
+  }
+
   return (
     <Context.Provider
       value={{
         cartProducts, setCartProducts,
-        onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart
+        onAddToCart, onPlusToCart, onMinusFromCart, removeFromCart, checkProductInCart, countTotalPrice
       }}
     >
       {children}
     </Context.Provider>
   )
-} 
+}
 
 export const useCartContext = () => useContext(Context);
