@@ -13,6 +13,11 @@ export const CartContext = ({ children }) => {
     localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
   }, [cartProducts]);
 
+  const checkProductInCart = (item) => {
+    const foundProduct = cartProducts.find(product => product.slug === item.slug);
+    return foundProduct ? foundProduct : null;
+  }
+
   const onAddToCart = (item) => {
     setCartProducts(prev => [...prev, {
       ...item,
@@ -51,7 +56,7 @@ export const CartContext = ({ children }) => {
     <Context.Provider
       value={{
         cartProducts, setCartProducts,
-        onAddToCart, onPlusToCart, onMinusFromCart
+        onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart
       }}
     >
       {children}
