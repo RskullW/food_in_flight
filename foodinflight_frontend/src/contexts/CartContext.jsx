@@ -22,7 +22,7 @@ export const CartContext = ({ children }) => {
     setCartProducts(prev => [...prev, {
       ...item,
       quantity: 1,
-      slug: item.slug
+      slug: item.slug,
     }]);
 
     toast.success(`${item.title} добавлено в корзину!`);
@@ -45,7 +45,7 @@ export const CartContext = ({ children }) => {
     } else {
       setCartProducts((prev) => prev.map(item => {
         if (item.slug === id) {
-          return {...item, quantity: item.quantity - 1};
+          return {...item, quantity: item.quantity - 1 };
         }
         return item;
       }))

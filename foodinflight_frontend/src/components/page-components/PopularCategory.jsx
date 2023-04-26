@@ -45,7 +45,7 @@ const PopularCategory = () => {
     }
 
     getData();
-  }, [])
+  }, [productsError])
 
   return (
     <Box className="popular-category" margin="50px 0px 0px 0px">
