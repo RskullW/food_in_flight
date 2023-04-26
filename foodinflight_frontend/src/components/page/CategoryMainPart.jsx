@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useCartContext } from "../../contexts/CartContext";
 import {
   Box,
@@ -16,9 +17,8 @@ import {
   Flex
 } from "@chakra-ui/react"
 
-import {BiArrowBack} from "react-icons/bi"
-import { useParams } from "react-router-dom";
-import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
+import {BiArrowBack} from "react-icons/bi";
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
 const CategoryMainPart = () => {
 
