@@ -4,14 +4,21 @@ import { toast } from 'react-toastify';
 const Context = createContext();
 
 export const CartContext = ({ children }) => {
-  const [cartProducts, setCartProducts] = useState([]);
+  const [cartProducts, setCartProducts] = useState(() => {
+    const savedCartProducts = JSON.parse(localStorage.getItem('cartProducts'));
+    return (savedCartProducts !== null ? savedCartProducts : []);
+  });
+
+  useEffect(() => {
+    localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
+  }, [cartProducts]);
 
   const onAddToCart = (item) => {
     setCartProducts(prev => [...prev, {
       ...item,
       quantity: 1,
       slug: item.slug
-    }])
+    }]);
 
     toast.success(`${item.title} добавлено в корзину!`);
   };
