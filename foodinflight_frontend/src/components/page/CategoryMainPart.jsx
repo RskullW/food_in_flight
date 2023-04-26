@@ -19,12 +19,11 @@ import {
 import {BiArrowBack} from "react-icons/bi"
 import { useParams } from "react-router-dom";
 import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
-// import AddToCartButton from "../page-components/AddToCartButton";
 
 const CategoryMainPart = () => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [category, setCategory] = useState([]);
+  const [category, setCategory] = useState(null);
   const [categoryError, setCategoryError] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);

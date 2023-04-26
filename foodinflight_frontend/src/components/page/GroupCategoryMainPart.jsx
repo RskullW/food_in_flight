@@ -17,16 +17,15 @@ import {
 } from "@chakra-ui/react"
 
 import { BiArrowBack } from "react-icons/bi"
-import AddToCartButton from "../page-components/AddToCartButton";
-
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
 
 const CuisinesMainPart = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [groupCategory, setGroupCategory] = useState([]);
-  const [groupCategoriesError, setGroupCategoriesError] = useState(false);
+  const [groupCategory, setGroupCategory] = useState(null);
+  const [groupCategoryError, setGroupCategoryError] = useState(false);
   const [productsWithCertainGroupCategory, setAllProductsWithCertainGroupCategory] = useState([]);
   const [productsError, setProductsError] = useState(false);
-
+  
   const { groupCategoryName } = useParams();
 
   useEffect(() => {
@@ -69,7 +68,7 @@ const CuisinesMainPart = () => {
     const getGroupCategory = async () => {
       setIsLoading(true);
       try {
-        const groupResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/group_categories/`, {
+        const groupResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/group_categories/${groupCategoryName}/`, {
           method: 'GET',
           mode: 'cors',
           headers: {
@@ -79,14 +78,13 @@ const CuisinesMainPart = () => {
 
         if (groupResponse.status === 200) {
           const groupNameJSON = await groupResponse.json();
-          const filteredGroupName = groupNameJSON.filter((name) => name.slug === groupCategoryName);
-          setGroupCategory(filteredGroupName);
+          setGroupCategory(groupNameJSON);
           setIsLoading(false);
         } else {
-          setGroupCategoriesError(true);
+          setGroupCategoryError(true);
         }
       } catch (error) {
-        setGroupCategoriesError(true);
+        setGroupCategoryError(true);
       }
     };
 
@@ -115,15 +113,15 @@ const CuisinesMainPart = () => {
         </Link>
 
         {
-          groupCategory.map((group) => (
+          groupCategory ?(
             <Heading
               as="h2"
               fontSize="2xl"
               p="10px 0px 0px 0px"
             >
-              {group.title}
+              {groupCategory.title}
             </Heading>
-          ))
+          ) : null
         }
 
       </Box>
@@ -175,7 +173,7 @@ const CuisinesMainPart = () => {
 
                     <Spacer />
 
-                    <AddToCartButton />
+                    {/* <AddToCartButton /> */}
 
                   </CardFooter>
 
