@@ -126,7 +126,7 @@ const CuisinesMainPart = () => {
                   transition="200ms ease-out"
                   _hover={{ shadow: "md", h: "338px" }}
                 >
-                  
+
                   <CardBody p="0px">
                     <Box>
                       <Link
@@ -146,7 +146,7 @@ const CuisinesMainPart = () => {
 
                           <Flex flexDirection="column">
                             <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
-                            <Spacer/>
+                            <Spacer />
                             <Text p="5px 0px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
                           </Flex>
 
@@ -160,14 +160,14 @@ const CuisinesMainPart = () => {
 
                     <Spacer />
 
-                    <Box 
+                    <Box
                       bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                      _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                      _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
                       borderRadius="10px"
                     >
                       {
                         checkProductInCart(product) ? (
-                          <Flex 
+                          <Flex
                             gap="10px"
                             alignItems="center"
                             h="-moz-min-content"
@@ -177,34 +177,34 @@ const CuisinesMainPart = () => {
                               onClick={() => onMinusFromCart(product.slug)}
                               textColor="whiteAlpha.900"
                               bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                              _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
                             >
                               <HiOutlineMinus />
                             </Button>
 
-                              <Text textColor="whiteAlpha.900">
-                                { cartProducts?.find(p => p.slug === product.slug)?.quantity }
-                              </Text>
-                                
-                              <Button
-                                onClick={() => onPlusToCart(product.slug)}
-                                textColor="whiteAlpha.900"
-                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                                _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
-                              >
-                                <HiOutlinePlus />
-                              </Button>
-                            </Flex>
-                          ) : (
-                            <Button 
-                              onClick={() => { onAddToCart(product) }}
+                            <Text textColor="whiteAlpha.900">
+                              {cartProducts?.find(p => p.slug === product.slug)?.quantity}
+                            </Text>
+
+                            <Button
+                              onClick={() => onPlusToCart(product.slug)}
                               textColor="whiteAlpha.900"
                               bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                              _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
                             >
-                              В корзину
+                              <HiOutlinePlus />
                             </Button>
-                          )
+                          </Flex>
+                        ) : (
+                          <Button
+                            onClick={() => { onAddToCart(product) }}
+                            textColor="whiteAlpha.900"
+                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                            _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                          >
+                            В корзину
+                          </Button>
+                        )
                       }
                     </Box>
 
@@ -215,7 +215,7 @@ const CuisinesMainPart = () => {
               </WrapItem>
             </Box>
           ))
-          
+
         }
       </Wrap>
     </Box>
