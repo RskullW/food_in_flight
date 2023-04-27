@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useCartContext } from "../../contexts/CartContext";
 import {
   Box,
   Text,
@@ -15,18 +17,17 @@ import {
   Flex
 } from "@chakra-ui/react"
 
-import {BiArrowBack} from "react-icons/bi"
-import { useParams } from "react-router-dom";
-// import AddToCartButton from "../page-components/AddToCartButton";
+import {BiArrowBack} from "react-icons/bi";
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
 const CategoryMainPart = () => {
 
   const [isLoading, setIsLoading] = useState(false);
-  const [allCategories, setAllCategories] = useState([]);
-  const [categoriesError, setCategoriesError] = useState(false);
+  const [category, setCategory] = useState(null);
+  const [categoryError, setCategoryError] = useState(false);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
-
+  const { onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts } = useCartContext();
   const { categoryName } = useParams();
 
   useEffect(() => {
@@ -53,10 +54,10 @@ const CategoryMainPart = () => {
       
     }
 
-    const getCategories = async () => {
+    const getCategory = async () => {
       setIsLoading(true);
       try {
-        const categoriesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/`, {
+        const categoryResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/categories/${categoryName}/`, {
           method: "GET",
           mode: 'cors',
           headers: {
@@ -65,23 +66,22 @@ const CategoryMainPart = () => {
         })
   
   
-        if (categoriesResponse.status === 200) {
-          const categoriesJSON = await categoriesResponse.json();
-          const filteredCategoryName = categoriesJSON.filter((name) => name.slug === categoryName);
-          setAllCategories(filteredCategoryName);
+        if (categoryResponse.status === 200) {
+          const categoryJSON = await categoryResponse.json();
+          setCategory(categoryJSON);
         } else {
-          setCategoriesError(true);
+          setCategoryError(true);
         }
       } catch (error) {
-        setCategoriesError(true);
+        setCategoryError(true);
       }
       
     }
 
     getProductsWithCertainCategory();
-    getCategories();
-    console.log(allProducts);
-  }, [categoryName])
+    getCategory();
+
+  }, [categoryName, cartProducts])
 
   return (
     <Box margin="10px 0px 0px 0px">
@@ -102,7 +102,7 @@ const CategoryMainPart = () => {
         </Link>
 
         {
-          allCategories.map((category) => (
+          category ? (
               <Heading 
                 as="h2" 
                 fontSize="2xl"
@@ -110,7 +110,7 @@ const CategoryMainPart = () => {
               >
                 {category.title}
               </Heading>
-          ))
+          ) : null
         } 
 
       </Box>
@@ -162,8 +162,53 @@ const CategoryMainPart = () => {
 
                   <Spacer/>
 
-                  {/* <AddToCartButton /> */}
+                  <Box 
+                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                    _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                    borderRadius="10px"
+                  >
+                  {
+                    checkProductInCart(product) ? (
+                      <Flex 
+                        gap="10px"
+                        alignItems="center"
+                        h="-moz-min-content"
+                      >
 
+                        <Button
+                          onClick={() => onMinusFromCart(product.slug)}
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                        >
+                          <HiOutlineMinus />
+                        </Button>
+
+                          <Text textColor="whiteAlpha.900">
+                            { cartProducts?.find(p => p.slug === product.slug)?.quantity }
+                          </Text>
+                            
+                          <Button
+                            onClick={() => onPlusToCart(product.slug)}
+                            textColor="whiteAlpha.900"
+                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                            _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                          >
+                            <HiOutlinePlus />
+                          </Button>
+                        </Flex>
+                      ) : (
+                        <Button 
+                          onClick={() => { onAddToCart(product) }}
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                        >
+                          В корзину
+                        </Button>
+                      )
+                  }
+                </Box>
                 </CardFooter>
 
               </Card>

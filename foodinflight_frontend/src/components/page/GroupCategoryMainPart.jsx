@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useCartContext } from "../../contexts/CartContext";
 import {
   Box,
   Text,
@@ -17,16 +18,16 @@ import {
 } from "@chakra-ui/react"
 
 import { BiArrowBack } from "react-icons/bi"
-import AddToCartButton from "../page-components/AddToCartButton";
-
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi"
 
 const CuisinesMainPart = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [groupCategory, setGroupCategory] = useState([]);
-  const [groupCategoriesError, setGroupCategoriesError] = useState(false);
+  const [groupCategory, setGroupCategory] = useState(null);
+  const [groupCategoryError, setGroupCategoryError] = useState(false);
   const [productsWithCertainGroupCategory, setAllProductsWithCertainGroupCategory] = useState([]);
   const [productsError, setProductsError] = useState(false);
-
+  
+  const { onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts } = useCartContext();
   const { groupCategoryName } = useParams();
 
   useEffect(() => {
@@ -69,7 +70,7 @@ const CuisinesMainPart = () => {
     const getGroupCategory = async () => {
       setIsLoading(true);
       try {
-        const groupResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/group_categories/`, {
+        const groupResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/group_categories/${groupCategoryName}/`, {
           method: 'GET',
           mode: 'cors',
           headers: {
@@ -79,21 +80,20 @@ const CuisinesMainPart = () => {
 
         if (groupResponse.status === 200) {
           const groupNameJSON = await groupResponse.json();
-          const filteredGroupName = groupNameJSON.filter((name) => name.slug === groupCategoryName);
-          setGroupCategory(filteredGroupName);
+          setGroupCategory(groupNameJSON);
           setIsLoading(false);
         } else {
-          setGroupCategoriesError(true);
+          setGroupCategoryError(true);
         }
       } catch (error) {
-        setGroupCategoriesError(true);
+        setGroupCategoryError(true);
       }
     };
 
     getProductsWithCertainGroupCategory();
     getGroupCategory();
     
-  }, [groupCategoryName]);
+  }, [groupCategoryName, cartProducts]);
 
 
   return (
@@ -115,15 +115,15 @@ const CuisinesMainPart = () => {
         </Link>
 
         {
-          groupCategory.map((group) => (
+          groupCategory ?(
             <Heading
               as="h2"
               fontSize="2xl"
               p="10px 0px 0px 0px"
             >
-              {group.title}
+              {groupCategory.title}
             </Heading>
-          ))
+          ) : null
         }
 
       </Box>
@@ -175,7 +175,53 @@ const CuisinesMainPart = () => {
 
                     <Spacer />
 
-                    <AddToCartButton />
+                    <Box 
+                      bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                      _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                      borderRadius="10px"
+                    >
+                      {
+                        checkProductInCart(product) ? (
+                          <Flex 
+                            gap="10px"
+                            alignItems="center"
+                            h="-moz-min-content"
+                          >
+
+                            <Button
+                              onClick={() => onMinusFromCart(product.slug)}
+                              textColor="whiteAlpha.900"
+                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                              _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                            >
+                              <HiOutlineMinus />
+                            </Button>
+
+                              <Text textColor="whiteAlpha.900">
+                                { cartProducts?.find(p => p.slug === product.slug)?.quantity }
+                              </Text>
+                                
+                              <Button
+                                onClick={() => onPlusToCart(product.slug)}
+                                textColor="whiteAlpha.900"
+                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                              >
+                                <HiOutlinePlus />
+                              </Button>
+                            </Flex>
+                          ) : (
+                            <Button 
+                              onClick={() => { onAddToCart(product) }}
+                              textColor="whiteAlpha.900"
+                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                              _hover={{bgGradient: "linear(to-b, #6E72FC, #AD1DEB)"}}
+                            >
+                              В корзину
+                            </Button>
+                          )
+                      }
+                    </Box>
 
                   </CardFooter>
 

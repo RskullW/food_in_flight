@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-// import AddToCartButton from "../page-components/AddToCartButton";
+import { useCartContext } from "../../contexts/CartContext";
 import {
   Box,
   Text,
@@ -17,16 +17,16 @@ import {
   Flex
 } from "@chakra-ui/react"
 
-import { BiArrowBack } from "react-icons/bi"
-
+import { BiArrowBack } from "react-icons/bi";
+import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
 const CuisinesMainPart = () => {
   const [isLoading, setIsLoading] = useState(false);
-  const [allCuisines, setAllCuisines] = useState([]);
-  const [cuisinesError, setCuisinesError] = useState(false);
+  const [cuisine, setCuisine] = useState(null);
+  const [cuisineError, setCuisineError] = useState(false);
   const [productsWithCertainCuisine, setAllProductsWithCertainCuisine] = useState([]);
   const [productsError, setProductsError] = useState(false);
-
+  const { onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts } = useCartContext();
   const { cuisineName } = useParams();
 
   useEffect(() => {
@@ -52,10 +52,10 @@ const CuisinesMainPart = () => {
       }
     };
 
-    const getCuisinesData = async () => {
+    const getCuisineData = async () => {
       setIsLoading(true);
       try {
-        const cuisinesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/cuisines/`, {
+        const cuisinesResponse = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/cuisines/${cuisineName}/`, {
           method: 'GET',
           mode: 'cors',
           headers: {
@@ -64,21 +64,20 @@ const CuisinesMainPart = () => {
         });
 
         if (cuisinesResponse.status === 200) {
-          const cuisinesData = await cuisinesResponse.json();
-          const filteredCuisineName = cuisinesData.filter((cuisine) => cuisine.slug === cuisineName);
-          setAllCuisines(filteredCuisineName);
+          const cuisineJSON = await cuisinesResponse.json();
+          setCuisine(cuisineJSON);
           setIsLoading(false);
         } else {
-          setCuisinesError(true);
+          setCuisineError(true);
         }
       } catch (error) {
-        setCuisinesError(true);
+        setCuisineError(true);
       }
     };
 
     getProductsWithCertainCuisine();
-    getCuisinesData();
-  }, [cuisineName]);
+    getCuisineData();
+  }, [cuisineName, cartProducts]);
 
 
   return (
@@ -100,7 +99,7 @@ const CuisinesMainPart = () => {
         </Link>
 
         {
-          allCuisines.map((cuisine) => (
+          cuisine ? (
             <Heading
               as="h2"
               fontSize="2xl"
@@ -109,7 +108,7 @@ const CuisinesMainPart = () => {
             >
               {cuisine.title}
             </Heading>
-          ))
+          ) : null
         }
 
       </Box>
@@ -127,7 +126,7 @@ const CuisinesMainPart = () => {
                   transition="200ms ease-out"
                   _hover={{ shadow: "md", h: "338px" }}
                 >
-                  
+
                   <CardBody p="0px">
                     <Box>
                       <Link
@@ -147,7 +146,7 @@ const CuisinesMainPart = () => {
 
                           <Flex flexDirection="column">
                             <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
-                            <Spacer/>
+                            <Spacer />
                             <Text p="5px 0px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
                           </Flex>
 
@@ -161,7 +160,53 @@ const CuisinesMainPart = () => {
 
                     <Spacer />
 
-                    {/* <AddToCartButton /> */}
+                    <Box
+                      bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                      _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                      borderRadius="10px"
+                    >
+                      {
+                        checkProductInCart(product) ? (
+                          <Flex
+                            gap="10px"
+                            alignItems="center"
+                            h="-moz-min-content"
+                          >
+
+                            <Button
+                              onClick={() => onMinusFromCart(product.slug)}
+                              textColor="whiteAlpha.900"
+                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                            >
+                              <HiOutlineMinus />
+                            </Button>
+
+                            <Text textColor="whiteAlpha.900">
+                              {cartProducts?.find(p => p.slug === product.slug)?.quantity}
+                            </Text>
+
+                            <Button
+                              onClick={() => onPlusToCart(product.slug)}
+                              textColor="whiteAlpha.900"
+                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                            >
+                              <HiOutlinePlus />
+                            </Button>
+                          </Flex>
+                        ) : (
+                          <Button
+                            onClick={() => { onAddToCart(product) }}
+                            textColor="whiteAlpha.900"
+                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                            _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                          >
+                            В корзину
+                          </Button>
+                        )
+                      }
+                    </Box>
 
                   </CardFooter>
 
@@ -170,7 +215,7 @@ const CuisinesMainPart = () => {
               </WrapItem>
             </Box>
           ))
-          
+
         }
       </Wrap>
     </Box>
