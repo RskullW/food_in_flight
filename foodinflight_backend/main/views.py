@@ -64,16 +64,11 @@ class OrderViewSet(viewsets.ModelViewSet):
             if token:
                 requested_user_id = int(token.user_id)
                 requested_user = User.objects.filter(id=requested_user_id)[:1].get()
-                
+
                 if requested_user.is_staff:
                     queryset = Order.objects.all()
                 else:
-                    queryset = Order.objects.filter(email=requested_user.username)
-
-                page = self.paginate_queryset(queryset)
-                if page is not None:
-                    serializer = self.get_serializer(page, many=True)
-                    return self.get_paginated_response(serializer.data)
+                    queryset = Order.objects.filter(email=requested_user.email)
 
                 serializer = self.get_serializer(queryset, many=True)
                 return Response(serializer.data, status=status.HTTP_200_OK)
@@ -96,12 +91,15 @@ class OrderViewSet(viewsets.ModelViewSet):
                 items = request.data.pop('items')
                 request.data['email'] = requested_user.email
 
+                print(request.data)
                 serializer = self.get_serializer(data=request.data)
                 serializer.is_valid(raise_exception=True)
-                self.perform_create(serializer)
+                serializer.save()
                 headers = self.get_success_headers(serializer.data)
 
                 created_order_queryset = Order.objects.filter(unique_uuid=serializer.data.get('unique_uuid'))[:1].get()
+
+                print(created_order_queryset.email)
                 if created_order_queryset:
                     for item in items:
                         try:
