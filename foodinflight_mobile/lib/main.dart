@@ -3,6 +3,7 @@ import 'package:mobile/maps/map_screen.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/screens/authorization_screen.dart';
 import 'package:mobile/screens/cart_screen.dart';
+import 'package:mobile/screens/history_orders.dart';
 import 'package:mobile/screens/home_screen.dart';
 import 'package:mobile/screens/menu_screen.dart';
 import 'package:mobile/screens/more_screen.dart';
@@ -46,6 +47,7 @@ class MyApp extends StatelessWidget {
           '/authorization_screen': (context) => AuthorizationScreen(),
           '/registration_screen': (context) => RegistrationScreen(),
           '/map_screen': (context) => MapScreen(),
+          '/history_orders': (context) => HistoryOrders(),
           '/product_categories_screen': (context) {
             final arguments = ModalRoute.of(context)?.settings.arguments
                 as Map<String, dynamic>?;

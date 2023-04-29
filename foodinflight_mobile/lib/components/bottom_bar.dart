@@ -18,7 +18,6 @@ class MyBottomAppBar extends StatefulWidget {
 
 class _MyBottomAppBarState extends State<MyBottomAppBar> {
   bool _isSelectHome = false;
-  bool _isSelectOffer = false;
   bool _isSelectMore = false;
   bool _isSelectMenu = false;
   bool _isSelectCart = false;
@@ -43,9 +42,6 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
 
   _MyBottomAppBarState({String text = 'Home'}) {
     switch (text) {
-      case 'Offer':
-        _isSelectOffer = true;
-        break;
       case 'More':
         _isSelectMore = true;
         break;
@@ -78,17 +74,13 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
   }
 
   void _defaultSelectIcon() {
-    _isSelectCart =
-        _isSelectHome = _isSelectMenu = _isSelectMore = _isSelectOffer = false;
+    _isSelectCart = _isSelectHome = _isSelectMenu = _isSelectMore = false;
   }
 
   void SetSelectIcon({String text = 'Home'}) {
     _defaultSelectIcon();
 
     switch (text) {
-      case 'Offer':
-        _isSelectOffer = true;
-        break;
       case 'More':
         _isSelectMore = true;
         break;
@@ -255,17 +247,6 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
               ),
               Expanded(
                 child: _getIconCart(),
-              ),
-              Expanded(
-                child: _getIcon(
-                  Icon(Icons.local_offer),
-                  MainAxisSize.min,
-                  _isSelectOffer ? colorSelectIcon : colorIcon,
-                  Text('Акции',
-                      style: TextStyle(
-                          color: _isSelectOffer ? colorSelectIcon : colorIcon)),
-                  () => ShowMessage(context, "В разработке"),
-                ),
               ),
               Expanded(
                 child: _getIcon(
