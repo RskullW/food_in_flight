@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 import { toast } from 'react-toastify';
 
 const Context = createContext();
@@ -9,9 +10,27 @@ export const CartContext = ({ children }) => {
     return (savedCartProducts !== null ? savedCartProducts : []);
   });
 
+  const [loggedIn, setLoggedIn] = useState(false); 
+  const [EnterAlertDialogOpen, setEnterAlertDialogOpen] = useState(false);
+
   useEffect(() => {
     localStorage.setItem('cartProducts', JSON.stringify(cartProducts));
   }, [cartProducts]);
+
+  const checkLoggedIn = () => {
+    const cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+      const [name, value] = cookies[i].split('=');
+      if (name === 'access_token') {
+        setLoggedIn(true);
+        return value;
+      } else {
+        setEnterAlertDialogOpen(true);
+      }
+    }
+    setLoggedIn(false);
+    return null;
+  }
 
   const checkProductInCart = (item) => {
     const foundProduct = cartProducts.find(product => product.slug === item.slug);
@@ -74,7 +93,8 @@ export const CartContext = ({ children }) => {
     <Context.Provider
       value={{
         cartProducts, setCartProducts,
-        onAddToCart, onPlusToCart, onMinusFromCart, removeFromCart, checkProductInCart, countTotalPrice
+        onAddToCart, onPlusToCart, onMinusFromCart, removeFromCart, checkProductInCart, countTotalPrice,
+        checkLoggedIn, loggedIn, EnterAlertDialogOpen, setEnterAlertDialogOpen
       }}
     >
       {children}

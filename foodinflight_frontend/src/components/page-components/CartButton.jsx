@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useCartContext } from "../../contexts/CartContext";
+import EnterAlertDialog from './EnterAlertDialog';
 import {
   Center,
   Link,
@@ -23,18 +24,26 @@ import {
   CardBody,
   CardFooter
 } from "@chakra-ui/react"
-import { AiOutlineShoppingCart } from "react-icons/ai"
-import { GrClose } from "react-icons/gr"
+import { AiOutlineShoppingCart } from "react-icons/ai";
+import { GrClose } from "react-icons/gr";
 import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
+import OrderDetailsAlertDialog from "./OrderDetailsAlertDialog";
 
 const CartButton = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [showOrderDetailsWindow, setShowOrderDetailsWindow] = useState(false);
   const cancelRef = React.useRef();
   const [products, setProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
-  const { onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts, countTotalPrice, removeFromCart } = useCartContext();
+  const { onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts, countTotalPrice, removeFromCart,
+    checkLoggedIn, loggedIn, EnterAlertDialogOpen, setEnterAlertDialogOpen } = useCartContext();
   countTotalPrice();
+  checkLoggedIn();
+
+  const handleContinueButtonClick = () => {
+    setShowOrderDetailsWindow(true);
+  };
 
   useEffect(() => {
     const getData = async () => {
@@ -55,7 +64,7 @@ const CartButton = () => {
     }
 
     getData();
-  }, [cartProducts, productsError]);
+  }, [cartProducts, productsError, loggedIn]);
 
   return (
     <>
@@ -108,13 +117,14 @@ const CartButton = () => {
         <AlertDialogOverlay>
           <AlertDialogContent>
 
-            <Flex alignItems="center" p="0px 10px 0px 0px">
-              <AlertDialogHeader fontSize='3xl' fontWeight='bold' display='inline-block' alignContent='center'>
-                Корзина
-              </AlertDialogHeader>
-              <Spacer />
-              <IconButton icon={<GrClose />} bgColor="white" _hover={{ bgColor: "white" }} onClick={onClose} />
-            </Flex>
+
+            <AlertDialogHeader fontSize='3xl' fontWeight='bold' display='inline-block' alignContent='center'>
+              <Flex alignItems="center">
+                <Text>Корзина</Text>
+                <Spacer />
+                <IconButton icon={<GrClose />} bgColor="white" _hover={{ bgColor: "white" }} onClick={onClose} />
+              </Flex>
+            </AlertDialogHeader>
 
             <AlertDialogBody>
               {
@@ -205,6 +215,8 @@ const CartButton = () => {
                                         <IconButton
                                           icon={<GrClose />}
                                           onClick={() => removeFromCart(product.slug)}
+                                          bgColor="white"
+                                          _hover={{ bgColor: "white" }}
                                         />
                                       </Flex>
                                     </CardFooter>
@@ -227,7 +239,23 @@ const CartButton = () => {
                         }
                       </Box>
                       <Spacer />
-                      <Button>Продолжить</Button>
+                      {
+                        loggedIn ? (
+                          <>
+                            <Button onClick={handleContinueButtonClick}>Продолжить</Button>
+                            {
+                              showOrderDetailsWindow && (
+                                <OrderDetailsAlertDialog isOpen={true} onClose={() => { setShowOrderDetailsWindow(false); onClose() }} />
+                              )
+                            }
+                          </>
+                        ) : (
+                          <EnterAlertDialog
+                            isOpen={EnterAlertDialogOpen}
+                            onClose={() => setEnterAlertDialogOpen(false)}
+                          />
+                        )
+                      }
                     </Flex>
                   </Flex>
                 ) : (
