@@ -34,7 +34,10 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
   const [numberError, setNumberError] = useState('');
   const { cartProducts } = useCartContext();
 
-  const accessToken = document.cookie.split('; ').find(cookie => cookie.startsWith('access_token='))?.split('=')[1];
+  const accessToken = document.cookie.split('; ')
+  .find(cookie => cookie
+  .startsWith('access_token='))
+  ?.split('=')[1];
 
   const items = cartProducts.map((product) => {
     return {
