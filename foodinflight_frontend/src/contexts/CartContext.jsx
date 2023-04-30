@@ -89,11 +89,16 @@ export const CartContext = ({ children }) => {
     );
   }
 
+  const clearCart = () => {
+    setCartProducts([]);
+    localStorage.setItem("cartProducts", []);
+  }
+
   return (
     <Context.Provider
       value={{
         cartProducts, setCartProducts,
-        onAddToCart, onPlusToCart, onMinusFromCart, removeFromCart, checkProductInCart, countTotalPrice,
+        onAddToCart, onPlusToCart, onMinusFromCart, removeFromCart, checkProductInCart, countTotalPrice, clearCart,
         checkLoggedIn, loggedIn, EnterAlertDialogOpen, setEnterAlertDialogOpen
       }}
     >

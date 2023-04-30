@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Cookies, useCookies } from "react-cookie";
+import { useCookies } from "react-cookie";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -21,20 +21,25 @@ import {
 import RegisterAlertDialog from "./RegisterAlertDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 
+
 const EnterAlertDialog = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+  const [show, setShow] = React.useState(false);
   const cancelRef = React.useRef();
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
-  const [dataError, setDataError] = useState(null);
+
   const [checkedEmail, setCheckedEmail] = useState('');
   const [checkedPassword, setCheckedPassword] = useState('');
+
+  const [dataError, setDataError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+
   const [message, setMessage] = useState(null);
   const [inputClicked, setInputClicked] = useState(false);
   const [disabledInput, setDisabledInput] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+
+  const handleClick = () => setShow(!show)
 
   const data = {
     username: `${checkedEmail}`,
@@ -53,6 +58,7 @@ const EnterAlertDialog = () => {
 
   const inputEmail = (event) => {
     const value = event.target.value;
+
     if (validateEmail(value)) {
       setCheckedEmail(value);
       setEmailError(null);
@@ -75,7 +81,6 @@ const EnterAlertDialog = () => {
 
   const logOutUser = async () => {
     try {
-      console.log(cookies.access_token);
       const requestData = {
         method: 'POST',
         mode: 'cors',
@@ -87,16 +92,17 @@ const EnterAlertDialog = () => {
 
       const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/logout/`, requestData);
 
-      console.log(userInfo.status);
       if (userInfo.status === 204) {
         setDataError(null);
-        removeCookie("access_token");
         setCookie(null);
+
+        removeCookie("access_token");
+
         window.location.reload();
 
       } else if (userInfo.status === 401) {
         const userInfoJSON = await userInfo.json();
-        console.log(userInfoJSON);
+        
         setDataError(userInfoJSON.detail);
       }
     } catch (error) {

@@ -32,7 +32,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
   const [nameError, setNameError] = useState('');
   const [checkedNumber, setCheckedNumber] = useState('');
   const [numberError, setNumberError] = useState('');
-  const { cartProducts } = useCartContext();
+  const { cartProducts, clearCart } = useCartContext();
 
   const accessToken = document.cookie.split('; ')
   .find(cookie => cookie
@@ -157,9 +157,9 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       const orderInfoJSON = await orderInfo.json();
 
       if (orderInfo.status === 201) {
-        console.log('Запрос отправлен');
         setDataError(null);
         window.location.reload();
+        clearCart();
       }
       if (orderInfo.status === 401) {
         setDataError(orderInfoJSON.message);
