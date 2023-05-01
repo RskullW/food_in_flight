@@ -1,5 +1,6 @@
 import React, { cancelRef, useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
+import { useCartContext } from "../../contexts/CartContext";
 import {
   AlertDialog,
   AlertDialogOverlay,
@@ -19,6 +20,7 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
   const [dataError, setDataError] = useState(null);
   const [orderStatus, setOrderStatus] = useState(null);
   const [userOrderStatus, setUserOrderStatus] = useState(null);
+  const { clearCart } = useCartContext();
 
   useEffect(() => {
     const checkOrderStatus = async () => {
@@ -104,7 +106,7 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
                   icon={<GrClose />}
                   bgColor="white"
                   _hover={{ bgColor: "white" }}
-                  onClick={onClose}
+                  onClick={() => {onClose(); clearCart()}}
                 />
               </Flex>
             </AlertDialogHeader>
