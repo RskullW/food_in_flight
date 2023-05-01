@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { useCartContext } from "../../contexts/CartContext";
 import {
-  useDisclosure,
-  Box,
   Text,
   IconButton,
   Spacer,
@@ -19,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 
 import { GrClose } from "react-icons/gr";
+import PaymentAlertDialog from "./PaymentAlertDialog";
 
 const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
   const cancelRef = React.useRef();
@@ -33,6 +32,8 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
   const [checkedNumber, setCheckedNumber] = useState('');
   const [numberError, setNumberError] = useState('');
   const { cartProducts, clearCart } = useCartContext();
+
+  const [showPaymentAlertDialog, setShowPaymentAlertDialog] = useState(false);
 
   const accessToken = document.cookie.split('; ')
   .find(cookie => cookie
@@ -143,6 +144,8 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       return numberError;
     }
 
+    setShowPaymentAlertDialog(true);
+
     try {
       const orderInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/orders/`, {
         method: "POST",
@@ -158,8 +161,8 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
 
       if (orderInfo.status === 201) {
         setDataError(null);
-        window.location.reload();
-        clearCart();
+        localStorage.setItem('order_key', JSON.stringify(orderInfoJSON.unique_uuid));
+        // clearCart();
       }
       if (orderInfo.status === 401) {
         setDataError(orderInfoJSON.message);
@@ -255,6 +258,11 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
               <Button colorScheme='green' onClick={disabledClick ? null : setOrder}>
                 Перейти к оплате
               </Button>
+              {
+                showPaymentAlertDialog && (
+                  <PaymentAlertDialog isOpen={true} onClose={() => { setShowPaymentAlertDialog(false); onClose() }}/>
+                )
+              }
             </AlertDialogFooter>
           </AlertDialogContent>
         </AlertDialogOverlay>

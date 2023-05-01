@@ -95,14 +95,11 @@ const EnterAlertDialog = () => {
       if (userInfo.status === 204) {
         setDataError(null);
         setCookie(null);
-
         removeCookie("access_token");
-
         window.location.reload();
 
       } else if (userInfo.status === 401) {
         const userInfoJSON = await userInfo.json();
-        
         setDataError(userInfoJSON.detail);
       }
     } catch (error) {
