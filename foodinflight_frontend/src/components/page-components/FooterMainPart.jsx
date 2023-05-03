@@ -90,10 +90,20 @@ const FooterMainPart = () => {
         <Heading as="h3" fontSize="xl"  m="0px 0px 15px 0px">Компания</Heading>
         <List>
           <ListItem p="5px 0px">
-            <Link style={{textDecoration: "none"}}>Наша Кухня</Link>
+            <Link 
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/aboutKitchen`}
+              style={{textDecoration: "none"}}
+            >
+              Наша Кухня
+            </Link>
           </ListItem>
           <ListItem p="5px 0px">
-            <Link style={{textDecoration: "none"}}>Оплата</Link>
+            <Link 
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/aboutPayment`}
+              style={{textDecoration: "none"}}
+            >
+              Оплата
+            </Link>
           </ListItem>
           <ListItem p="5px 0px">
             <Link 

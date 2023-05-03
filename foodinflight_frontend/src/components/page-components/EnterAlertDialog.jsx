@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import {
   AlertDialog,
@@ -78,6 +78,11 @@ const EnterAlertDialog = () => {
       setPasswordError(message);
     }
   }
+
+  useEffect(() => {
+    inputEmail({ target: { value: checkedEmail } });
+    inputPassword({ target: { value: checkedPassword } });
+  });
 
   const logOutUser = async () => {
     try {
