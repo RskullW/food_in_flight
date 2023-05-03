@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import { useCartContext } from "../../contexts/CartContext";
 import {
   Text,
@@ -31,7 +31,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
   const [nameError, setNameError] = useState('');
   const [checkedNumber, setCheckedNumber] = useState('');
   const [numberError, setNumberError] = useState('');
-  const { cartProducts, clearCart } = useCartContext();
+  const { cartProducts } = useCartContext();
 
   const [showPaymentAlertDialog, setShowPaymentAlertDialog] = useState(false);
 
@@ -72,12 +72,15 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
   }
 
   const validateName = (name) => {
+    if (!name || name.trim().length < 2) {
+      return false;
+    }
     const userName = /^[А-Яа-яЁё]{2,}$/u;
     return userName.test(name);
   }
 
   const validateNumber = (number) => {
-    const num = /^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10}$/
+    const num = /^\+?((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{10,}$/;
     return num.test(number);
   }
 
@@ -103,6 +106,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
 
   const inputName = (event) => {
     const value = event.target.value;
+    console.log(value);
     if (validateName(value)) {
       setCheckedName(value);
       setNameError(null);
@@ -120,6 +124,12 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       setNumberError("Номер телефона введён неверно. Введите номер телефона без кода страны");
     }
   }
+
+  useEffect(() => {
+    inputAddress({ target: { value: checkedAddress }});
+    inputName({ target: { value: checkedName }});
+    inputNumber({ target: { value: checkedNumber}});
+  }, []);
 
   const setOrder = async () => {
     setDisabledClick(true);
@@ -162,7 +172,6 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       if (orderInfo.status === 201) {
         setDataError(null);
         localStorage.setItem('order_key', JSON.stringify(orderInfoJSON.unique_uuid));
-        // clearCart();
       }
       if (orderInfo.status === 401) {
         setDataError(orderInfoJSON.message);

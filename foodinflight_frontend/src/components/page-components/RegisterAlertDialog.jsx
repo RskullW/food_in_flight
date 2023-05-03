@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -99,6 +99,11 @@ const RegisterAlertDialog = () => {
     }
   }
 
+  useEffect(() => {
+    inputEmail({ target : { value: checkedEmail } });
+    inputPassword({ target: { value: checkedPassword } });
+    repeatPassword({ target: { value: checkedRepeatedPassword }});
+  }, []);
 
 
   const setNewUser = async () => {

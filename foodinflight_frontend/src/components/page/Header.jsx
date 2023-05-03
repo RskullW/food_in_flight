@@ -9,26 +9,26 @@ import CartButton from "../page-components/CartButton";
 const Header = () => {
   return (
     <Flex
-      className="header"  
+      className="header"
       position="fixed"
-      top='0' 
-      zIndex="100000" 
+      top='0'
+      zIndex="100000"
       bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-      h="70px" 
+      h="70px"
       w="100%"
-      borderBottom="1px solid rgba(0, 0, 0, 0.15)" 
+      borderBottom="1px solid rgba(0, 0, 0, 0.15)"
       p="0px 20px"
     >
 
       <Flex
         justifyContent="space-between"
-        
+
       >
         <Link
-            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/`}
+          href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/`}
         >
-          <Center 
-            className="header__logo" 
+          <Center
+            className="header__logo"
             minW="120px"
             h="100%"
             display="block"
@@ -37,23 +37,30 @@ const Header = () => {
             <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
           </Center>
         </Link>
-        <SearchBar/>
+        <SearchBar />
 
       </Flex>
-      
 
-      <Spacer/>
+
+      <Spacer />
 
       <Flex>
         <CartButton />
-        
+
+        <Center m="0px 90px 0px 90px">
+          <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`}>
+            История заказов
+          </Link>
+        </Center>
+
+
         <Center className="header__adress-bar" w="200px" m="0px 90px 0px 90px">
-          <EnterAlertDialog/>
+          <EnterAlertDialog />
         </Center>
 
       </Flex>
 
-      
+
     </Flex>
   )
 }
