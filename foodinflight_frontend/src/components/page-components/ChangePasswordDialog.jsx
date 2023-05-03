@@ -164,12 +164,12 @@ const ChangePasswordDialog = () => {
                 <Box>
                   {
                     dataError || !oldPassword || !checkedPassword ? (
-                      <Text>{dataError}</Text>
+                      <Text textColor='red'>{dataError}</Text>
                     ) : null
                   }
                   {
                     statusError ? (
-                      <Text>{statusError}</Text>
+                      <Text textColor='red'>{statusError}</Text>
                     ) : null
                   }
                 </Box>

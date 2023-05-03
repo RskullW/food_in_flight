@@ -34,6 +34,7 @@ const CartButton = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showOrderDetailsWindow, setShowOrderDetailsWindow] = useState(false);
   const cancelRef = React.useRef();
+  const [scrollBehavior, setScrollBehavior] = React.useState('inside')
   const [products, setProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
   const { onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts, countTotalPrice, removeFromCart,
@@ -114,6 +115,7 @@ const CartButton = () => {
         isCentered
         filter='auto'
         size="3xl"
+        scrollBehavior={scrollBehavior}
       >
         <AlertDialogOverlay>
           <AlertDialogContent>
@@ -144,8 +146,8 @@ const CartButton = () => {
                                 key={product.slug}
                               >
                                 <Card
-                                  minW="550px"
-                                  maxW='550px'
+                                  minW="570px"
+                                  maxW='570px'
                                   h="100px"
                                   mb="15px"
                                   shadow="lg"

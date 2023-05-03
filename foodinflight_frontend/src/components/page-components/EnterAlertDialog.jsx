@@ -208,15 +208,18 @@ const EnterAlertDialog = () => {
             <AlertDialogOverlay>
               <AlertDialogContent>
                 <Center>
-                  <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
-                    Выход из аккаунта
+                  <AlertDialogHeader >
+                    <Text fontSize='xl' fontWeight='bold' align='center'>
+                      Выход
+                    </Text>
                   </AlertDialogHeader>
                 </Center>
                 <AlertDialogBody>
                   <Flex flexDirection="column">
                     <Box>
-                      <Text>Вы действительно хотите выйти?</Text>
+                      <Text fontSize='md'>Вы действительно хотите выйти из аккаунта?</Text>
                     </Box>
+                    <br />
                     <Box>
                       <ChangePasswordDialog />
                     </Box>
@@ -225,14 +228,20 @@ const EnterAlertDialog = () => {
 
                 <AlertDialogFooter>
                   <Button ref={cancelRef} onClick={onClose}>
-                    Закрыть
+                    Остаться
                   </Button>
-                  <Button colorScheme='green' onClick={disabledInput ? null : (e) => { e.persist(); logOutUser(); }} ml={3}>
+                  <Button 
+                    bgColor='red.400' 
+                    textColor='whiteAlpha.900'
+                    _hover={{bgColor:'red.500'}}
+                    onClick={disabledInput ? null : (e) => { e.persist(); logOutUser(); }} 
+                    ml={3}
+                  >
                     Выйти
                   </Button>
                   {
                     dataError ? (
-                      <Text>{dataError}</Text>
+                      <Text textColor='red'>{dataError}</Text>
                     ) : null
                   }
                 </AlertDialogFooter>
@@ -279,7 +288,7 @@ const EnterAlertDialog = () => {
                       {
                         message ? (
                           dataError || !checkedEmail || !checkedPassword || (inputClicked === false) ? (
-                            <Text>{dataError}</Text>
+                            <Text textColor='red'>{dataError}</Text>
                           ) : null
                         ) : null
                       }

@@ -181,26 +181,38 @@ const FooterMainPart = () => {
           </Flex>
 
           <Flex justifyContent="left" gap="20px">
-            <IconButton 
-              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-              borderRadius="50%"
-              w="50px"
-              h="50px"
-            >
-              <SlSocialVkontakte color="black" />
-            </IconButton>
-
-            <IconButton 
-              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-              borderRadius="50%"
-              w="50px"
-              h="50px"
-            >
-              <FaTelegramPlane />
-            </IconButton>
             
             <Link
+              isExternal
+              href="https://vk.com/5fs4d3j2"
+            >
+              <IconButton 
+                bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+                borderRadius="50%"
+                w="50px"
+                h="50px"
+              >
+                <SlSocialVkontakte color="black" />
+              </IconButton>
+            </Link>
+
+            <Link
+              isExternal
+              href="https://t.me/rskullw"
+            >
+              <IconButton 
+                bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+                borderRadius="50%"
+                w="50px"
+                h="50px"
+              >
+                <FaTelegramPlane />
+              </IconButton>
+            </Link>
+
+            <Link
               href="https://github.com/RskullW/food_in_flight"
+              isExternal
             >
               <IconButton 
                 bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
