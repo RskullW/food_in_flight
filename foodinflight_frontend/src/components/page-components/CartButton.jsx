@@ -97,6 +97,7 @@ const CartButton = () => {
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
+                  marginLeft='5px'
                 >
                   {cartProducts.length}
                 </Box>
@@ -143,7 +144,8 @@ const CartButton = () => {
                                 key={product.slug}
                               >
                                 <Card
-                                  minW="500px"
+                                  minW="550px"
+                                  maxW='550px'
                                   h="100px"
                                   mb="15px"
                                   shadow="lg"
@@ -235,14 +237,21 @@ const CartButton = () => {
                       <Heading as="h3" fontSize="xl">К оплате</Heading>
                       <Box>
                         {
-                          countTotalPrice()
+                          countTotalPrice() + ' ₽'
                         }
                       </Box>
                       <Spacer />
                       {
                         loggedIn ? (
                           <>
-                            <Button onClick={handleContinueButtonClick}>Продолжить</Button>
+                            <Button 
+                              onClick={handleContinueButtonClick} 
+                              textColor="whiteAlpha.900"
+                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                              _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+                            >
+                              Продолжить
+                            </Button>
                             {
                               showOrderDetailsWindow && (
                                 <OrderDetailsAlertDialog isOpen={true} onClose={() => { setShowOrderDetailsWindow(false); onClose() }} />
@@ -259,9 +268,10 @@ const CartButton = () => {
                     </Flex>
                   </Flex>
                 ) : (
-                  <Box textAlign="center">
+                  <Box textAlign="center" padding='0px 0px 30px 0px'>
                     <Text>Корзина пуста</Text>
                     <Text>Добавьте что-нибудь в корзину</Text>
+                    <br/>
                     <Link
                       style={{ textDecoration: "none" }}
                       href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}

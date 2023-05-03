@@ -87,7 +87,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       setCheckedAddress(value);
       setAddressError(null);
     } else {
-      setAddressError("Адрес доставки введён неверно.");
+      setAddressError("Адрес доставки введён неверно!");
     }
   }
 
@@ -97,7 +97,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       setCheckedApartmentNumber(value);
       setApartmentNumberError(null);
     } else {
-      setApartmentNumberError("Номер квартиры введён неверно.");
+      setApartmentNumberError("Номер квартиры введён неверно!");
     }
   }
 
@@ -107,7 +107,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       setCheckedName(value);
       setNameError(null);
     } else {
-      setNameError("Имя введено неверно.");
+      setNameError("Имя введено неверно!");
     }
   }
 
@@ -117,7 +117,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
       setCheckedNumber(value);
       setNumberError(null);
     } else {
-      setNumberError("Номер телефона введён неверно. Введите номер телефона без кода страны");
+      setNumberError("Номер телефона введён неверно! Введите номер телефона без кода страны.");
     }
   }
 
@@ -209,7 +209,7 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
               </Heading>
               <Input
                 mt="10px"
-                placeholder="Введите адрес доставки"
+                placeholder="Введите адрес доставки в формате: город, улица, дом"
                 onChange={inputAddress}
               />
 
@@ -248,14 +248,19 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
               <>
                 {
                   dataError || !checkedAddress || !checkedApartmentNumber || !checkedName || !checkedNumber || (disabledClick) ? (
-                    <Text>{dataError}</Text>
+                    <Text color='red'>{dataError}</Text>
                   ) : null
                 }
               </>
 
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button colorScheme='green' onClick={disabledClick ? null : setOrder}>
+              <Button 
+                onClick={disabledClick ? null : setOrder}
+                textColor="whiteAlpha.900"
+                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+              >
                 Перейти к оплате
               </Button>
               {

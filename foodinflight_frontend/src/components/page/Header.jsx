@@ -37,10 +37,12 @@ const Header = () => {
             <Image src="/icons/full-logo.png" h="100%" maxW="100%" alt="full-logo"></Image>
           </Center>
         </Link>
-        <SearchBar/>
 
       </Flex>
       
+      <Flex padding='0px 90px 0px 0px'>
+        <SearchBar/>
+      </Flex>
 
       <Spacer/>
 
