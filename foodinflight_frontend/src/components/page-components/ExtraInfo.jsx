@@ -4,7 +4,8 @@ import {
   Image, 
   Heading, 
   Text, 
-  Button
+  Button,
+  Link
 } from "@chakra-ui/react";
 
 const ExtraInfo = () => {
@@ -52,15 +53,15 @@ const ExtraInfo = () => {
           top="80%" 
           left="45%"
         >
-
-          <Button
-            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-            textColor="whiteAlpha.900"
-            _hover={{bgColor: "none", bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
-          >
-            Узнать больше
-          </Button>
-
+          <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/aboutKitchen`}>
+            <Button
+              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+              textColor="whiteAlpha.900"
+              _hover={{bgColor: "none", bgGradient: "linear(to-t, #6E72FC, #AD1DEB)"}}
+            >
+              Узнать больше
+            </Button>
+          </Link>
         </Box>
         
       </Box>

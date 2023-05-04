@@ -8,7 +8,7 @@ import {
   WrapItem,
   Image
 } from "@chakra-ui/react"
-import {BiArrowBack} from "react-icons/bi"
+import { BiArrowBack } from "react-icons/bi"
 
 const Trademarks = () => {
   return (
