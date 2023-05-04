@@ -48,23 +48,6 @@ const Header = () => {
       <Flex>
         <CartButton />
 
-        <Center m="0px 0px 0px 90px">
-          <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`} style={{textDecoration: "none"}}>
-            <Button
-              variant='solid'
-              borderRadius="10px"
-              h='50px'
-              _hover={{
-                bgColor: "#CDCDCD"
-              }}
-              transition="700ms"
-            >
-              История заказов
-            </Button>
-          </Link>
-        </Center>
-
-
         <Center className="header__adress-bar" w="200px" m="0px 90px 0px 90px">
           <EnterAlertDialog />
         </Center>
