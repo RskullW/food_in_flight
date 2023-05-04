@@ -16,10 +16,19 @@ import {
   Stack,
   Box,
   Text,
-  Flex
+  Flex,
+  Drawer,
+  DrawerOverlay,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  DrawerContent,
+  Spacer
 } from '@chakra-ui/react'
 import RegisterAlertDialog from "./RegisterAlertDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
+import ExitConfirmationDialog from "./ExitConfirmation";
 
 
 const EnterAlertDialog = () => {
@@ -27,6 +36,7 @@ const EnterAlertDialog = () => {
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const [show, setShow] = React.useState(false);
   const cancelRef = React.useRef();
+  const btnRef = React.useRef()
 
   const [checkedEmail, setCheckedEmail] = useState('');
   const [checkedPassword, setCheckedPassword] = useState('');
@@ -180,7 +190,7 @@ const EnterAlertDialog = () => {
               bgColor: "#CDCDCD"
             }}
           >
-            Настройки
+            Аккаунт
           </Button>
         ) : (
           <Button
@@ -203,54 +213,39 @@ const EnterAlertDialog = () => {
 
       {
         cookies.access_token ? (
-          <AlertDialog
-            motionPreset='slideInRight'
+          <Drawer
             isOpen={isOpen}
-            leastDestructiveRef={cancelRef}
+            placement='bottom'
             onClose={onClose}
-            isCentered
+            finalFocusRef={btnRef}
           >
-            <AlertDialogOverlay>
-              <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <Text fontSize='xl' fontWeight='bold' align='center'>
-                      Настройки аккаунта
-                    </Text>
-                  </AlertDialogHeader>
-                <AlertDialogBody>
-                  <Flex flexDirection="column">
-                    <Box>
-                      <Text fontSize='md'>Вы действительно хотите выйти из аккаунта?</Text>
-                    </Box>
-                    <br />
-                    <Box>
-                      <ChangePasswordDialog />
-                    </Box>
-                  </Flex>
-                </AlertDialogBody>
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+              <Center>
+                <DrawerHeader>
+                  <Text fontSize='3xl' as='b'>
+                    Аккаунт
+                  </Text>
+                </DrawerHeader>
+              </Center>
 
-                <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose}>
-                    Остаться
-                  </Button>
-                  <Button 
-                    bgColor='red.400' 
-                    textColor='whiteAlpha.900'
-                    _hover={{bgColor:'red.500'}}
-                    onClick={disabledInput ? null : (e) => { e.persist(); logOutUser(); }} 
-                    ml={3}
-                  >
-                    Выйти
-                  </Button>
-                  {
-                    dataError ? (
-                      <Text textColor='red'>{dataError}</Text>
-                    ) : null
-                  }
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialogOverlay>
-          </AlertDialog>
+              <DrawerBody>
+                <Center>
+                  <Box w='370px' h='auto'>
+                    <Flex>
+                      <ChangePasswordDialog />
+                      <Spacer />
+                      <ExitConfirmationDialog />
+                    </Flex>
+                  </Box>
+                </Center>
+              </DrawerBody>
+
+              <DrawerFooter>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         ) : (
           <AlertDialog
             motionPreset='slideInRight'

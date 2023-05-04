@@ -111,7 +111,12 @@ const ChangePasswordDialog = () => {
 
   return (
     <>
-      <Button variant='link' onClick={onOpen}>
+      <Button 
+        onClick={onOpen}
+        textColor="whiteAlpha.900"
+        bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+        _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+      >
         Сменить пароль
       </Button>
 
