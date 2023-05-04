@@ -150,7 +150,7 @@ const OrdersHistory = () => {
                                 Сумма заказа:
                               </Box>
                               <Box>
-                                {order.total_price}
+                                {order.total_price + ' ₽'}
                               </Box>
                             </Flex>
                           </Flex>

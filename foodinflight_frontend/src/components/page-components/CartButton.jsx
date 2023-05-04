@@ -238,9 +238,11 @@ const CartButton = () => {
                     <Flex flexDirection="column">
                       <Heading as="h3" fontSize="xl">К оплате</Heading>
                       <Box>
-                        {
-                          countTotalPrice() + ' ₽'
-                        }
+                        <Text as='b' fontSize='xl'>
+                          {
+                            countTotalPrice() + ' ₽'
+                          }
+                        </Text>
                       </Box>
                       <Spacer />
                       {

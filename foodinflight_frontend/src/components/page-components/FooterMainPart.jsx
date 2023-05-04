@@ -145,6 +145,7 @@ const FooterMainPart = () => {
               <Link 
                 style={{textDecoration:"none"}}
                 href="https://www.apple.com/ru/app-store/"
+                isExternal
               >
                 <Button 
                   bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
@@ -170,6 +171,7 @@ const FooterMainPart = () => {
               <Link
                 style={{textDecoration:"none"}}
                 href="https://play.google.com/store/games?hl=ru&gl=US&pli=1"
+                isExternal
               >
                 <Button 
                   bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
