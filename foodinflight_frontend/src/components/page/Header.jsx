@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Image, Flex, Center, Spacer, Link } from "@chakra-ui/react";
+import { Text, Image, Flex, Center, Spacer, Link, Button } from "@chakra-ui/react";
 import EnterAlertDialog from "../page-components/EnterAlertDialog";
 import SearchBar from "../page-components/SearchBar";
 import AdressBar from "../page-components/AdressBar";
@@ -48,9 +48,19 @@ const Header = () => {
       <Flex>
         <CartButton />
 
-        <Center m="0px 90px 0px 90px">
-          <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`}>
-            История заказов
+        <Center m="0px 0px 0px 90px">
+          <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`} style={{textDecoration: "none"}}>
+            <Button
+              variant='solid'
+              borderRadius="10px"
+              h='50px'
+              _hover={{
+                bgColor: "#CDCDCD"
+              }}
+              transition="700ms"
+            >
+              История заказов
+            </Button>
           </Link>
         </Center>
 

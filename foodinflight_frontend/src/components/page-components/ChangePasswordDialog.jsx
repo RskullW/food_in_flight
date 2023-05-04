@@ -125,11 +125,11 @@ const ChangePasswordDialog = () => {
         <AlertDialogOverlay>
           <AlertDialogContent>
 
-            <Center>
-              <AlertDialogHeader fontSize='3xl' fontWeight='bold' alignContent='center'>
+            <AlertDialogHeader fontSize='3xl' fontWeight='bold' alignContent='center'>
+              <Text align='center'>
                 Смена пароля
-              </AlertDialogHeader>
-            </Center>
+              </Text>
+            </AlertDialogHeader>
 
             <AlertDialogBody>
               <Stack spacing='10px'>
@@ -180,7 +180,13 @@ const ChangePasswordDialog = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 Закрыть
               </Button>
-              <Button colorScheme='green' onClick={disabledChange ? null : changeUserPassword} ml={3}>
+              <Button 
+                onClick={disabledChange ? null : changeUserPassword} 
+                ml={3}
+                textColor="whiteAlpha.900"
+                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+              >
                 Сменить пароль
               </Button>
             </AlertDialogFooter>

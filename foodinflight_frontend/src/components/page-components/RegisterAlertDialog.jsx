@@ -229,7 +229,13 @@ const RegisterAlertDialog = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 Закрыть
               </Button>
-              <Button colorScheme='green' onClick={disabledRegistration ? null : setNewUser} ml={3}>
+              <Button 
+                onClick={disabledRegistration ? null : setNewUser} 
+                ml={3}
+                textColor="whiteAlpha.900"
+                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+              >
                 Зарегистрироваться
               </Button>
             </AlertDialogFooter>

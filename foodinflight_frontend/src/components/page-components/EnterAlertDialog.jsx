@@ -180,7 +180,7 @@ const EnterAlertDialog = () => {
               bgColor: "#CDCDCD"
             }}
           >
-            Выйти
+            Настройки
           </Button>
         ) : (
           <Button
@@ -212,13 +212,11 @@ const EnterAlertDialog = () => {
           >
             <AlertDialogOverlay>
               <AlertDialogContent>
-                <Center>
-                  <AlertDialogHeader >
+                  <AlertDialogHeader>
                     <Text fontSize='xl' fontWeight='bold' align='center'>
-                      Выход
+                      Настройки аккаунта
                     </Text>
                   </AlertDialogHeader>
-                </Center>
                 <AlertDialogBody>
                   <Flex flexDirection="column">
                     <Box>
@@ -314,7 +312,13 @@ const EnterAlertDialog = () => {
                   <Button ref={cancelRef} onClick={onClose}>
                     Закрыть
                   </Button>
-                  <Button colorScheme='green' onClick={disabledInput ? null : logInUser} ml={3}>
+                  <Button 
+                    onClick={disabledInput ? null : logInUser} 
+                    ml={3}
+                    textColor="whiteAlpha.900"
+                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                    _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+                  >
                     Войти
                   </Button>
                 </AlertDialogFooter>
