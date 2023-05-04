@@ -128,29 +128,37 @@ const OrdersHistory = () => {
                     arrayOfOrders.map((order) => (
                       <Card
                         key={order.created}
-                        minW="570px"
-                        maxW='570px'
+                        minW="650px"
+                        maxW='650px'
                         mb="50px"
                         shadow="lg"
                         border="1px solid rgba(0, 0, 0, 0.2)"
                       >
                         <CardHeader bgColor="rgba(0, 0, 0, 0.05)">
-                          <Flex>
-                            <Flex flexDirection="column">
-                              <Box>
-                                Дата заказа:
+                          <Flex alignItems="center">
+                            <Flex flexDirection="row" alignItems="center">
+                              <Box m="0px 10px 0px 0px">
+                                <Text color="blackAlpha.900" fontWeight="semibold" fontSize="xl">
+                                  Дата заказа:
+                                </Text>
                               </Box>
                               <Box>
-                                {order.created.slice(0, 10)}
+                                <Text color="blackAlpha.900" fontWeight="bold" fontSize="xl">
+                                  {order.created.slice(0, 10)}
+                                </Text>
                               </Box>
                             </Flex>
                             <Spacer />
-                            <Flex flexDirection="column">
-                              <Box>
-                                Сумма заказа:
+                            <Flex flexDirection="row">
+                              <Box m="0px 10px 0px 0px">
+                                <Text color="blackAlpha.900" fontWeight="semibold" fontSize="xl">
+                                  Сумма заказа:
+                                </Text>
                               </Box>
                               <Box>
-                                {order.total_price}
+                                <Text color="blackAlpha.900" fontWeight="bold" fontSize="xl">
+                                  {order.items_price} ₽
+                                </Text>
                               </Box>
                             </Flex>
                           </Flex>
@@ -167,14 +175,21 @@ const OrdersHistory = () => {
                                         <Flex textAlign="left">
                                           <Flex flexDirection="column">
                                             <Flex >
-                                              <Text fontWeight="500">{product.title} x{item.amount}</Text>
+                                              <Text color="blackAlpha.900" fontWeight="semibold" p="0px 10px 0px 0px">
+                                                {product.title}
+                                              </Text>
+                                              <Text color="blackAlpha.700" fontWeight="bold">
+                                                x{item.amount}
+                                              </Text>
                                             </Flex>
                                           </Flex>
                                         </Flex>
                                       </CardBody>
                                       <CardFooter>
                                         <Flex>
-                                          <Text fontWeight="500">{product.price * item.amount} ₽</Text>
+                                          <Text color="blackAlpha.600" fontWeight="bold">
+                                            {product.price * item.amount} ₽
+                                          </Text>
                                         </Flex>
                                       </CardFooter>
                                     </>
