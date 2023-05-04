@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {Box, Link} from "@chakra-ui/react";
+import { Box, Link, Text, Flex, Icon, Image } from "@chakra-ui/react";
 
 
 const Navbar = () => {
@@ -61,7 +61,9 @@ const Navbar = () => {
               <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}`}
                 style={{ textDecoration: "none" }}
               >
-                {category.title}
+                <Text color="blackAlpha.900" fontWeight="semibold" fontSize="md">
+                  {category.title}
+                </Text>
               </Link>
             </Box>
           ))
@@ -76,7 +78,20 @@ const Navbar = () => {
                 style={{ textDecoration: "none" }}
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/group_categories/${groupCategory.slug}`}
               >
-                {groupCategory.title}
+                <Flex>
+                  <Box>
+                    <Image
+                      src={groupCategory.icon}
+                      objectFit="cover"
+                      maxH="24px"
+                      mr="3px"
+                      borderRadius="50%"
+                    />
+                  </Box>
+                  <Text color="blackAlpha.900" fontWeight="semibold" fontSize="md">
+                    {groupCategory.title}
+                  </Text>
+                </Flex>
               </Link>
             </Box>
           ))
