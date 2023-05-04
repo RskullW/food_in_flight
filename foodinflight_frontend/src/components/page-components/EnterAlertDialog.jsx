@@ -24,7 +24,8 @@ import {
   DrawerBody,
   DrawerFooter,
   DrawerContent,
-  Spacer
+  Spacer,
+  Link
 } from '@chakra-ui/react'
 import RegisterAlertDialog from "./RegisterAlertDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
@@ -232,8 +233,20 @@ const EnterAlertDialog = () => {
 
               <DrawerBody>
                 <Center>
-                  <Box w='370px' h='auto'>
+                  <Box w='600px' h='auto'>
                     <Flex>
+                      <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`} style={{textDecoration: "none"}}>
+                        <Button
+                          variant='solid'
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+                          transition="700ms"
+                        >
+                          История заказов
+                        </Button>
+                      </Link>
+                      <Spacer />
                       <ChangePasswordDialog />
                       <Spacer />
                       <ExitConfirmationDialog />
