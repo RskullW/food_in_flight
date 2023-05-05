@@ -57,7 +57,7 @@ export const CartContext = ({ children }) => {
   };
 
   const countTotalPrice = () => {
-    let totalPrice = 0;
+    let totalPrice = 200;
     for (let p of cartProducts) {
       totalPrice += p.quantity * p.price;
     }

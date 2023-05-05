@@ -114,7 +114,7 @@ const CartButton = () => {
         onClose={onClose}
         isCentered
         filter='auto'
-        size="3xl"
+        size="4xl"
         scrollBehavior={scrollBehavior}
       >
         <AlertDialogOverlay>
@@ -132,124 +132,128 @@ const CartButton = () => {
             <AlertDialogBody>
               {
                 cartProducts.length ? (
-                  <Flex>
-                    <Flex flexDirection="column">
-                      <Heading as="h3" fontSize="xl">Ваш заказ</Heading>
+                  <Flex flexDirection="column">
+                    <Flex>
+                      <Flex flexDirection="column">
+                        <Heading as="h3" fontSize="xl">Ваш заказ</Heading>
+
+                        <Spacer />
+
+                        <Wrap justify="left">
+                          {
+                            products?.map((product) => (
+                              checkProductInCart(product) ? (
+                                <WrapItem
+                                  key={product.slug}
+                                >
+                                  <Card
+                                    minW="570px"
+                                    maxW='570px'
+                                    h="100px"
+                                    mb="15px"
+                                    shadow="lg"
+                                  >
+                                    <Flex direction="row">
+                                      <CardBody p="0px">
+                                        <Flex textAlign="left">
+                                          <Image
+                                            src={(product.images[0]?.image == null ? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png" : product.images[0]?.image)}
+                                            borderRadius="0.375rem 0rem 0rem 0.375rem"
+                                            objectFit="cover"
+                                            maxH="100px"
+                                            margin="0px 0px 3px 0px"
+                                            transition="200ms"
+                                            _hover={{ opacity: "0.8" }}
+                                          />
+
+                                          <Flex flexDirection="column">
+                                            <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
+                                            <Spacer />
+                                            <Text p="5px 0px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
+                                          </Flex>
+                                        </Flex>
+                                      </CardBody>
+
+                                      <CardFooter alignItems="center" padding="0px 10px 10px 10px">
+                                        <Flex direction="column">
+                                          <Text fontWeight="700">{product.price}₽</Text>
+
+                                          <Spacer />
+
+                                          <Box
+                                            bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                            _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                                            borderRadius="10px"
+                                          >
+                                            <Flex
+                                              gap="10px"
+                                              alignItems="center"
+                                              h="-moz-min-content"
+                                            >
+
+                                              <Button
+                                                onClick={() => onMinusFromCart(product.slug)}
+                                                textColor="whiteAlpha.900"
+                                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                                _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                                              >
+                                                <HiOutlineMinus />
+                                              </Button>
+
+                                              <Text textColor="whiteAlpha.900">
+                                                {cartProducts?.find(p => p.slug === product.slug)?.quantity}
+                                              </Text>
+
+                                              <Button
+                                                onClick={() => onPlusToCart(product.slug)}
+                                                textColor="whiteAlpha.900"
+                                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                                _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                                              >
+                                                <HiOutlinePlus />
+                                              </Button>
+                                            </Flex>
+                                          </Box>
+                                        </Flex>
+                                        <Spacer />
+                                        <Flex>
+                                          <IconButton
+                                            icon={<GrClose />}
+                                            onClick={() => removeFromCart(product.slug)}
+                                            bgColor="white"
+                                            _hover={{ bgColor: "white" }}
+                                          />
+                                        </Flex>
+                                      </CardFooter>
+                                    </Flex>
+                                  </Card>
+                                </WrapItem>
+                              ) : null
+                            ))
+                          }
+                        </Wrap>
+                      </Flex>
 
                       <Spacer />
 
-                      <Wrap justify="left">
-                        {
-                          products?.map((product) => (
-                            checkProductInCart(product) ? (
-                              <WrapItem
-                                key={product.slug}
-                              >
-                                <Card
-                                  minW="570px"
-                                  maxW='570px'
-                                  h="100px"
-                                  mb="15px"
-                                  shadow="lg"
-                                >
-                                  <Flex direction="row">
-                                    <CardBody p="0px">
-                                      <Flex textAlign="left">
-                                        <Image
-                                          src={(product.images[0]?.image == null ? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png" : product.images[0]?.image)}
-                                          borderRadius="0.375rem 0rem 0rem 0.375rem"
-                                          objectFit="cover"
-                                          maxH="100px"
-                                          margin="0px 0px 3px 0px"
-                                          transition="200ms"
-                                          _hover={{ opacity: "0.8" }}
-                                        />
-
-                                        <Flex flexDirection="column">
-                                          <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
-                                          <Spacer />
-                                          <Text p="5px 0px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
-                                        </Flex>
-                                      </Flex>
-                                    </CardBody>
-
-                                    <CardFooter alignItems="center" padding="0px 10px 10px 10px">
-                                      <Flex direction="column">
-                                        <Text fontWeight="700">{product.price}₽</Text>
-
-                                        <Spacer />
-
-                                        <Box
-                                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                                          _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                                          borderRadius="10px"
-                                        >
-                                          <Flex
-                                            gap="10px"
-                                            alignItems="center"
-                                            h="-moz-min-content"
-                                          >
-
-                                            <Button
-                                              onClick={() => onMinusFromCart(product.slug)}
-                                              textColor="whiteAlpha.900"
-                                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                                            >
-                                              <HiOutlineMinus />
-                                            </Button>
-
-                                            <Text textColor="whiteAlpha.900">
-                                              {cartProducts?.find(p => p.slug === product.slug)?.quantity}
-                                            </Text>
-
-                                            <Button
-                                              onClick={() => onPlusToCart(product.slug)}
-                                              textColor="whiteAlpha.900"
-                                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                                            >
-                                              <HiOutlinePlus />
-                                            </Button>
-                                          </Flex>
-                                        </Box>
-                                      </Flex>
-                                      <Spacer />
-                                      <Flex>
-                                        <IconButton
-                                          icon={<GrClose />}
-                                          onClick={() => removeFromCart(product.slug)}
-                                          bgColor="white"
-                                          _hover={{ bgColor: "white" }}
-                                        />
-                                      </Flex>
-                                    </CardFooter>
-                                  </Flex>
-                                </Card>
-                              </WrapItem>
-                            ) : null
-                          ))
-                        }
-                      </Wrap>
+                      <Flex flexDirection="column">
+                        <Heading as="h3" fontSize="xl">К оплате</Heading>
+                        <Box>
+                          <Text as='b' fontSize='xl'>
+                            {
+                              countTotalPrice() + ' ₽'
+                            }
+                          </Text>
+                        </Box>
+                      </Flex>
                     </Flex>
 
-                    <Spacer />
-
-                    <Flex flexDirection="column">
-                      <Heading as="h3" fontSize="xl">К оплате</Heading>
-                      <Box>
-                        <Text as='b' fontSize='xl'>
-                          {
-                            countTotalPrice() + ' ₽'
-                          }
-                        </Text>
-                      </Box>
-                      <Spacer />
+                    <Flex justifyContent="end" mt="20px">
                       {
                         loggedIn ? (
                           <>
-                            <Button 
-                              onClick={handleContinueButtonClick} 
+                            <Button
+                              onClick={handleContinueButtonClick}
                               textColor="whiteAlpha.900"
                               bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
                               _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
@@ -275,7 +279,7 @@ const CartButton = () => {
                   <Box textAlign="center" padding='0px 0px 30px 0px'>
                     <Text>Корзина пуста</Text>
                     <Text>Добавьте что-нибудь в корзину</Text>
-                    <br/>
+                    <br />
                     <Link
                       style={{ textDecoration: "none" }}
                       href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}

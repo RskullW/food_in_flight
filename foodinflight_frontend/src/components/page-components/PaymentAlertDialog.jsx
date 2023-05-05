@@ -76,7 +76,6 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
       else {
         setUserOrderStatus('Ваш заказ отправляется. Ожидайте.');
       }
-      console.log(userOrderStatus);
     }
 
     checkUserOrderStatus();

@@ -48,7 +48,7 @@ const PopularCategory = () => {
   }, [productsError])
 
   return (
-    <Box className="popular-category" margin="50px 0px 0px 0px">
+    <Box className="popular-category" margin="20px 0px 0px 0px">
 
       <Center className="popular-category__header">
         <Heading as="h1" size="2xl">

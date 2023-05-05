@@ -91,7 +91,7 @@ function ExitConfirmationDialog() {
 
                     <AlertDialogFooter>
                         <Button ref={cancelRef} onClick={onClose}>
-                            Остаться
+                            Отмена
                         </Button>
                         <Button 
                             bgColor='red.400' 
