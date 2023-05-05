@@ -54,7 +54,7 @@ const Navbar = () => {
       display={{ base: 'none', lg: 'block' }}
       bgGradient="linear(to-r, #EEEEEE, #F8F9E2)"
     >
-      <Box margin="0px 0px 100px 20px">
+      <Box margin="0px 0px 50px 20px">
         {
           allCategories.map((category) => (
             <Box margin="15px 0px" key={category.slug}>

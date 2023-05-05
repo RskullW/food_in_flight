@@ -166,7 +166,7 @@ const OrdersHistory = () => {
       <Wrap justify="left" p="5px">
         <Wrap justify="left">
           <WrapItem>
-            <Flex flexDirection="column" margin="20px 10px" p="5px">
+            <Flex flexDirection="column" margin="10px" p="5px">
               {
                 !dataError ? (
                   numberOfOrders ? (

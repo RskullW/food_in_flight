@@ -69,7 +69,6 @@ const EnterAlertDialog = () => {
 
   const inputEmail = (event) => {
     const value = event.target.value;
-
     if (validateEmail(value)) {
       setCheckedEmail(value);
       setEmailError(null);
@@ -91,7 +90,7 @@ const EnterAlertDialog = () => {
   }
 
   useEffect(() => {
-    inputEmail({ target: { value: checkedEmail } });
+    inputEmail({ target : { value: checkedEmail } });
     inputPassword({ target: { value: checkedPassword } });
   });
 
@@ -298,7 +297,7 @@ const EnterAlertDialog = () => {
                     <Box>
                       {
                         message ? (
-                          dataError || !checkedEmail || !checkedPassword || (inputClicked === false) ? (
+                          dataError || !checkedEmail || !checkedPassword || (disabledInput === false) ? (
                             <Text textColor='red'>{dataError}</Text>
                           ) : null
                         ) : null

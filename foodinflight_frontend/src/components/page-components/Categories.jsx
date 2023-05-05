@@ -45,7 +45,7 @@ const Categories = () => {
       margin="20px 0px 0px 0px"
     >
       <Center area={`header`}>
-        <Heading as="h1" size="2xl">Категории</Heading>
+        <Heading as="h1" size="xl">Категории</Heading>
       </Center>
 
       <Wrap justify="center" margin="20px 0px">

@@ -56,7 +56,7 @@ const FooterMainPart = () => {
   return (
     <Flex 
       className="footer" 
-      m="100px 20px 20px 20px" 
+      m="20px 20px 20px 20px" 
       p="20px 0px 10px 0px" 
       borderTop="1px solid rgba(0, 0, 0, 0.15)"
     >
