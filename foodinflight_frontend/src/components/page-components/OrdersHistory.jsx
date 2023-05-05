@@ -156,9 +156,7 @@ const OrdersHistory = () => {
                                 </Text>
                               </Box>
                               <Box>
-                                <Text color="blackAlpha.900" fontWeight="bold" fontSize="xl">
-                                  {order.items_price} ₽
-                                </Text>
+                                {order.total_price}
                               </Box>
                             </Flex>
                           </Flex>
