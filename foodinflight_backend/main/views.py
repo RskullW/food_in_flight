@@ -87,12 +87,19 @@ class OrderViewSet(viewsets.ModelViewSet):
             if token:
                 requested_user_id = int(token.user_id)
                 requested_user = User.objects.filter(id=requested_user_id)[:1].get()
+                    
+                print('User: ', requested_user)
+                print('request.data: ', request.data)
+                
+                try:
+                    items = request.data.pop('items')
+                except:
+                    items = []
+                
+                order_data = request.data.dict()
+                order_data['email'] = requested_user.email
 
-                items = request.data.pop('items')
-                request.data['email'] = requested_user.email
-
-                print(request.data)
-                serializer = self.get_serializer(data=request.data)
+                serializer = self.get_serializer(data=order_data)
                 serializer.is_valid(raise_exception=True)
                 serializer.save()
                 headers = self.get_success_headers(serializer.data)
