@@ -125,7 +125,10 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        data_to_update = request.data
+        data_to_update['tg_notified'] = False
+
+        serializer = self.get_serializer(instance, data=data_to_update, partial=True)
         serializer.is_valid(raise_exception=True)
         self.perform_update(serializer)
 

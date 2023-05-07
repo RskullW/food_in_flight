@@ -114,6 +114,8 @@ class Order(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    tg_notified = models.BooleanField(default=False)
+    
     items_price = property(get_items_price)
     delivery_price = models.IntegerField(default=200)
     total_price = property(lambda self: self.items_price + self.delivery_price)

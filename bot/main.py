@@ -10,7 +10,7 @@ dp = Dispatcher(bot)
 
 @dp.message_handler(commands=['start', 'help'])
 async def send_welcome(message: types.Message):
-    await bot.send_message(message.chat.id, "test message")
+    await bot.send_message(message.from_user.id, message.from_user.id)
 
 
 if __name__ == '__main__':
