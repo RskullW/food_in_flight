@@ -11,6 +11,7 @@ RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
 COPY ./.env /app/
+COPY ./bot /app/
 RUN chmod +x /app/main.py
 
 CMD ["python", "/app/main.py"]
