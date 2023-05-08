@@ -120,6 +120,7 @@ services:
     build:
       context: webhook-deployer
       dockerfile: ./Dockerfile
+      target: runner
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/repo/
@@ -128,4 +129,3 @@ services:
       - "80:80"
     networks:
       - backnet
-
