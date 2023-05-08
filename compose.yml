@@ -115,16 +115,17 @@ services:
     networks:
       - backnet
 
-    foodinflight_deployer:
-      container_name: foodinflight_deployer
-      build:
-        context: webhook-deployer
-        dockerfile: webhook-deployer/Dockerfile
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - ./:/repo/
-        - ~/.ssh/:/root/.ssh/
-      ports:
-        - "80:80"
-      networks:
-        - backnet
+  foodinflight_deployer:
+    container_name: foodinflight_deployer
+    build:
+      context: webhook-deployer
+      dockerfile: ./Dockerfile
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./:/repo/
+      - ~/.ssh/:/root/.ssh/
+    ports:
+      - "80:80"
+    networks:
+      - backnet
+
