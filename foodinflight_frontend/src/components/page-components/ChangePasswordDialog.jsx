@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import { useCookies } from "react-cookie";
 import {
   AlertDialog,
@@ -16,12 +16,14 @@ import {
   Stack,
   Text,
   InputRightElement,
+  IconButton
 } from '@chakra-ui/react'
+import { RxEyeOpen, RxEyeClosed } from "react-icons/rx";
 
 const ChangePasswordDialog = () => {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
-  const { isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [disabledChange, setDisabledChange] = useState(false);
   const [changePasswordClicked, setChangePasswordClicked] = useState(false);
@@ -63,7 +65,7 @@ const ChangePasswordDialog = () => {
     }
   }
 
-  const changeUserPassword = async() => {
+  const changeUserPassword = async () => {
     setChangePasswordClicked(true);
     setDisabledChange(true);
     if (oldPasswordError) {
@@ -78,7 +80,7 @@ const ChangePasswordDialog = () => {
     }
 
     try {
-      const userInfo = await fetch (`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/change_password/`, {
+      const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/change_password/`, {
         method: 'PATCH',
         body: JSON.stringify(data),
         mode: 'cors',
@@ -111,7 +113,7 @@ const ChangePasswordDialog = () => {
 
   return (
     <>
-      <Button 
+      <Button
         onClick={onOpen}
         textColor="whiteAlpha.900"
         bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
@@ -145,13 +147,22 @@ const ChangePasswordDialog = () => {
                     placeholder='Введите старый пароль'
                     onChange={inputOldPassword}
                   />
-                  <InputRightElement width='5rem'>
-                    <Button h='1.75rem' size='md' onClick={handleClick}>
-                      {show ? 'Скрыть' : 'Показать'}
-                    </Button>
+                  <InputRightElement width='3rem'>
+                    <IconButton
+                      h='2rem'
+                      w='2rem'
+                      bgColor="white"
+                      size='xl'
+                      borderRadius="50%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center" onClick={handleClick}
+                    >
+                      {show ? <RxEyeOpen /> : <RxEyeClosed />}
+                    </IconButton>
                   </InputRightElement>
                 </InputGroup>
-                
+
 
                 <InputGroup>
                   <Input
@@ -159,10 +170,19 @@ const ChangePasswordDialog = () => {
                     placeholder='Введите новый пароль'
                     onChange={inputPassword}
                   />
-                  <InputRightElement width='5rem'>
-                    <Button h='1.75rem' size='md' onClick={handleClick}>
-                      {show ? 'Скрыть' : 'Показать'}
-                    </Button>
+                  <InputRightElement width='3rem'>
+                    <IconButton
+                      h='2rem'
+                      w='2rem'
+                      bgColor="white"
+                      size='xl'
+                      borderRadius="50%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center" onClick={handleClick}
+                    >
+                      {show ? <RxEyeOpen /> : <RxEyeClosed />}
+                    </IconButton>
                   </InputRightElement>
                 </InputGroup>
 
@@ -185,8 +205,8 @@ const ChangePasswordDialog = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 Закрыть
               </Button>
-              <Button 
-                onClick={disabledChange ? null : changeUserPassword} 
+              <Button
+                onClick={disabledChange ? null : changeUserPassword}
                 ml={3}
                 textColor="whiteAlpha.900"
                 bgGradient="linear(to-b, #6E72FC, #AD1DEB)"

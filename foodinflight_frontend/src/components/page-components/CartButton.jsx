@@ -76,6 +76,7 @@ const CartButton = () => {
             w="150px"
             leftIcon={<AiOutlineShoppingCart />}
             bgColor="white"
+            fontSize="lg"
             borderRadius="10px"
             onClick={onOpen}
             bgGradient="none"
@@ -98,7 +99,7 @@ const CartButton = () => {
                   display="flex"
                   justifyContent="center"
                   alignItems="center"
-                  marginLeft='5px'
+                  ml='5px'
                 >
                   {cartProducts.length}
                 </Box>

@@ -25,11 +25,14 @@ import {
   DrawerFooter,
   DrawerContent,
   Spacer,
-  Link
+  Link,
+  IconButton
 } from '@chakra-ui/react'
 import RegisterAlertDialog from "./RegisterAlertDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
 import ExitConfirmationDialog from "./ExitConfirmation";
+
+import { RxEyeClosed, RxEyeOpen } from "react-icons/rx"
 
 
 const EnterAlertDialog = () => {
@@ -90,7 +93,7 @@ const EnterAlertDialog = () => {
   }
 
   useEffect(() => {
-    inputEmail({ target : { value: checkedEmail } });
+    inputEmail({ target: { value: checkedEmail } });
     inputPassword({ target: { value: checkedPassword } });
   });
 
@@ -154,6 +157,7 @@ const EnterAlertDialog = () => {
 
       if (userInfo.status === 200) {
         setCookie("access_token", userInfoJSON.token);
+        localStorage.setItem('userEmail', checkedEmail);
         setDataError(null);
         window.location.reload();
       }
@@ -172,7 +176,6 @@ const EnterAlertDialog = () => {
 
   }
 
-
   return (
     <>
       {
@@ -181,6 +184,7 @@ const EnterAlertDialog = () => {
             w="200px"
             h="50px"
             bgColor="white"
+            fontSize="lg"
             borderRadius="10px"
             onClick={onOpen}
             bgGradient="none"
@@ -197,6 +201,7 @@ const EnterAlertDialog = () => {
             w="200px"
             h="50px"
             bgColor="white"
+            fontSize="lg"
             borderRadius="10px"
             onClick={onOpen}
             bgGradient="none"
@@ -224,8 +229,11 @@ const EnterAlertDialog = () => {
               <DrawerCloseButton />
               <Center>
                 <DrawerHeader>
-                  <Text fontSize='3xl' as='b'>
+                  <Text fontSize='2xl' as='b'>
                     Аккаунт
+                  </Text>
+                  <Text>
+                    Пользователь: {localStorage.getItem('userEmail')}
                   </Text>
                 </DrawerHeader>
               </Center>
@@ -234,7 +242,7 @@ const EnterAlertDialog = () => {
                 <Center>
                   <Box w='600px' h='auto'>
                     <Flex>
-                      <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`} style={{textDecoration: "none"}}>
+                      <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`} style={{ textDecoration: "none" }}>
                         <Button
                           variant='solid'
                           textColor="whiteAlpha.900"
@@ -287,10 +295,19 @@ const EnterAlertDialog = () => {
                         placeholder='Введите пароль (не менее 8 символов)'
                         onChange={inputPassword}
                       />
-                      <InputRightElement width='5rem'>
-                        <Button h='1.75rem' size='md' onClick={handleClick}>
-                          {show ? 'Скрыть' : 'Показать'}
-                        </Button>
+                      <InputRightElement width='3rem'>
+                        <IconButton
+                          h='2rem'
+                          w='2rem'
+                          bgColor="white"
+                          size='xl'
+                          borderRadius="50%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center" onClick={handleClick}
+                        >
+                          {show ? <RxEyeOpen /> : <RxEyeClosed />}
+                        </IconButton>
                       </InputRightElement>
                     </InputGroup>
 
@@ -319,8 +336,8 @@ const EnterAlertDialog = () => {
                   <Button ref={cancelRef} onClick={onClose}>
                     Закрыть
                   </Button>
-                  <Button 
-                    onClick={disabledInput ? null : logInUser} 
+                  <Button
+                    onClick={disabledInput ? null : logInUser}
                     ml={3}
                     textColor="whiteAlpha.900"
                     bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
