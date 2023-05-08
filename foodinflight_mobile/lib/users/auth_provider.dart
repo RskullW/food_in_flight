@@ -49,7 +49,7 @@ class AuthProvider with ChangeNotifier {
 
   Future<void> deleteToken() async {
     if (_tokenUser.isNotEmpty) {
-      final url = Uri.parse('https://foodflight.ru/api/logoutall/');
+      final url = Uri.parse('https://foodflight.ru/api/logout/');
       Map<String, String> headers = {
         'ContentType': 'application/json',
         'Authorization': 'Token $_tokenUser',

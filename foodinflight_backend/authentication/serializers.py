@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
+from .models import TelegramID
 
 
 
@@ -8,6 +9,12 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email')
 
+
+class TelegramIDSerializer(serializers.ModelSerializer):
+    user = UserSerializer
+    class Meta:
+        model = TelegramID
+        fields = '__all__'
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:

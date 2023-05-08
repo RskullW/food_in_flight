@@ -1,0 +1,3 @@
+[submodule "webhook-deployer"]
+	path = webhook-deployer
+	url = https://github.com/vi350/webhook-deployer
