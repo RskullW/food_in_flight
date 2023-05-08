@@ -48,6 +48,10 @@ http {
         include /etc/letsencrypt/options-ssl-nginx.conf;
         ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
 
+        location /webhook/ {
+            proxy_pass http://${DEPLOYER_HOSTNAME}:80;
+        }
+
         location /api/ {
             uwsgi_pass djangouwsgi;
             include /etc/nginx/uwsgi_params;

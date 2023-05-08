@@ -54,6 +54,7 @@ services:
       - ./logs:/logs
     environment:
       - NGINX_HOST=${HOST_DOMAIN}
+      - DEPLOYER_HOSTNAME=foodinflight_deployer
       - BACKEND_HOSTNAME=foodinflight_backend
       - FRONTEND_HOSTNAME=foodinflight_frontend
       - NGINX_ENVSUBST_TEMPLATE_DIR=/etc/nginx
@@ -113,3 +114,17 @@ services:
     restart: unless-stopped
     networks:
       - backnet
+
+    foodinflight_deployer:
+      container_name: foodinflight_deployer
+      build:
+        context: webhook-deployer
+        dockerfile: webhook-deployer/Dockerfile
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+        - ./:/repo/
+        - ~/.ssh/:/root/.ssh/
+      ports:
+        - "80:80"
+      networks:
+        - backnet
