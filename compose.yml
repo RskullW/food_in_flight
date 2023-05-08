@@ -15,6 +15,8 @@ networks:
 services:
   foodinflight_frontend:
     container_name: foodinflight_frontend
+    depends_on:
+      - foodinflight_backend
     build:
       context: .
       dockerfile: configs/Dockerfile_frontend
@@ -43,6 +45,7 @@ services:
     container_name: foodinflight_nginx
     depends_on:
       - foodinflight_certbot
+      - foodinflight_frontend
     image: nginx:alpine
     volumes:
       - ./configs/nginx.conf.template:/etc/nginx/nginx.conf.template
