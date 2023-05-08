@@ -24,7 +24,6 @@ const ChangePasswordDialog = () => {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
   const [disabledChange, setDisabledChange] = useState(false);
   const [changePasswordClicked, setChangePasswordClicked] = useState(false);
   const [dataError, setDataError] = useState(null);
@@ -125,7 +124,6 @@ const ChangePasswordDialog = () => {
       <AlertDialog
         motionPreset="slideInRight"
         isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
         onClose={onClose}
         isCentered
       >
@@ -202,7 +200,7 @@ const ChangePasswordDialog = () => {
               </Stack>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
+              <Button onClick={onClose}>
                 Закрыть
               </Button>
               <Button

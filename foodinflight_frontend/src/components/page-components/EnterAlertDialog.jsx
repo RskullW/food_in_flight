@@ -39,7 +39,6 @@ const EnterAlertDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const [show, setShow] = React.useState(false);
-  const cancelRef = React.useRef();
   const btnRef = React.useRef()
 
   const [checkedEmail, setCheckedEmail] = useState('');
@@ -270,7 +269,6 @@ const EnterAlertDialog = () => {
           <AlertDialog
             motionPreset='slideInRight'
             isOpen={isOpen}
-            leastDestructiveRef={cancelRef}
             onClose={onClose}
             isCentered
           >
@@ -333,7 +331,7 @@ const EnterAlertDialog = () => {
                 </AlertDialogBody>
 
                 <AlertDialogFooter>
-                  <Button ref={cancelRef} onClick={onClose}>
+                  <Button onClick={onClose}>
                     Закрыть
                   </Button>
                   <Button

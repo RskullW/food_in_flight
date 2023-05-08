@@ -14,7 +14,6 @@ import {
 
 function ExitConfirmationDialog() {
     const { isOpen, onOpen, onClose } = useDisclosure()
-    const cancelRef = React.useRef()
     const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
     const [show, setShow] = React.useState(false);
     const btnRef = React.useRef()
@@ -70,7 +69,6 @@ function ExitConfirmationDialog() {
 
         <AlertDialog
             isOpen={isOpen}
-            leastDestructiveRef={cancelRef}
             onClose={onClose}
             isCentered
             motionPreset='slideInBottom'
@@ -90,7 +88,7 @@ function ExitConfirmationDialog() {
                     </AlertDialogBody>
 
                     <AlertDialogFooter>
-                        <Button ref={cancelRef} onClick={onClose}>
+                        <Button onClick={onClose}>
                             Отмена
                         </Button>
                         <Button 

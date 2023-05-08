@@ -20,7 +20,6 @@ import { GrClose } from "react-icons/gr";
 import PaymentAlertDialog from "./PaymentAlertDialog";
 
 const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
-  const cancelRef = React.useRef();
   const [disabledClick, setDisabledClick] = useState(false);
   const [dataError, setDataError] = useState(null);
   const [checkedAddress, setCheckedAddress] = useState('');
@@ -187,7 +186,6 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
     <>
       <AlertDialog
         isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
         isCentered
         filter="auto"
         size="3xl"
