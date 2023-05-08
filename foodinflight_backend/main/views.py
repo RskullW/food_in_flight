@@ -87,17 +87,15 @@ class OrderViewSet(viewsets.ModelViewSet):
             if token:
                 requested_user_id = int(token.user_id)
                 requested_user = User.objects.filter(id=requested_user_id)[:1].get()
-                    
-                print('User: ', requested_user)
-                print('request.data: ', request.data)
                 
                 try:
                     items = request.data.pop('items')
                 except:
                     items = []
                 
-                order_data = request.data.dict()
+                order_data = request.data
                 order_data['email'] = requested_user.email
+                
 
                 serializer = self.get_serializer(data=order_data)
                 serializer.is_valid(raise_exception=True)
@@ -132,7 +130,7 @@ class OrderViewSet(viewsets.ModelViewSet):
     
     def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
-        data_to_update = request.data.dict()
+        data_to_update = request.data
         data_to_update['tg_notified'] = False
 
         serializer = self.get_serializer(instance, data=data_to_update, partial=True)
