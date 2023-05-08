@@ -33,7 +33,6 @@ const CartButton = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showOrderDetailsWindow, setShowOrderDetailsWindow] = useState(false);
-  const cancelRef = React.useRef();
   const [scrollBehavior, setScrollBehavior] = React.useState('inside')
   const [products, setProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
@@ -111,7 +110,6 @@ const CartButton = () => {
 
       <AlertDialog
         isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
         onClose={onClose}
         isCentered
         filter='auto'

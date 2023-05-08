@@ -1,4 +1,4 @@
-import React, { cancelRef, useState, useEffect } from "react";
+import React, {useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useCartContext } from "../../contexts/CartContext";
 import {
@@ -85,7 +85,6 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
     <>
       <AlertDialog
         isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
         isCentered
         filter="auto"
         size="3xl"

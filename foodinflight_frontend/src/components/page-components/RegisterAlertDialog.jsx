@@ -25,7 +25,6 @@ const RegisterAlertDialog = () => {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = React.useRef();
   const [disabledRegistration, setDisabledRegistration] = useState(false);
   const [registrationClicked, setRegistrationClicked] = useState(false);
   const [dataError, setDataError] = useState(null);
@@ -170,7 +169,6 @@ const RegisterAlertDialog = () => {
       <AlertDialog
         motionPreset="slideInRight"
         isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
         onClose={onClose}
         isCentered
       >
@@ -247,7 +245,7 @@ const RegisterAlertDialog = () => {
               </Stack>
             </AlertDialogBody>
             <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
+              <Button onClick={onClose}>
                 Закрыть
               </Button>
               <Button
