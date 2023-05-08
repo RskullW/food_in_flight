@@ -118,13 +118,14 @@ services:
   foodinflight_deployer:
     container_name: foodinflight_deployer
     build:
-      context: webhook-deployer
+      context: ./webhook-deployer/
       dockerfile: ./Dockerfile
       target: runner
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./:/repo/
       - ~/.ssh/:/root/.ssh/
+      - ./.env:/.env
     ports:
       - "80:80"
     networks:
