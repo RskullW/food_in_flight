@@ -7,9 +7,9 @@ const Footer = () => {
     <Box 
       className="footer" 
       bgColor="rgba(0, 0, 0, 1)" 
-      position="relative" 
       borderTop="1px solid rgba(0,0,0,0.15)" 
-      h="90px"
+      h="calc(100% - 70px)"
+      
       padding="10px 20px"
     >
 
@@ -18,7 +18,6 @@ const Footer = () => {
           justifyContent="center" 
           gap="30px" 
           textAlign="center" 
-          margin="10px 0px 0px 0px"
           textColor="white"
         >
           <Link 

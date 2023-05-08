@@ -14,12 +14,12 @@ const Layout = ({ children }) => {
             <Flex mt="70px" bgGradient="linear(to-l, #E8DBFC, #F8F9D2)">
               <Navbar />
               <Box
-                width={{ base: "100%", lg: "85%" }}
+                width={{  xl:"85%", md: "100%", base: "100%", lg: "100%" }}
                 border="1px solid rgba(0, 0, 0, 0.3)"
                 shadow="2xl"
                 bgColor="white"
                 borderRadius="10px"
-                margin="20px"
+                m={{xl:"10px 20px", lg:"10px 10px", md:"10px 10px", sm:"10px 10px"}}
               >
                 { children }
                 <FooterMainPart />

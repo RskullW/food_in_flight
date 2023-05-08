@@ -84,13 +84,12 @@ const SearchBar = () => {
             p="10px"
           >
             {results.slice(0, 7).map((product) => ( 
-              
               <Link
+                key={product.slug}
                 style={{textDecoration:"none"}}
                 href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}`}
               >
                 <Flex 
-                  key={product.id}
                   alignItems="center"
                   p="10px 10px"
                   gap="10px"

@@ -105,7 +105,6 @@ const OrderDetailsAlertDialog = ({ isOpen, onClose }) => {
 
   const inputName = (event) => {
     const value = event.target.value;
-    console.log(value);
     if (validateName(value)) {
       setCheckedName(value);
       setNameError(null);

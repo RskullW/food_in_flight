@@ -61,8 +61,11 @@ const Navbar = () => {
 
 
   return (
-    <Box className="nav-bar" width="15%" borderRight="1px solid rgba(0, 0, 0, 0.1)"
-      display={{ base: 'none', lg: 'block' }}
+    <Box 
+      className="nav-bar" 
+      width={{xl:"15%", lg:"20%", md:"0%", sm:"0%"}} 
+      borderRight="1px solid rgba(0, 0, 0, 0.1)"
+      display={{ base: 'none', xl: 'block', lg:'block' }}
       bgGradient="linear(to-r, #EEEEEE, #F8F9E2)"
     >
       {
@@ -88,7 +91,7 @@ const Navbar = () => {
               }
             </Box>
 
-            <Box margin="20px 0px 100px 20px">
+            <Box margin="0px 0px 0px 20px">
               {
                 allGroupCategories.map((groupCategory) => (
                   <Box margin="15px 0px" key={groupCategory.slug}>

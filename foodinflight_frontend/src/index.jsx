@@ -21,6 +21,7 @@ import AboutPaymentPage from './pages/AboutPaymentPage';
 import { CartContext } from './contexts/CartContext';
 import AboutKitchenPage from './pages/AboutKitchenPage';
 
+
 const router = createBrowserRouter([
   {
     path: '/',
