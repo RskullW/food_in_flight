@@ -244,15 +244,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
             colorMoreScreenAppBar,
             colorBlack,
             colorAppBar,
-            () => ShowMessage(context, "В разработке"),
-            Icons.arrow_forward_ios_sharp,
-            colorAppBar),
-        _buildButtonMore(
-            "Акции",
-            colorMoreScreenAppBar,
-            colorBlack,
-            colorAppBar,
-            () => ShowMessage(context, "В разработке"),
+            ProcessButtonHistoryOrders,
             Icons.arrow_forward_ios_sharp,
             colorAppBar),
         _buildButtonMore(
@@ -326,6 +318,10 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
       '/home',
       (route) => false,
     );
+  }
+
+  void ProcessButtonHistoryOrders() {
+    Navigator.pushNamed(context, '/history_orders');
   }
 
   PreferredSizeWidget _buildAppBar() {
