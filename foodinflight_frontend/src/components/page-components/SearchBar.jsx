@@ -67,6 +67,7 @@ const SearchBar = () => {
           borderRadius="10px"
           type="search" 
           placeholder="Поиск по меню"
+          fontSize="lg"
           focusBorderColor="#CDCDCD"
         />
         {results.length && query.length ? (

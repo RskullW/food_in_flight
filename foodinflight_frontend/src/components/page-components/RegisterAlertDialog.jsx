@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -16,12 +16,15 @@ import {
   Stack,
   Text,
   InputRightElement,
+  IconButton
 } from '@chakra-ui/react'
+import { RxEyeClosed, RxEyeOpen } from "react-icons/rx"
+
 
 const RegisterAlertDialog = () => {
   const [show, setShow] = React.useState(false)
   const handleClick = () => setShow(!show)
-  const { isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = React.useRef();
   const [disabledRegistration, setDisabledRegistration] = useState(false);
   const [registrationClicked, setRegistrationClicked] = useState(false);
@@ -99,6 +102,11 @@ const RegisterAlertDialog = () => {
     }
   }
 
+  useEffect(() => {
+    inputEmail({ target: { value: checkedEmail } });
+    inputPassword({ target: { value: checkedPassword } });
+    repeatPassword({ target: { value: checkedRepeatedPassword } });
+  }, []);
 
 
   const setNewUser = async () => {
@@ -189,13 +197,22 @@ const RegisterAlertDialog = () => {
                     placeholder='Введите пароль (не менее 8 символов)'
                     onChange={inputPassword}
                   />
-                  <InputRightElement width='5rem'>
-                    <Button h='1.75rem' size='md' onClick={handleClick}>
-                      {show ? 'Скрыть' : 'Показать'}
-                    </Button>
+                  <InputRightElement width='3rem'>
+                    <IconButton
+                      h='2rem'
+                      w='2rem'
+                      bgColor="white"
+                      size='xl'
+                      borderRadius="50%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center" onClick={handleClick}
+                    >
+                      {show ? <RxEyeOpen /> : <RxEyeClosed />}
+                    </IconButton>
                   </InputRightElement>
                 </InputGroup>
-                
+
 
                 <InputGroup>
                   <Input
@@ -203,18 +220,27 @@ const RegisterAlertDialog = () => {
                     placeholder='Повторите пароль'
                     onChange={repeatPassword}
                   />
-                  <InputRightElement width='5rem'>
-                    <Button h='1.75rem' size='md' onClick={handleClick}>
-                      {show ? 'Скрыть' : 'Показать'}
-                    </Button>
+                  <InputRightElement width='3rem'>
+                    <IconButton
+                      h='2rem'
+                      w='2rem'
+                      bgColor="white"
+                      size='xl'
+                      borderRadius="50%"
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center" onClick={handleClick}
+                    >
+                      {show ? <RxEyeOpen /> : <RxEyeClosed />}
+                    </IconButton>
                   </InputRightElement>
                 </InputGroup>
 
                 <Box>
                   {
                     dataError || !checkedEmail || !checkedPassword || !checkedRepeatedPassword || (registrationClicked === false) ? (
-                      <Text>{dataError}</Text>  
-                    ) :  null
+                      <Text>{dataError}</Text>
+                    ) : null
                   }
                 </Box>
 
@@ -224,7 +250,13 @@ const RegisterAlertDialog = () => {
               <Button ref={cancelRef} onClick={onClose}>
                 Закрыть
               </Button>
-              <Button colorScheme='green' onClick={disabledRegistration ? null : setNewUser} ml={3}>
+              <Button
+                onClick={disabledRegistration ? null : setNewUser}
+                ml={3}
+                textColor="whiteAlpha.900"
+                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+              >
                 Зарегистрироваться
               </Button>
             </AlertDialogFooter>

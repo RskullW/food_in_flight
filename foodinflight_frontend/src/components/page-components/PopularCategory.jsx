@@ -48,10 +48,10 @@ const PopularCategory = () => {
   }, [productsError])
 
   return (
-    <Box className="popular-category" margin="50px 0px 0px 0px">
+    <Box className="popular-category" margin="20px 0px 0px 0px">
 
       <Center className="popular-category__header">
-        <Heading as="h1" size="2xl">
+        <Heading as="h2" size="xl">
           Популярное
         </Heading>
       </Center>
@@ -90,10 +90,10 @@ const PopularCategory = () => {
                           _hover={{ opacity: "0.8" }}
                         />
 
-                        <Flex flexDirection="column">
-                          <Text p="10px 0px 0px 10px" fontWeight="500">{product.title}</Text>
+                        <Flex flexDirection="row" alignItems="start">
+                          <Text p="10px 0px 0px 10px" fontWeight="500" fontSize="lg">{product.title}</Text>
                           <Spacer />
-                          <Text p="5px 0px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
+                          <Text p="10px 10px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
                         </Flex>
 
                       </Box>
@@ -101,8 +101,8 @@ const PopularCategory = () => {
                   </Box>
                 </CardBody>
 
-                <CardFooter alignItems="center" padding="0px 10px 10px 10px">
-                  <Text fontWeight="700">{product.price}₽</Text>
+                <CardFooter alignItems="center" padding="0px 10px 20px 10px">
+                  <Text fontWeight="700" fontSize="lg">{product.price}₽</Text>
 
                   <Spacer />
 
@@ -128,7 +128,7 @@ const PopularCategory = () => {
                             <HiOutlineMinus />
                           </Button>
 
-                          <Text textColor="whiteAlpha.900">
+                          <Text textColor="whiteAlpha.900" fontSize="lg">
                             {cartProducts?.find(p => p.slug === product.slug)?.quantity}
                           </Text>
 
@@ -145,6 +145,7 @@ const PopularCategory = () => {
                         <Button
                           onClick={() => { onAddToCart(product) }}
                           textColor="whiteAlpha.900"
+                          fontSize="lg"
                           bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
                           _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
                         >

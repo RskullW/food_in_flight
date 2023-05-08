@@ -56,7 +56,7 @@ const FooterMainPart = () => {
   return (
     <Flex 
       className="footer" 
-      m="100px 20px 20px 20px" 
+      m="20px 20px 20px 20px" 
       p="20px 0px 10px 0px" 
       borderTop="1px solid rgba(0, 0, 0, 0.15)"
     >
@@ -90,10 +90,20 @@ const FooterMainPart = () => {
         <Heading as="h3" fontSize="xl"  m="0px 0px 15px 0px">Компания</Heading>
         <List>
           <ListItem p="5px 0px">
-            <Link style={{textDecoration: "none"}}>Наша Кухня</Link>
+            <Link 
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/aboutKitchen`}
+              style={{textDecoration: "none"}}
+            >
+              Наша Кухня
+            </Link>
           </ListItem>
           <ListItem p="5px 0px">
-            <Link style={{textDecoration: "none"}}>Оплата</Link>
+            <Link 
+              href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/aboutPayment`}
+              style={{textDecoration: "none"}}
+            >
+              Оплата
+            </Link>
           </ListItem>
           <ListItem p="5px 0px">
             <Link 
@@ -135,6 +145,7 @@ const FooterMainPart = () => {
               <Link 
                 style={{textDecoration:"none"}}
                 href="https://www.apple.com/ru/app-store/"
+                isExternal
               >
                 <Button 
                   bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
@@ -160,6 +171,7 @@ const FooterMainPart = () => {
               <Link
                 style={{textDecoration:"none"}}
                 href="https://play.google.com/store/games?hl=ru&gl=US&pli=1"
+                isExternal
               >
                 <Button 
                   bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
@@ -181,26 +193,38 @@ const FooterMainPart = () => {
           </Flex>
 
           <Flex justifyContent="left" gap="20px">
-            <IconButton 
-              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-              borderRadius="50%"
-              w="50px"
-              h="50px"
-            >
-              <SlSocialVkontakte color="black" />
-            </IconButton>
-
-            <IconButton 
-              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-              borderRadius="50%"
-              w="50px"
-              h="50px"
-            >
-              <FaTelegramPlane />
-            </IconButton>
             
             <Link
+              isExternal
+              href="https://vk.com/5fs4d3j2"
+            >
+              <IconButton 
+                bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+                borderRadius="50%"
+                w="50px"
+                h="50px"
+              >
+                <SlSocialVkontakte color="black" />
+              </IconButton>
+            </Link>
+
+            <Link
+              isExternal
+              href="https://t.me/rskullw"
+            >
+              <IconButton 
+                bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
+                borderRadius="50%"
+                w="50px"
+                h="50px"
+              >
+                <FaTelegramPlane />
+              </IconButton>
+            </Link>
+
+            <Link
               href="https://github.com/RskullW/food_in_flight"
+              isExternal
             >
               <IconButton 
                 bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"

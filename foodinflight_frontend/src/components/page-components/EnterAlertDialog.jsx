@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Cookies, useCookies } from "react-cookie";
+import React, { useState, useEffect } from "react";
+import { useCookies } from "react-cookie";
 import {
   AlertDialog,
   AlertDialogBody,
@@ -16,25 +16,44 @@ import {
   Stack,
   Box,
   Text,
-  Flex
+  Flex,
+  Drawer,
+  DrawerOverlay,
+  DrawerCloseButton,
+  DrawerHeader,
+  DrawerBody,
+  DrawerFooter,
+  DrawerContent,
+  Spacer,
+  Link,
+  IconButton
 } from '@chakra-ui/react'
 import RegisterAlertDialog from "./RegisterAlertDialog";
 import ChangePasswordDialog from "./ChangePasswordDialog";
+import ExitConfirmationDialog from "./ExitConfirmation";
+
+import { RxEyeClosed, RxEyeOpen } from "react-icons/rx"
+
 
 const EnterAlertDialog = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+  const [show, setShow] = React.useState(false);
   const cancelRef = React.useRef();
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
-  const [dataError, setDataError] = useState(null);
+  const btnRef = React.useRef()
+
   const [checkedEmail, setCheckedEmail] = useState('');
   const [checkedPassword, setCheckedPassword] = useState('');
+
+  const [dataError, setDataError] = useState(null);
   const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+
   const [message, setMessage] = useState(null);
   const [inputClicked, setInputClicked] = useState(false);
   const [disabledInput, setDisabledInput] = useState(false);
-  const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
+
+  const handleClick = () => setShow(!show)
 
   const data = {
     username: `${checkedEmail}`,
@@ -73,9 +92,37 @@ const EnterAlertDialog = () => {
     }
   }
 
-  const logOutUser = () => {
-    removeCookie("access_token");
-    window.location.reload();
+  useEffect(() => {
+    inputEmail({ target: { value: checkedEmail } });
+    inputPassword({ target: { value: checkedPassword } });
+  });
+
+  const logOutUser = async () => {
+    try {
+      const requestData = {
+        method: 'POST',
+        mode: 'cors',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${cookies.access_token}`
+        }
+      }
+
+      const userInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/logout/`, requestData);
+
+      if (userInfo.status === 204) {
+        setDataError(null);
+        setCookie(null);
+        removeCookie("access_token");
+        window.location.reload();
+
+      } else if (userInfo.status === 401) {
+        const userInfoJSON = await userInfo.json();
+        setDataError(userInfoJSON.detail);
+      }
+    } catch (error) {
+      setDataError(error.detail);
+    }
   }
 
   const logInUser = async () => {
@@ -108,9 +155,9 @@ const EnterAlertDialog = () => {
 
       const userInfoJSON = await userInfo.json();
 
-
       if (userInfo.status === 200) {
         setCookie("access_token", userInfoJSON.token);
+        localStorage.setItem('userEmail', checkedEmail);
         setDataError(null);
         window.location.reload();
       }
@@ -124,160 +171,186 @@ const EnterAlertDialog = () => {
       }
 
     } catch (error) {
-      setDataError(error);
+      setDataError(error.message);
     }
 
   }
 
-
   return (
     <>
-    {
-      cookies.access_token ? (
-        <Button
-          w="200px"
-          h="50px"
-          bgColor="white"
-          borderRadius="10px"
-          onClick={onOpen}
-          bgGradient="none"
-          transition="700ms"
-          transitionDelay="bgColor linear"
-          _hover={{
-            bgColor: "#CDCDCD"
-          }}
-        >
-          Выйти
-        </Button>
-      ) : (
-        <Button
-          w="200px"
-          h="50px"
-          bgColor="white"
-          borderRadius="10px"
-          onClick={onOpen}
-          bgGradient="none"
-          transition="700ms"
-          transitionDelay="bgColor linear"
-          _hover={{
-            bgColor: "#CDCDCD"
-          }}
-        >
-          Войти
-        </Button>
-      )
-    }  
+      {
+        cookies.access_token ? (
+          <Button
+            w="200px"
+            h="50px"
+            bgColor="white"
+            fontSize="lg"
+            borderRadius="10px"
+            onClick={onOpen}
+            bgGradient="none"
+            transition="700ms"
+            transitionDelay="bgColor linear"
+            _hover={{
+              bgColor: "#CDCDCD"
+            }}
+          >
+            Аккаунт
+          </Button>
+        ) : (
+          <Button
+            w="200px"
+            h="50px"
+            bgColor="white"
+            fontSize="lg"
+            borderRadius="10px"
+            onClick={onOpen}
+            bgGradient="none"
+            transition="700ms"
+            transitionDelay="bgColor linear"
+            _hover={{
+              bgColor: "#CDCDCD"
+            }}
+          >
+            Войти
+          </Button>
+        )
+      }
 
-    {
-      cookies.access_token ? (
-        <AlertDialog
-        motionPreset='slideInRight'
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isCentered
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <Center>
-              <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
-                Выход из аккаунта
-              </AlertDialogHeader>
-            </Center>
-            <AlertDialogBody>
-              <Flex flexDirection="column">
-                <Box>
-                  <Text>Вы действительно хотите выйти?</Text>
-                </Box>
-                <Box>
-                  <ChangePasswordDialog />
-                </Box>
-              </Flex>
-            </AlertDialogBody>
+      {
+        cookies.access_token ? (
+          <Drawer
+            isOpen={isOpen}
+            placement='bottom'
+            onClose={onClose}
+            finalFocusRef={btnRef}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerCloseButton />
+              <Center>
+                <DrawerHeader>
+                  <Text fontSize='2xl' as='b'>
+                    Аккаунт
+                  </Text>
+                  <Text>
+                    Пользователь: {localStorage.getItem('userEmail')}
+                  </Text>
+                </DrawerHeader>
+              </Center>
 
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Закрыть
-              </Button>
-              <Button colorScheme='green' onClick={disabledInput ? null : logOutUser} ml={3}>
-                Выйти
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-      ) : (
-        <AlertDialog
-        motionPreset='slideInRight'
-        isOpen={isOpen}
-        leastDestructiveRef={cancelRef}
-        onClose={onClose}
-        isCentered
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <Center>
-              <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
-                Авторизация
-              </AlertDialogHeader>
-            </Center>
-            <AlertDialogBody>
-              <Stack spacing="10px">
+              <DrawerBody>
+                <Center>
+                  <Box w='600px' h='auto'>
+                    <Flex>
+                      <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/ordersHistory`} style={{ textDecoration: "none" }}>
+                        <Button
+                          variant='solid'
+                          textColor="whiteAlpha.900"
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+                          transition="700ms"
+                        >
+                          История заказов
+                        </Button>
+                      </Link>
+                      <Spacer />
+                      <ChangePasswordDialog />
+                      <Spacer />
+                      <ExitConfirmationDialog />
+                    </Flex>
+                  </Box>
+                </Center>
+              </DrawerBody>
 
-                <Input type='email'
-                  placeholder='Электронная почта'
-                  onChange={inputEmail}
-                />
+              <DrawerFooter>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
+        ) : (
+          <AlertDialog
+            motionPreset='slideInRight'
+            isOpen={isOpen}
+            leastDestructiveRef={cancelRef}
+            onClose={onClose}
+            isCentered
+          >
+            <AlertDialogOverlay>
+              <AlertDialogContent>
+                <Center>
+                  <AlertDialogHeader fontSize='lg' fontWeight='bold' display='inline-block' alignContent='center'>
+                    Авторизация
+                  </AlertDialogHeader>
+                </Center>
+                <AlertDialogBody>
+                  <Stack spacing="10px">
 
-                <InputGroup>
-                  <Input
-                    type={show ? 'text' : 'password'}
-                    placeholder='Введите пароль (не менее 8 символов)'
-                    onChange={inputPassword}
-                  />
-                  <InputRightElement width='5rem'>
-                    <Button h='1.75rem' size='md' onClick={handleClick}>
-                      {show ? 'Скрыть' : 'Показать'}
-                    </Button>
-                  </InputRightElement>
-                </InputGroup>
+                    <Input type='email'
+                      placeholder='Электронная почта'
+                      onChange={inputEmail}
+                    />
 
-                <Box>
-                  {
-                    message ? (
-                      dataError || !checkedEmail || !checkedPassword || (inputClicked === false) ? (
-                        <Text>{dataError}</Text>
+                    <InputGroup>
+                      <Input
+                        type={show ? 'text' : 'password'}
+                        placeholder='Введите пароль (не менее 8 символов)'
+                        onChange={inputPassword}
+                      />
+                      <InputRightElement width='3rem'>
+                        <IconButton
+                          h='2rem'
+                          w='2rem'
+                          bgColor="white"
+                          size='xl'
+                          borderRadius="50%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center" onClick={handleClick}
+                        >
+                          {show ? <RxEyeOpen /> : <RxEyeClosed />}
+                        </IconButton>
+                      </InputRightElement>
+                    </InputGroup>
 
-                      ) : null
-                    ) : null
+                    <Box>
+                      {
+                        message ? (
+                          dataError || !checkedEmail || !checkedPassword || (disabledInput === false) ? (
+                            <Text textColor='red'>{dataError}</Text>
+                          ) : null
+                        ) : null
+                      }
+                    </Box>
 
-                  }
-                </Box>
+                    <Flex justifyContent="space-between">
+                      <RegisterAlertDialog />
 
-                <Flex justifyContent="space-between">
-                  <RegisterAlertDialog />
+                      {
+                        cookies.access_token ? <ChangePasswordDialog /> : null
+                      }
 
-                  {
-                    cookies.access_token ? <ChangePasswordDialog /> : null
-                  }
-                  
-                </Flex>
-              </Stack>
-            </AlertDialogBody>
+                    </Flex>
+                  </Stack>
+                </AlertDialogBody>
 
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onClose}>
-                Закрыть
-              </Button>
-              <Button colorScheme='green' onClick={disabledInput ? null : logInUser} ml={3}>
-                Войти
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
-      )
-    }
+                <AlertDialogFooter>
+                  <Button ref={cancelRef} onClick={onClose}>
+                    Закрыть
+                  </Button>
+                  <Button
+                    onClick={disabledInput ? null : logInUser}
+                    ml={3}
+                    textColor="whiteAlpha.900"
+                    bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                    _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+                  >
+                    Войти
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialogOverlay>
+          </AlertDialog>
+        )
+      }
     </>
   )
 }

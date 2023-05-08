@@ -16,7 +16,10 @@ import TrademarksPage from './pages/TrademarksPage';
 import GroupCategoryPage from './pages/GroupCategoryPage';
 import CuisinesPage from './pages/CuisinesPage';
 import ResultsOfSearchPage from './pages/ResultsOfSearchPage';
+import OrdersHistoryPage from './pages/OrdersHistoryPage';
+import AboutPaymentPage from './pages/AboutPaymentPage';
 import { CartContext } from './contexts/CartContext';
+import AboutKitchenPage from './pages/AboutKitchenPage';
 
 const router = createBrowserRouter([
   {
@@ -55,6 +58,11 @@ const router = createBrowserRouter([
   },
 
   {
+    path: '/ordersHistory',
+    element: <OrdersHistoryPage />
+  },
+
+  {
     path: '/user-agreement',
     element: <UserAgreementPage/>
   },
@@ -77,6 +85,16 @@ const router = createBrowserRouter([
   {
     path: '/trademarks',
     element: <TrademarksPage />
+  },
+
+  {
+    path: '/aboutPayment',
+    element: <AboutPaymentPage />
+  },
+
+  {
+    path: '/aboutKitchen',
+    element: <AboutKitchenPage />
   }
 ]);
 

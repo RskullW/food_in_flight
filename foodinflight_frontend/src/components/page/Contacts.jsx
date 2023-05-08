@@ -9,8 +9,9 @@ import {
   Container,
   HStack
 } from "@chakra-ui/react"
-import { VscAccount } from "react-icons/vsc"
 import { AiOutlineArrowLeft, AiOutlineMail } from "react-icons/ai"
+import { SlSocialVkontakte } from "react-icons/sl"
+import { FaTelegramPlane } from "react-icons/fa"
 
 const Contacts = () => {
   return (
@@ -31,8 +32,13 @@ const Contacts = () => {
             <br />
             <Text fontSize='md'>Ковтун Антон Альбертович</Text>
             <Link href="https://vk.com/5fs4d3j2" isExternal>
-              <Button leftIcon={<VscAccount />} colorScheme='blue' variant='solid' size='sm'>
+              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
                 ВКонтакте
+              </Button>
+            </Link>
+            <Link href="https://t.me/rskullw" isExternal margin='10px'>
+              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
+                Telegram
               </Button>
             </Link>
           </Container>
@@ -43,8 +49,13 @@ const Contacts = () => {
             <br />
             <Text fontSize='md'>Балкунов Сергей Иванович</Text>
             <Link href="https://vk.com/itm0sha" isExternal>
-              <Button leftIcon={<VscAccount />} colorScheme='blue' variant='solid' size='sm'>
+              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
                 ВКонтакте
+              </Button>
+            </Link>
+            <Link href="https://t.me/itmosha" isExternal margin='10px'>
+              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
+                Telegram
               </Button>
             </Link>
           </Container>
@@ -55,8 +66,13 @@ const Contacts = () => {
             <br />
             <Text fontSize='md'>Базилевич Дмитрий Александрович</Text>
             <Link href="https://vk.com/pivolovepizdec" isExternal>
-              <Button leftIcon={<VscAccount />} colorScheme='blue' variant='solid' size='sm'>
+              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
                 ВКонтакте
+              </Button>
+            </Link>
+            <Link href="https://t.me/Pivondepula" isExternal margin='10px'>
+              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
+                Telegram
               </Button>
             </Link>
           </Container>
@@ -67,8 +83,13 @@ const Contacts = () => {
             <br />
             <Text fontSize='md'>Михайловский Никита Сергеевич</Text>
             <Link href="https://vk.com/mihalych32" isExternal>
-              <Button leftIcon={<VscAccount />} colorScheme='blue' variant='solid' size='sm'>
+              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
                 ВКонтакте
+              </Button>
+            </Link>
+            <Link href="https://t.me/xy19989" isExternal margin='10px'>
+              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
+                Telegram
               </Button>
             </Link>
           </Container>
@@ -79,8 +100,13 @@ const Contacts = () => {
             <br />
             <Text fontSize='md'>Кириллов Павел Евгеньевич</Text>
             <Link href="https://vk.com/id347879578" isExternal>
-              <Button leftIcon={<VscAccount />} colorScheme='blue' variant='solid' size='sm'>
+              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
                 ВКонтакте
+              </Button>
+            </Link>
+            <Link href="https://t.me/kpasshok" isExternal margin='10px'>
+              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
+                Telegram
               </Button>
             </Link>
           </Container>
@@ -91,8 +117,13 @@ const Contacts = () => {
             <br />
             <Text fontSize='md'>Бусырев Виктор Андреевич</Text>
             <Link href="https://vk.com/vi350" isExternal>
-              <Button leftIcon={<VscAccount />} colorScheme='blue' variant='solid' size='sm'>
+              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
                 ВКонтакте
+              </Button>
+            </Link>
+            <Link href="https://t.me/just_yoy" isExternal margin='10px'>
+              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
+                Telegram
               </Button>
             </Link>
           </Container>

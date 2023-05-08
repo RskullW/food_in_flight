@@ -34,7 +34,7 @@ const Footer = () => {
           </Link>
 
           <Link
-            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/feedback`}
+            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/contacts`}
           >
             Обратная связь
           </Link>
