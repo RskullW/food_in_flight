@@ -10,8 +10,10 @@ API_TOKEN = os.getenv('BOT_TOKEN')
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
+host = os.getenv('POSTGRES_HOST_DOCKER') if os.getenv('INSIDE_A_DOCKER', False) else os.getenv('POSTGRES_HOST')
+
 conn = psycopg2.connect(
-    host=os.getenv('POSTGRES_HOST'),
+    host=host,
     port=os.getenv('POSTGRES_PORT'),
     database=os.getenv('POSTGRES_NAME'),
     user=os.getenv('POSTGRES_USER'),

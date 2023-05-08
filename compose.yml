@@ -69,6 +69,16 @@ services:
       - backnet
       - frontnet
 
+  foodinflight_tgbot:
+    container_name: foodinflight_tgbot
+    depends_on:
+      - foodinflight_postgres
+    build:
+      context: .
+      dockerfile: configs/Dockerfile_tgbot
+    networks:
+      - backnet
+
   foodinflight_certbot:
     container_name: foodinflight_certbot
     image: certbot/certbot
