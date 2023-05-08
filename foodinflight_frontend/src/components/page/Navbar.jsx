@@ -55,7 +55,7 @@ const Navbar = () => {
     Promise.all([getCategories(), getGroupCategories()]).then(() => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000)
+      }, 500)
     })
   }, [])
 

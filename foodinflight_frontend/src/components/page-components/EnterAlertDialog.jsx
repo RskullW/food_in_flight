@@ -226,16 +226,20 @@ const EnterAlertDialog = () => {
             <DrawerOverlay />
             <DrawerContent>
               <DrawerCloseButton />
-              <Center>
-                <DrawerHeader>
-                  <Text fontSize='2xl' as='b'>
-                    Аккаунт
-                  </Text>
-                  <Text>
-                    Пользователь: {localStorage.getItem('userEmail')}
-                  </Text>
-                </DrawerHeader>
-              </Center>
+              <DrawerHeader>
+                <Flex flexDirection="column" alignItems="center">
+                  <Box>
+                    <Text fontSize='2xl' as='b'>
+                      Аккаунт
+                    </Text>
+                  </Box>
+                  <Box>
+                    <Text>
+                      Пользователь: {localStorage.getItem('userEmail')}
+                    </Text>
+                  </Box>
+                </Flex>
+              </DrawerHeader>
 
               <DrawerBody>
                 <Center>

@@ -33,7 +33,7 @@ const CartButton = () => {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [showOrderDetailsWindow, setShowOrderDetailsWindow] = useState(false);
-  const [scrollBehavior, setScrollBehavior] = React.useState('inside')
+  const [scrollBehavior] = React.useState('inside')
   const [products, setProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
   const { onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts, countTotalPrice, removeFromCart,
@@ -134,10 +134,7 @@ const CartButton = () => {
                   <Flex flexDirection="column">
                     <Flex>
                       <Flex flexDirection="column">
-                        <Heading as="h3" fontSize="xl">Ваш заказ</Heading>
-
-                        <Spacer />
-
+                        <Heading as="h3" fontSize="xl" fontWeight="semibold">Ваш заказ</Heading>
                         <Wrap justify="left">
                           {
                             products?.map((product) => (
@@ -235,15 +232,18 @@ const CartButton = () => {
 
                       <Spacer />
 
-                      <Flex flexDirection="column">
-                        <Heading as="h3" fontSize="xl">К оплате</Heading>
-                        <Box>
-                          <Text as='b' fontSize='xl'>
+                      <Flex flexDirection="column" alignItems="start">
+                        
+                          <Heading as="h3" fontSize="xl" fontWeight="semibold" whiteSpace="nowrap">К оплате</Heading>
+                        
+                        
+                        
+                          <Text as='b' fontSize='2xl' fontWeight="bold">
                             {
                               countTotalPrice() + ' ₽'
                             }
                           </Text>
-                        </Box>
+                        
                       </Flex>
                     </Flex>
 

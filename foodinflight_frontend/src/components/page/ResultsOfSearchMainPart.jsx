@@ -14,7 +14,8 @@ import {
   Image,
   Spacer,
   Button,
-  Flex
+  Flex,
+  Spinner
 } from "@chakra-ui/react"
 
 import { BiArrowBack } from "react-icons/bi"
@@ -22,7 +23,7 @@ import { HiOutlineMinus, HiOutlinePlus } from "react-icons/hi";
 
 
 const ResultsOfSearchMainPart = () => {
-
+  const [isLoading, setIsLoading] = useState(true);
   const [allProducts, setAllProducts] = useState([]);
   const [productsError, setProductsError] = useState(false);
   const { onAddToCart, onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts } = useCartContext();
@@ -52,7 +53,11 @@ const ResultsOfSearchMainPart = () => {
       }
     }
 
-    getProducts();
+    Promise.all([getProducts()]).then(() => {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 1000)
+    })
   }, [queryName, cartProducts])
 
   return (
@@ -85,147 +90,151 @@ const ResultsOfSearchMainPart = () => {
       </Box>
 
       {
-        allProducts.length > 0 ? (
-          <Wrap justify="center" margin="20px 0px" p="5px">
-            {
-              allProducts.map((product) => (
-                <WrapItem
-                  key={product.slug}
-                  className="popular-category__item"
-                >
-                  <Card
-                    maxW="296px"
-                    h="340px"
-                    mb="15px"
-                    shadow="lg"
-                    transition="200ms ease-out"
-                    _hover={{ shadow: "md", h: "338px" }}
-                  >
-
-                    <CardBody p="0px">
-                      <Box>
-                        <Link
-                          href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}`}
-                          style={{ textDecoration: "none" }}
-                        >
-                          <Box textAlign="left">
-
-                            <Image
-                              src={(product.images[0]?.image == null ? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png" : product.images[0]?.image)}
-                              borderRadius="0.375rem 0.375rem 0rem 0rem"
-                              objectFit="cover"
-                              maxH="200px"
-                              margin="0px 0px 3px 0px"
-                              transition="200ms"
-                              _hover={{ opacity: "0.8" }}
-                            />
-
-                            <Flex flexDirection="row" alignItems="start">
-                              <Text p="10px 0px 0px 10px" fontWeight="500" fontSize="lg">{product.title}</Text>
-                              <Spacer />
-                              <Text p="10px 10px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
-                            </Flex>
-
-                          </Box>
-                        </Link>
-                      </Box>
-                    </CardBody>
-
-                    <CardFooter alignItems="center" padding="0px 10px 20px 10px">
-                      <Text fontWeight="700" fontSize="lg">{product.price}₽</Text>
-
-                      <Spacer />
-
-                      <Box
-                        bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                        _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                        borderRadius="10px"
-                      >
-                        {
-                          checkProductInCart(product) ? (
-                            <Flex
-                              gap="10px"
-                              alignItems="center"
-                              h="-moz-min-content"
-                            >
-
-                              <Button
-                                onClick={() => onMinusFromCart(product.slug)}
-                                textColor="whiteAlpha.900"
-                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                                _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                              >
-                                <HiOutlineMinus />
-                              </Button>
-
-                              <Text textColor="whiteAlpha.900" fontSize="lg">
-                                {cartProducts?.find(p => p.slug === product.slug)?.quantity}
-                              </Text>
-
-                              <Button
-                                onClick={() => onPlusToCart(product.slug)}
-                                textColor="whiteAlpha.900"
-                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                                _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                              >
-                                <HiOutlinePlus />
-                              </Button>
-                            </Flex>
-                          ) : (
-                            <Button
-                              onClick={() => { onAddToCart(product) }}
-                              textColor="whiteAlpha.900"
-                              fontSize="lg"
-                              bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                              _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                            >
-                              В корзину
-                            </Button>
-                          )
-                        }
-                      </Box>
-
-                    </CardFooter>
-
-                  </Card>
-
-                </WrapItem>
-
-              )
-              )
-            }
-          </Wrap>
+        isLoading ? (
+          <Box margin="20px 10px" p="10px">
+            <Spinner />
+          </Box>
         ) : (
-          <Flex flexDirection="column" justifyContent="center" margin="20px 20px" p="5px" gap="20px">
-            <Box textAlign="center">
-              <Text>
-                Такого блюда у нас нет
-                <br />
-                Уточните запрос или посмотрите меню
-              </Text>
-            </Box>
+          allProducts.length > 0 ? (
+            <Wrap justify="center" margin="20px 0px" p="5px">
+              {
+                allProducts.map((product) => (
+                  <WrapItem
+                    key={product.slug}
+                  >
+                    <Card
+                      maxW="296px"
+                      h="340px"
+                      mb="15px"
+                      shadow="lg"
+                      transition="200ms ease-out"
+                      _hover={{ shadow: "md", h: "338px" }}
+                    >
 
-            <Spacer />
+                      <CardBody p="0px">
+                        <Box>
+                          <Link
+                            href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/${product.category.slug}/${product.slug}`}
+                            style={{ textDecoration: "none" }}
+                          >
+                            <Box textAlign="left">
 
-            <Box textAlign="center">
-              <Link
-                style={{ textDecoration: "none" }}
-                href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
+                              <Image
+                                src={(product.images[0]?.image == null ? "https://i.ibb.co/Px7bWvM/Image-Not-Loaded.png" : product.images[0]?.image)}
+                                borderRadius="0.375rem 0.375rem 0rem 0rem"
+                                objectFit="cover"
+                                maxH="200px"
+                                margin="0px 0px 3px 0px"
+                                transition="200ms"
+                                _hover={{ opacity: "0.8" }}
+                              />
 
-                textColor="whiteAlpha.900"
-                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
-                _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
-                borderRadius="20px"
-                textAlign="center"
-                p="10px 40px"
-              >
-                В меню
-              </Link>
-            </Box>
-          </Flex>
+                              <Flex flexDirection="row" alignItems="start">
+                                <Text p="10px 0px 0px 10px" fontWeight="500" fontSize="lg">{product.title}</Text>
+                                <Spacer />
+                                <Text p="10px 10px 0px 10px" textColor="blackAlpha.500" fontWeight="400">{product.weight}г</Text>
+                              </Flex>
+
+                            </Box>
+                          </Link>
+                        </Box>
+                      </CardBody>
+
+                      <CardFooter alignItems="center" padding="0px 10px 20px 10px">
+                        <Text fontWeight="700" fontSize="lg">{product.price}₽</Text>
+
+                        <Spacer />
+
+                        <Box
+                          bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                          _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                          borderRadius="10px"
+                        >
+                          {
+                            checkProductInCart(product) ? (
+                              <Flex
+                                gap="10px"
+                                alignItems="center"
+                                h="-moz-min-content"
+                              >
+
+                                <Button
+                                  onClick={() => onMinusFromCart(product.slug)}
+                                  textColor="whiteAlpha.900"
+                                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                  _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                                >
+                                  <HiOutlineMinus />
+                                </Button>
+
+                                <Text textColor="whiteAlpha.900" fontSize="lg">
+                                  {cartProducts?.find(p => p.slug === product.slug)?.quantity}
+                                </Text>
+
+                                <Button
+                                  onClick={() => onPlusToCart(product.slug)}
+                                  textColor="whiteAlpha.900"
+                                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                  _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                                >
+                                  <HiOutlinePlus />
+                                </Button>
+                              </Flex>
+                            ) : (
+                              <Button
+                                onClick={() => { onAddToCart(product) }}
+                                textColor="whiteAlpha.900"
+                                fontSize="lg"
+                                bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                                _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                              >
+                                В корзину
+                              </Button>
+                            )
+                          }
+                        </Box>
+
+                      </CardFooter>
+
+                    </Card>
+
+                  </WrapItem>
+
+                )
+                )
+              }
+            </Wrap>
+          ) : (
+            <Flex flexDirection="column" justifyContent="center" margin="20px 20px" p="5px" gap="20px">
+              <Box textAlign="center">
+                <Text>
+                  Такого блюда у нас нет
+                  <br />
+                  Уточните запрос или посмотрите меню
+                </Text>
+              </Box>
+
+              <Spacer />
+
+              <Box textAlign="center">
+                <Link
+                  style={{ textDecoration: "none" }}
+                  href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}`}
+
+                  textColor="whiteAlpha.900"
+                  bgGradient="linear(to-b, #6E72FC, #AD1DEB)"
+                  _hover={{ bgGradient: "linear(to-b, #6E72FC, #AD1DEB)" }}
+                  borderRadius="20px"
+                  textAlign="center"
+                  p="10px 40px"
+                >
+                  В меню
+                </Link>
+              </Box>
+            </Flex>
+          )
         )
       }
-
     </Box>
   )
 }

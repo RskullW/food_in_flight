@@ -88,14 +88,11 @@ const OrdersHistory = () => {
       }
     }
 
-
-
-    Promise.all([getOrdersHistory(), getProducts()])
-      .then(() => {
-        setTimeout(() => {
-          setIsLoading(false);
-        }, 1000);
-      });
+    Promise.all([getOrdersHistory(), getProducts()]).then(() => {
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 2000)
+    })
   }, [numberOfOrders]);
 
   const checkUserState = (state) => {
