@@ -338,23 +338,20 @@ class _CartScreenState extends State<CartScreen> {
             ),
             Expanded(
               child: TextFormField(
-                initialValue: '+7',
+                initialValue: "+7",
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(phoneNumberRegExp),
                   LengthLimitingTextInputFormatter(12),
                 ],
                 style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: MediaQuery.of(context).size.width * 0.035),
-                decoration: InputDecoration(
-                  hintText: '+7',
-                  hintStyle: TextStyle(
-                      color: Colors.grey,
-                      fontSize: MediaQuery.of(context).size.width * 0.035),
-                  border: InputBorder.none,
+                  color: Colors.grey,
+                  fontSize: MediaQuery.of(context).size.width * 0.035,
                 ),
                 onChanged: (numberPhone) {
                   setState(() {
+                    if (numberPhone == "") {
+                      numberPhone = "+7";
+                    }
                     _phoneNumber = numberPhone;
                   });
                 },
@@ -499,40 +496,49 @@ class _CartScreenState extends State<CartScreen> {
                   SizedBox(
                     height: MediaQuery.of(context).size.height * 0.15,
                   ),
-                  Container(
-                    padding: EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: value >= 1
-                          ? colorSelectItemInCart
-                          : colorNotSelectItemInCart,
-                    ),
-                    child: Text(
-                      "1",
-                      style: TextStyle(
-                        color: colorMoreScreenAppBar,
-                        fontSize: MediaQuery.of(context).size.width * 0.035,
-                        fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () => _numberStatusCreationOrder.value = 1,
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: value >= 1
+                            ? colorSelectItemInCart
+                            : colorNotSelectItemInCart,
+                      ),
+                      child: Text(
+                        "1",
+                        style: TextStyle(
+                          color: colorMoreScreenAppBar,
+                          fontSize: MediaQuery.of(context).size.width * 0.035,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 0.3,
                   ),
-                  Container(
-                    padding: EdgeInsets.all(7),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: value >= 2
-                          ? colorSelectItemInCart
-                          : colorNotSelectItemInCart,
-                    ),
-                    child: Text(
-                      "2",
-                      style: TextStyle(
-                        color: colorMoreScreenAppBar,
-                        fontSize: MediaQuery.of(context).size.width * 0.035,
-                        fontWeight: FontWeight.bold,
+                  GestureDetector(
+                    onTap: () => _numberStatusCreationOrder.value =
+                        _numberStatusCreationOrder.value >= 3
+                            ? 2
+                            : _numberStatusCreationOrder.value,
+                    child: Container(
+                      padding: EdgeInsets.all(7),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: value >= 2
+                            ? colorSelectItemInCart
+                            : colorNotSelectItemInCart,
+                      ),
+                      child: Text(
+                        "2",
+                        style: TextStyle(
+                          color: colorMoreScreenAppBar,
+                          fontSize: MediaQuery.of(context).size.width * 0.035,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                   ),
@@ -832,7 +838,7 @@ class _CartScreenState extends State<CartScreen> {
                 splashRadius: MediaQuery.of(context).size.width * 0.07,
                 onPressed: () {
                   setState(() {
-                    if (productInCart.numbersOfCount < 9) {
+                    if (productInCart.numbersOfCount < 99) {
                       productInCart.numbersOfCount++;
                     }
                   });
