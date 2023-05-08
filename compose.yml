@@ -81,6 +81,7 @@ services:
       context: .
       dockerfile: configs/Dockerfile_tgbot
     networks:
+      - frontnet
       - backnet
 
   foodinflight_certbot:
