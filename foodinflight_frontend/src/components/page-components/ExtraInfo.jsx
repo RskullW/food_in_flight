@@ -79,7 +79,7 @@ const ExtraInfo = () => {
         <Card
           mr="10px"
           p="5px"
-          boxShadow="2xl"
+          boxShadow="lg"
           transition="100ms ease-out"
           _hover={{ boxShadow: "md" }}
         >
@@ -109,7 +109,7 @@ const ExtraInfo = () => {
         <Card
           ml="10px"
           p="5px"
-          boxShadow="2xl"
+          boxShadow="lg"
           transition="200ms ease-out"
           _hover={{ boxShadow: "md" }}
         >
@@ -125,6 +125,7 @@ const ExtraInfo = () => {
 
             <Text
               margin="20px 0px 0px 0px"
+              fontSize="md"
             >
               Чем еще мы можем порадовать своих клиентов?
               Например, круглосуточной доставкой еды по Санкт-Петербургу.

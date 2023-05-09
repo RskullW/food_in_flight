@@ -54,7 +54,6 @@ const FooterMainPart = () => {
 
   return (
     <Flex
-      className="footer"
       m="20px 20px 20px 20px"
       p="20px 0px 10px 0px"
       borderTop="1px solid rgba(0, 0, 0, 0.15)"
@@ -119,8 +118,8 @@ const FooterMainPart = () => {
       <Flex
         className="footer__nav-item"
         flexDirection="column"
-        textAlign="left"
-        gap="20px"
+        textAlign="center"
+        gap="10px"
       >
 
         <Heading
@@ -150,6 +149,7 @@ const FooterMainPart = () => {
                 justifyContent="left"
                 borderRadius="20px"
                 _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
+                w="100%"
               >
 
                 <Box margin="0px 10px 0px 0px">
@@ -176,6 +176,7 @@ const FooterMainPart = () => {
                 _hover={{ bgGradient: "linear(to-r, #6E72FC, #AD1DEB)" }}
                 justifyContent="left"
                 borderRadius="20px"
+                w="100%"
               >
                 <Box margin="0px 10px 0px 0px">
                   <BsGooglePlay />
@@ -190,7 +191,7 @@ const FooterMainPart = () => {
 
         </Flex>
 
-        <Flex justifyContent="left" gap="20px">
+        <Flex justifyContent="center" gap="20px">
 
           <Link
             isExternal

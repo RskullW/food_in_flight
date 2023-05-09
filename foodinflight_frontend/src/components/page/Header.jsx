@@ -62,8 +62,7 @@ const Header = () => {
         <CartButton />
 
         <Center 
-          w="200px" 
-          m={{xl:"0px 90px 0px 90px", lg:"0px 10px 0px 90px", md:"0px 10px 0px 10px", sm:"0px 10px 0px 10px"}}
+          m={{xl:"0px 0px 0px 90px", lg:"0px 0px 0px 90px", md:"0px 0px 0px 10px", sm:"0px 0px 0px 10px"}}
         >
           <EnterAlertDialog />
         </Center>

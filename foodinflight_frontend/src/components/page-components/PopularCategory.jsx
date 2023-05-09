@@ -74,6 +74,7 @@ const PopularCategory = () => {
                 <Card
                   maxW="296px"
                   h="340px"
+                  minH="fit-content"
                   mb="15px"
                   shadow="lg"
                   transition="200ms ease-out"

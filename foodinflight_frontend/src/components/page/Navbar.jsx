@@ -5,7 +5,9 @@ import {
   Text,
   Flex,
   Image,
-  Spinner
+  Spinner,
+  Skeleton,
+  Stack
 } from "@chakra-ui/react";
 
 
@@ -55,24 +57,33 @@ const Navbar = () => {
     Promise.all([getCategories(), getGroupCategories()]).then(() => {
       setTimeout(() => {
         setIsLoading(false);
-      }, 500)
+      }, 1000)
     })
   }, [])
 
 
   return (
-    <Box 
-      className="nav-bar" 
-      width={{xl:"15%", lg:"20%", md:"0%", sm:"0%"}} 
+    <Box
+      className="nav-bar"
+      width={{ xl: "15%", lg: "20%", md: "0%", sm: "0%" }}
       borderRight="1px solid rgba(0, 0, 0, 0.1)"
-      display={{ base: 'none', xl: 'block', lg:'block' }}
+      display={{ base: 'none', xl: 'block', lg: 'block' }}
       bgGradient="linear(to-r, #EEEEEE, #F8F9E2)"
     >
       {
         isLoading ? (
-          <Box m="10px 20px 0px 20px">
-            <Spinner />
-          </Box>
+          <Stack flexDirection="column" m="10px 20px 0px 20px" spacing={4}>
+              {
+                allCategories.map((category) => (
+                  <Skeleton key={category.slug} startColor="#E8DBFC" endColor="#F8F9D2" h="24px" />
+                ))
+              }
+              {
+                allGroupCategories.map((groupCategory) => (
+                  <Skeleton key={groupCategory.slug} startColor="#E8DBFC" endColor="#F8F9D2" h="24px" />
+                ))
+              }
+          </Stack>
         ) : (
           <>
             <Box margin="0px 0px 50px 20px">
@@ -82,7 +93,7 @@ const Navbar = () => {
                     <Link href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}`}
                       style={{ textDecoration: "none" }}
                     >
-                      <Text color="blackAlpha.900" fontWeight="semibold" fontSize="md">
+                      <Text color="blackAlpha.900" fontWeight="semibold" fontSize="lg">
                         {category.title}
                       </Text>
                     </Link>
@@ -109,7 +120,7 @@ const Navbar = () => {
                             borderRadius="50%"
                           />
                         </Box>
-                        <Text color="blackAlpha.900" fontWeight="semibold" fontSize="md">
+                        <Text color="blackAlpha.900" fontWeight="semibold" fontSize="lg">
                           {groupCategory.title}
                         </Text>
                       </Flex>

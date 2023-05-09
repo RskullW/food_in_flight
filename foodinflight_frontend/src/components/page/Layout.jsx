@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Flex} from '@chakra-ui/react'
+import { Box, Flex } from '@chakra-ui/react'
 import Header from './Header'
 import Footer from './Footer'
 import Navbar from './Navbar'
@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
         <Box>
           <Header />
           
-            <Flex mt="70px" bgGradient="linear(to-l, #E8DBFC, #F8F9D2)">
+            <Flex minH="100vh" mt="70px" bgGradient="linear(to-l, #E8DBFC, #F8F9D2)">
               <Navbar />
               <Box
                 width={{  xl:"85%", md: "100%", base: "100%", lg: "100%" }}
@@ -21,7 +21,9 @@ const Layout = ({ children }) => {
                 borderRadius="10px"
                 m={{xl:"10px 20px", lg:"10px 10px", md:"10px 10px", sm:"10px 10px"}}
               >
-                { children }
+                <Box minH="70vh">
+                  { children }
+                </Box>
                 <FooterMainPart />
               </Box>
             </Flex>

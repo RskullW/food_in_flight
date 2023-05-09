@@ -53,7 +53,7 @@ const Categories = () => {
         <Heading as="h1" size="xl">Категории</Heading>
       </Center>
 
-      <Wrap justify="center" margin="20px 0px">
+      <Wrap justify="center" margin="20px 0px" >
         {
           isLoading ? (
             <Spinner />
@@ -62,11 +62,12 @@ const Categories = () => {
               <WrapItem key={category.slug}>
                 <Card
                   maxW="295px"
+                  h="147px"
                   shadow="md"
                   _hover={{ opacity: "0.8" }}
                 >
 
-                  <CardBody p="0 !important">
+                  <CardBody p="0">
                     <Box>
                       <Link
                         href={`${process.env.REACT_APP_FRONTEND_PROTOCOL_HOST}/categories/${category.slug}`}
@@ -76,7 +77,8 @@ const Categories = () => {
                           <Image
                             src={category.image}
                             borderRadius="0.375rem 0.375rem 0.375rem 0.375rem"
-                            margin="0px 0px -29px 0px"
+                            margin="0px 0px -30px 0px"
+                            objectFit="cover"
                           />
 
                           {category.title}

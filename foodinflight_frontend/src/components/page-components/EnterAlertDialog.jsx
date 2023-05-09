@@ -37,6 +37,8 @@ import { RxEyeClosed, RxEyeOpen } from "react-icons/rx"
 
 const EnterAlertDialog = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [delayedIsOpen, setDelayedIsOpen] = useState(false);
+
   const [cookies, setCookie, removeCookie] = useCookies(['access_token']);
   const [show, setShow] = React.useState(false);
   const btnRef = React.useRef()
@@ -53,6 +55,12 @@ const EnterAlertDialog = () => {
   const [disabledInput, setDisabledInput] = useState(false);
 
   const handleClick = () => setShow(!show)
+
+  const handleOpenWithDelay = () => {
+    setTimeout(() => {
+      setDelayedIsOpen(true);
+    }, 1000);
+  };
 
   const data = {
     username: `${checkedEmail}`,
@@ -185,12 +193,10 @@ const EnterAlertDialog = () => {
             bgColor="white"
             fontSize="lg"
             borderRadius="10px"
+            border="1px solid violet"
             onClick={onOpen}
-            bgGradient="none"
-            transition="700ms"
-            transitionDelay="bgColor linear"
             _hover={{
-              bgColor: "#CDCDCD"
+              backgroundImage: "linear-gradient(to right, #e66465, #9198e5)"
             }}
           >
             Аккаунт
@@ -202,12 +208,10 @@ const EnterAlertDialog = () => {
             bgColor="white"
             fontSize="lg"
             borderRadius="10px"
+            border="1px solid violet"
             onClick={onOpen}
-            bgGradient="none"
-            transition="700ms"
-            transitionDelay="bgColor linear"
             _hover={{
-              bgColor: "#CDCDCD"
+              backgroundImage: "linear-gradient(to right, #e66465, #9198e5)"
             }}
           >
             Войти
@@ -339,7 +343,7 @@ const EnterAlertDialog = () => {
                     Закрыть
                   </Button>
                   <Button
-                    onClick={disabledInput ? null : logInUser}
+                    onClick={disabledInput ? null : (() => logInUser() && handleOpenWithDelay())}
                     ml={3}
                     textColor="whiteAlpha.900"
                     bgGradient="linear(to-b, #6E72FC, #AD1DEB)"

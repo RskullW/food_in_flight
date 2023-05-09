@@ -38,8 +38,12 @@ const CartButton = () => {
   const [productsError, setProductsError] = useState(false);
   const { onPlusToCart, onMinusFromCart, checkProductInCart, cartProducts, countTotalPrice, removeFromCart,
     checkLoggedIn, loggedIn, EnterAlertDialogOpen, setEnterAlertDialogOpen } = useCartContext();
-  countTotalPrice();
-  checkLoggedIn();
+
+  useEffect(() => {
+    countTotalPrice();
+    checkLoggedIn();
+  }, [])
+  
 
   const handleContinueButtonClick = () => {
     setShowOrderDetailsWindow(true);
@@ -73,6 +77,8 @@ const CartButton = () => {
           <Button
             h="50px"
             w="150px"
+            minW="fit-content"
+            p="5px"
             leftIcon={<AiOutlineShoppingCart />}
             bgColor="white"
             fontSize="lg"
