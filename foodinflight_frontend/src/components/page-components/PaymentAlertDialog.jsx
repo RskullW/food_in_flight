@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useCookies } from "react-cookie";
 import { useCartContext } from "../../contexts/CartContext";
 import {
@@ -10,7 +10,8 @@ import {
   Text,
   Flex,
   Spacer,
-  IconButton
+  IconButton,
+  Button
 } from "@chakra-ui/react";
 
 import { GrClose } from "react-icons/gr";
@@ -18,6 +19,7 @@ import { GrClose } from "react-icons/gr";
 const PaymentAlertDialog = ({ isOpen, onClose }) => {
   const [cookies] = useCookies(['access_token']);
   const [dataError, setDataError] = useState(null);
+  const [payError, setPayError] = useState(null);
   const [orderStatus, setOrderStatus] = useState(null);
   const [userOrderStatus, setUserOrderStatus] = useState(null);
   const { clearCart } = useCartContext();
@@ -34,15 +36,14 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
               'Authorization': `Token ${cookies.access_token}`
             }
           })
-  
+
           const orderInfoJSON = await orderInfo.json();
-  
+
           if (orderInfo.status === 200) {
             setOrderStatus(orderInfoJSON.state);
             setDataError(null);
           }
           if (orderInfo.status === 401) {
-            console.log(orderInfo.message);
             setDataError(orderInfo.message);
           }
         } catch (error) {
@@ -51,9 +52,10 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
     }
-  
+
     checkOrderStatus();
 
+    
     const checkUserOrderStatus = () => {
       if (orderStatus === 'PENDING') {
         setUserOrderStatus('Ожидание подтверждения оплаты.');
@@ -67,7 +69,7 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
       else if (orderStatus === 'DELIVERING') {
         setUserOrderStatus('Ваш заказ уже в пути!');
       }
-      else if(orderStatus === 'DELIVERED') {
+      else if (orderStatus === 'DELIVERED') {
         setUserOrderStatus('Заказ успешно доставлен!');
       }
       else if (orderStatus === 'CANCELED') {
@@ -79,7 +81,30 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
     }
 
     checkUserOrderStatus();
-  }, [orderStatus, userOrderStatus]); 
+  }, [orderStatus, userOrderStatus]);
+
+  const payForOrder = async () => {
+    try {
+      const payInfo = await fetch(`${process.env.REACT_APP_BACKEND_PROTOCOL_HOST}/api/orders/${JSON.parse(localStorage.getItem('order_key'))}/`, {
+        method: 'PATCH',
+        mode: 'cors',
+        body: JSON.stringify({"state": "PAID"}),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Token ${cookies.access_token}`
+        }
+      })
+
+      if (payInfo.status === 204) {
+        setDataError(null);
+      }
+      else {
+        setDataError(payInfo.message);
+      }
+    } catch (error) {
+      setPayError(error.message)
+    }
+  }
 
   return (
     <>
@@ -104,7 +129,7 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
                   icon={<GrClose />}
                   bgColor="white"
                   _hover={{ bgColor: "white" }}
-                  onClick={() => {onClose(); clearCart()}}
+                  onClick={() => { onClose(); clearCart() }}
                 />
               </Flex>
             </AlertDialogHeader>
@@ -113,9 +138,17 @@ const PaymentAlertDialog = ({ isOpen, onClose }) => {
                 dataError ? (
                   <Text>{dataError}</Text>
                 ) : (
-                  <>
-                    <Text>{userOrderStatus}</Text>
-                  </>
+                  (orderStatus === 'PENDING') ? (
+                    <>
+                      <Text mb="10px">Подключение системы оплаты сейчас невозможно. При нажатии "Оплатить" произойдёт симуляция оплаты заказа</Text>
+                      <Text mb="10px">{userOrderStatus}</Text>
+                      <Button onClick={() => payForOrder()} colorScheme="green">Оплатить</Button>
+                    </>
+                  ) : (
+                    <>
+                      <Text>{userOrderStatus}</Text>
+                    </>
+                  )
                 )
               }
             </AlertDialogBody>
