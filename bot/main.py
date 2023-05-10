@@ -32,7 +32,10 @@ async def run_notify():
             # If the state is PAID then notify user about the new order and its content
             # Otherwise notify user that the state changed
             query = cur.execute(f"SELECT id FROM auth_user WHERE email='{order[3]}';")
-            user_id = cur.fetchone()[0]
+            try:
+                user_id = cur.fetchone()[0]
+            except:
+                continue
             cur.execute(f"SELECT tg_id FROM authentication_telegramid WHERE user_id='{user_id}';")
 
             if cur.rowcount == 0:
