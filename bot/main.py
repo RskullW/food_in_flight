@@ -34,8 +34,8 @@ async def run_notify():
             query = cur.execute(f"SELECT id FROM auth_user WHERE email='{order[3]}';")
             try:
                 user_id = cur.fetchone()[0]
-            except:
-                continue
+            except Exception as e:
+                print(e)
             cur.execute(f"SELECT tg_id FROM authentication_telegramid WHERE user_id='{user_id}';")
 
             if cur.rowcount == 0:
