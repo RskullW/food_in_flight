@@ -73,7 +73,7 @@ const EnterAlertDialog = () => {
   }
 
   const validatePassword = (password) => {
-    const passw = /^[A-Za-z]\w{7,14}$/;
+    const passw = /^[A-Za-z]\w{7,100}$/;
     return passw.test(password);
   }
 

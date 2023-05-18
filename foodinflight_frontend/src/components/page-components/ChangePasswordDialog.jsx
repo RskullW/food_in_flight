@@ -89,16 +89,12 @@ const ChangePasswordDialog = () => {
         }
       })
 
-      console.log(userInfo.status);
-
       if (userInfo.status === 204) {
-        console.log(userInfo.status);
         setDataError(null);
         window.location.reload();
       }
 
       if (userInfo.status === 400) {
-        console.log(userInfo.status);
         setStatusError('Данные введены некорректно. Проверьте правильность данных.');
         setChangePasswordClicked(false);
         setDisabledChange(false);
