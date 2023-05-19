@@ -28,7 +28,7 @@ const Contacts = () => {
       <Wrap spacing='20px'>
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>Project Manager & Mobile Developer</Text>
+            <Text as='b' fontSize='md'>Капитан корабля (Project Manager & Mobile Developer)</Text>
             <br />
             <Text fontSize='md'>Ковтун Антон Альбертович</Text>
             <Link href="https://vk.com/5fs4d3j2" isExternal>
@@ -46,7 +46,7 @@ const Contacts = () => {
         
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>Backend Developer</Text>
+            <Text as='b' fontSize='md'>Ответственный за отсек двигателей (Backend Developer)</Text>
             <br />
             <Text fontSize='md'>Базилевич Дмитрий Александрович</Text>
             <Link href="https://vk.com/pivolovepizdec" isExternal>
@@ -64,7 +64,7 @@ const Contacts = () => {
 
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>Старший Frontend Developer</Text>
+            <Text as='b' fontSize='md'>Второй пилот (Старший Frontend Developer)</Text>
             <br />
             <Text fontSize='md'>Михайловский Никита Сергеевич</Text>
             <Link href="https://vk.com/mihalych32" isExternal>
@@ -82,7 +82,7 @@ const Contacts = () => {
 
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>Frontend Developer</Text>
+            <Text as='b' fontSize='md'>Ответственный за навигацию (Frontend Developer)</Text>
             <br />
             <Text fontSize='md'>Кириллов Павел Евгеньевич</Text>
             <Link href="https://vk.com/id347879578" isExternal>
