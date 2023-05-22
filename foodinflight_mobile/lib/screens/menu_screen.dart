@@ -4,10 +4,13 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:mobile/components/bottom_bar.dart';
+import 'package:mobile/maps/map_screen.dart';
 import 'package:mobile/products/product_type.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/products/product_grid.dart';
 import 'package:mobile/components/colors.dart';
+import 'package:mobile/users/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../components/gradient_color.dart';
 
 class MenuScreen extends StatefulWidget {
@@ -110,6 +113,7 @@ class _MenuScreenState extends State<MenuScreen> {
 
   Widget _buildSearchBar() {
     return TextField(
+      cursorColor: Colors.black,
       controller: _searchController,
       decoration: InputDecoration(
         hintText: 'Введите запрос...',
@@ -132,6 +136,9 @@ class _MenuScreenState extends State<MenuScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
+    String street =
+        Provider.of<AuthProvider>(context, listen: false).getAddressUser();
+
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
@@ -140,18 +147,22 @@ class _MenuScreenState extends State<MenuScreen> {
         automaticallyImplyLeading: false,
         title: _isSearchOpen
             ? _buildSearchBar()
-            : Text('FOOD IN FLIGHT',
+            : Text(street.length > 1 ? street : '',
                 style: TextStyle(
-                  color: colorNameApp,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.05,
                 )),
-        centerTitle: true,
         leading: _isSearchOpen
             ? null
             : Row(
                 children: [
                   Flexible(
-                    child: _buildLeadingIcon(),
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: MediaQuery.of(context).size.width * 0.015),
+                      child: _buildLeadingIcon(),
+                    ),
                   ),
                 ],
               ),

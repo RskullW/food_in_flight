@@ -90,7 +90,7 @@ class CategoriesGrid extends StatelessWidget {
                     '\n${category.Title}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 16,
+                      fontSize: 20,
                       color: colorNameProduct,
                     ),
                     textAlign: TextAlign.center,

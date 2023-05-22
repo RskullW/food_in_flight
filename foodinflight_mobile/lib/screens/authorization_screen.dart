@@ -75,7 +75,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                 Center(
                   child: Image.asset(
                     'assets/images/logo.png',
-                    scale: MediaQuery.of(context).size.width * 0.015,
+                    scale: MediaQuery.of(context).size.width * 0.07,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.05),
@@ -87,7 +87,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: colorAppBar,
+                        color: Colors.white,
                       ),
                       textAlign: TextAlign.center,
                       maxLines: 3,
@@ -109,8 +109,16 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: TextField(
+                              cursorColor: Colors.black,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Введите почту',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
                                 border: InputBorder.none,
                               ),
                               onChanged: (loginUser) {
@@ -143,8 +151,16 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: TextField(
+                              cursorColor: Colors.black,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Введите пароль',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
                                 border: InputBorder.none,
                               ),
                               obscureText: true,
@@ -183,6 +199,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                           'Регистрация',
                           style: TextStyle(
                             fontSize: 16.0,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -201,6 +218,7 @@ class _AuthorizationScreenState extends State<AuthorizationScreen> {
                           'Вход в аккаунт',
                           style: TextStyle(
                             fontSize: 16.0,
+                            color: Colors.white,
                           ),
                         ),
                       ),

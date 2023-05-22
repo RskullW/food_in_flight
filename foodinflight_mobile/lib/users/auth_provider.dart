@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/foundation.dart';
+import 'package:mobile/maps/map_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
@@ -8,6 +9,7 @@ class AuthProvider with ChangeNotifier {
   bool _isAuthenticated = false;
   String _tokenUser = "";
   String _loginUser = "";
+  String _addressUser = "";
 
   Future<void> set(bool isAuthenticated, String token, String login) async {
     _isAuthenticated = isAuthenticated;
@@ -68,11 +70,14 @@ class AuthProvider with ChangeNotifier {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      _loginUser = _tokenUser = "";
+      _loginUser = _tokenUser = _addressUser = "";
       _isAuthenticated = false;
       await prefs.setBool('isAuthenticated', false);
       await prefs.remove("tokenUser");
       await prefs.remove("loginUser");
+      await prefs.remove("addressUser");
+      await prefs.remove("numberPhoneUser");
+      await prefs.remove("nameUser");
     }
   }
 
@@ -83,6 +88,26 @@ class AuthProvider with ChangeNotifier {
     if (_isAuthenticated) {
       _tokenUser = prefs.getString("tokenUser") ?? "";
       _loginUser = prefs.getString("loginUser") ?? "";
+      _addressUser = prefs.getString("addressUser") ?? "";
+      MapScreen.STREET.value = _addressUser;
     }
+  }
+
+  Future<void> saveStateUser(
+      String addressUser, String numberPhoneUser, String nameUser) async {
+    _addressUser = addressUser;
+
+    if (kDebugMode) print("IS_STATS_USER (set): $nameUser");
+
+    notifyListeners();
+
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    await prefs.setString("addressUser", _addressUser);
+  }
+
+  String getAddressUser() {
+    if (kDebugMode) print("IS_ADDRESS_USER (get): $_addressUser");
+    return _addressUser;
   }
 }

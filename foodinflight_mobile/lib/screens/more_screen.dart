@@ -73,7 +73,8 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
               children: [
                 Padding(
                   padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.1),
+                      horizontal: MediaQuery.of(context).size.width * 0.1,
+                      vertical: MediaQuery.of(context).size.height * 0.005),
                   child: Row(
                     children: [
                       Text(
@@ -138,10 +139,10 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
         Spacer(),
         Spacer(),
         Text(
-          'Version 00.50.0.r (130)',
+          'Version 00.9.8.r (151)',
           style: TextStyle(
               fontFamily: 'Roboto-Black',
-              color: colorAppBar.withOpacity(0.6),
+              color: Colors.white70,
               fontWeight: FontWeight.bold,
               fontSize: MediaQuery.of(context).size.width * 0.035),
         ),
@@ -174,7 +175,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                         radius: MediaQuery.of(context).size.width * 0.05,
                         child: Icon(
                           Icons.person,
-                          color: colorBottomPanelProduct,
+                          color: Colors.white70,
                         ),
                       ),
                       SizedBox(width: MediaQuery.of(context).size.width * 0.01),
@@ -189,7 +190,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                                     .getLogin()
                                 : "Войти",
                             style: TextStyle(
-                              color: colorAppBar,
+                              color: Colors.white70,
                               fontSize:
                                   MediaQuery.of(context).size.width * 0.04,
                               fontWeight: FontWeight.bold,
@@ -216,7 +217,7 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
                                   style: TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.w600,
-                                    color: colorAppBar.withBlue(220),
+                                    color: Colors.white70,
                                   ),
                                 ),
                               ),
@@ -243,45 +244,47 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
             "Мои заказы",
             colorMoreScreenAppBar,
             colorBlack,
-            colorAppBar,
+            Colors.white,
             ProcessButtonHistoryOrders,
             Icons.arrow_forward_ios_sharp,
-            colorAppBar),
+            Colors.white),
         _buildButtonMore(
-            "Перейти на сайт",
-            colorMoreScreenAppBar,
-            colorBlack,
-            colorAppBar,
-            () => _launchSite("foodflight.ru"),
-            Icons.arrow_forward_ios_sharp,
-            colorAppBar),
+          "Перейти на сайт",
+          colorMoreScreenAppBar,
+          colorBlack,
+          Colors.white,
+          () => _launchSite("foodflight.ru"),
+          Icons.arrow_forward_ios_sharp,
+          Colors.white,
+        ),
         _buildButtonMore(
           "Ссылка на репозиторий: ",
           colorMoreScreenAppBar,
           colorBlack,
-          colorAppBar,
+          Colors.white,
           () => _launchSite("github.com", path: "RskullW"),
           Icons.arrow_forward_ios_sharp,
-          colorAppBar,
+          Colors.white,
         ),
         _buildButtonMore(
           "Команда разработчиков: ",
           colorMoreScreenAppBar,
           colorBlack,
-          colorAppBar,
+          Colors.white,
           () => _launchSite("foodflight.ru", path: "more/developers"),
           Icons.arrow_forward_ios_sharp,
-          colorAppBar,
+          Colors.white,
         ),
         _isAuthenticated
             ? _buildButtonMore(
                 "Выйти из профиля",
                 colorMoreScreenAppBar,
                 colorBlack,
-                colorBottomPanelProduct,
+                Colors.white70,
                 () => ProcessButtonExitProfile(),
                 Icons.exit_to_app,
-                colorBottomPanelProduct)
+                Colors.white70,
+              )
             : Container(),
         _buildUnderPanelMoreScreen(),
       ],
@@ -333,13 +336,17 @@ class _MyMoreScreenState extends State<MyMoreScreen> {
         automaticallyImplyLeading: false,
         title: Text(
           "Меню приложения",
-          style: TextStyle(color: colorNameApp),
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         leading: Row(
           children: [
             Flexible(
-              child: Image.asset('assets/images/icon.png'),
+              child: Padding(
+                padding: EdgeInsets.only(
+                    left: MediaQuery.of(context).size.width * 0.015),
+                child: Image.asset('assets/images/icon.png'),
+              ),
             ),
           ],
         ),

@@ -8,6 +8,8 @@ import 'package:mobile/products/categories_grid.dart';
 import 'package:mobile/products/product.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product_categories.dart';
+import 'package:mobile/users/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../components/gradient_color.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -48,38 +50,30 @@ class _HomeScreenState extends State<HomeScreen> {
     return Image.asset('assets/images/icon.png');
   }
 
-  Widget _buildSearchBar() {
-    return TextField(
-      controller: _searchController,
-      decoration: InputDecoration(
-        hintText: 'Введите запрос...',
-        hintStyle: TextStyle(color: colorAppBar),
-        enabledBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
-        focusedBorder:
-            UnderlineInputBorder(borderSide: BorderSide(color: colorAppBar)),
-      ),
-      style: TextStyle(color: colorAppBar),
-    );
-  }
-
   PreferredSizeWidget _buildAppBar() {
+    String street =
+        Provider.of<AuthProvider>(context, listen: false).getAddressUser();
+
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
           automaticallyImplyLeading: false,
-          title: Text('FOOD IN FLIGHT',
+          title: Text(street.length > 1 ? street : "",
               style: TextStyle(
-                color: colorNameApp,
+                color: Colors.white,
                 fontWeight: FontWeight.bold,
+                fontSize: MediaQuery.of(context).size.width * 0.05,
               )),
-          centerTitle: true,
           leading: Row(
             children: [
               Flexible(
-                child: _buildLeadingIcon(),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width * 0.015),
+                  child: _buildLeadingIcon(),
+                ),
               ),
             ],
           )),

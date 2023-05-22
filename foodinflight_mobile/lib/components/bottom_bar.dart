@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/users/auth_provider.dart';
@@ -111,11 +110,12 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
             splashRadius: Material.defaultSplashRadius * 1.3,
             onPressed: onPressed as void Function(),
             color: color,
+            iconSize: MediaQuery.of(context).size.width * 0.06,
           ),
         ),
         Text(
           text.data!,
-          style: TextStyle(color: color),
+          style: TextStyle(color: color, fontSize: 16),
         ),
       ],
     );
@@ -133,26 +133,28 @@ class _MyBottomAppBarState extends State<MyBottomAppBar> {
             child: Stack(
               children: [
                 IconButton(
-                  icon: Icon(Icons.shopping_cart),
-                  splashColor: Colors.transparent,
-                  highlightColor: color.withOpacity(0.1),
-                  splashRadius: Material.defaultSplashRadius * 1.3,
-                  onPressed: () => Navigator.pushNamed(
-                      context,
-                      Provider.of<AuthProvider>(context, listen: false)
-                              .getAuthenticated()
-                          ? '/cart_screen'
-                          : '/authorization_screen'),
-                  color: color,
-                ),
+                    icon: Icon(Icons.shopping_cart),
+                    splashColor: Colors.transparent,
+                    highlightColor: color.withOpacity(0.1),
+                    splashRadius: Material.defaultSplashRadius * 1.3,
+                    onPressed: () => Navigator.pushNamed(
+                        context,
+                        Provider.of<AuthProvider>(context, listen: false)
+                                .getAuthenticated()
+                            ? '/cart_screen'
+                            : '/authorization_screen'),
+                    color: color,
+                    iconSize: MediaQuery.of(context).size.width * 0.06),
                 iconCart,
               ],
             ),
           ),
           Text(
             'Корзина',
-            style:
-                TextStyle(color: _isSelectCart ? colorSelectIcon : colorIcon),
+            style: TextStyle(
+              color: _isSelectCart ? colorSelectIcon : colorIcon,
+              fontSize: 16,
+            ),
           ),
         ],
       );

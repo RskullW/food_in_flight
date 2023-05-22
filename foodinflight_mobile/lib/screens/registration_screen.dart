@@ -74,7 +74,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                 Center(
                   child: Image.asset(
                     'assets/images/logo.png',
-                    scale: MediaQuery.of(context).size.width * 0.015,
+                    scale: MediaQuery.of(context).size.width * 0.07,
                   ),
                 ),
                 SizedBox(height: MediaQuery.of(context).size.width * 0.05),
@@ -86,7 +86,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        color: colorAppBar,
+                        color: Colors.white,
                       ),
                       textAlign: TextAlign.center,
                       maxLines: 1,
@@ -107,8 +107,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: TextField(
+                              cursorColor: Colors.black,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Введите почту',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
                                 border: InputBorder.none,
                               ),
                               onChanged: (emailUser) {
@@ -141,8 +149,16 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: TextField(
+                              cursorColor: Colors.black,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
                               decoration: InputDecoration(
                                 hintText: 'Введите пароль',
+                                hintStyle: TextStyle(
+                                  color: Colors.white,
+                                ),
                                 border: InputBorder.none,
                               ),
                               obscureText: true,
@@ -177,6 +193,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                         'Зарегистрироваться',
                         style: TextStyle(
                           fontSize: 16.0,
+                          color: Colors.white,
                         ),
                       ),
                     ),

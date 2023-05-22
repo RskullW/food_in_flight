@@ -4,7 +4,7 @@ class ProductInCart {
   late Product product;
   int numbersOfCount = 1;
 
-  ProductInCart({required Product Product, int numbersOfCount = 0}) {
+  ProductInCart({required Product Product, int numbersOfCount = 1}) {
     this.product = Product;
     this.numbersOfCount = numbersOfCount;
   }
