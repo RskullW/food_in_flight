@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/products/product.dart';
+import 'package:mobile/users/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../components/gradient_color.dart';
 import 'package:http/http.dart' as http;
 
@@ -133,6 +135,9 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
   }
 
   PreferredSizeWidget _buildAppBar() {
+    String street =
+        Provider.of<AuthProvider>(context, listen: false).getAddressUser();
+
     return PreferredSize(
       preferredSize: Size.fromHeight(kToolbarHeight),
       child: AppBar(
@@ -141,10 +146,11 @@ class _CategoryProductsScreenState extends State<CategoryProductsScreen> {
         automaticallyImplyLeading: true,
         title: _isSearchOpen
             ? _buildSearchBar()
-            : Text('FOOD IN FLIGHT',
+            : Text(street.length > 1 ? street : 'Добавьте адрес...',
                 style: TextStyle(
-                  color: colorNameApp,
+                  color: Colors.white,
                   fontWeight: FontWeight.bold,
+                  fontSize: MediaQuery.of(context).size.width * 0.05,
                 )),
         centerTitle: true,
         actions: <Widget>[

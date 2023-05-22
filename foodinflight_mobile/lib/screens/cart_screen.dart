@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile/components/colors.dart';
 import 'package:mobile/components/delivery_type.dart';
+import 'package:mobile/components/notifications.dart';
 import 'package:mobile/components/state_orders.dart';
 import 'package:mobile/maps/map_screen.dart';
+import 'package:mobile/users/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '../components/cart.dart';
 import '../components/display_message.dart';
 import '../components/gradient_color.dart';
-import 'package:yandex_mapkit/yandex_mapkit.dart';
 
 class CartScreen extends StatefulWidget {
   @override
@@ -26,7 +28,12 @@ class _CartScreenState extends State<CartScreen> {
       ValueNotifier<int>(1);
   static OrderState _orderState = OrderState();
   List<ProductInCart> _productsInCart = [];
-  late YandexMapController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    NotificationHelper.initialize();
+  }
 
   PreferredSizeWidget _buildAppBar() {
     return PreferredSize(
@@ -37,9 +44,10 @@ class _CartScreenState extends State<CartScreen> {
         title: Text(
           "Корзина",
           style: TextStyle(
-              color: colorNameApp,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Roboto-Black'),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: MediaQuery.of(context).size.width * 0.05,
+          ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -63,9 +71,7 @@ class _CartScreenState extends State<CartScreen> {
       _buildPersonalInformation(),
     ];
     List<Widget> thirdPage = [
-      _buildStatusOrder(),
       _buildUnderLine(),
-      _buildPaymentSystem()
     ];
 
     return ValueListenableBuilder(
@@ -83,74 +89,10 @@ class _CartScreenState extends State<CartScreen> {
         });
   }
 
-  Widget _buildPaymentSystem() {
-    return ValueListenableBuilder(
-      valueListenable: _numberStatusCreationOrder,
-      builder: (BuildContext context, int value, Widget? child) {
-        return Column(
-          children: [
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.1),
-                  child: Text(
-                    "К сожалению, нет возможности\nподключить систему оплаты,\nпоэтому каждое нажатие на 'Далее'\nбудет симулировать запросы\n на сервер:",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: MediaQuery.of(context).size.height * 0.02,
-                      color: Colors.white.withAlpha(200),
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 4,
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            _buildUnderLine(),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            _buildText("1. Ожидает оплаты",
-                fontSize: MediaQuery.of(context).size.height * 0.017),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            _buildText("2. Оплачен",
-                fontSize: MediaQuery.of(context).size.height * 0.017,
-                fontWeight: value <= 3 ? FontWeight.normal : FontWeight.bold),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            _buildText("3. Готовится",
-                fontSize: MediaQuery.of(context).size.height * 0.017,
-                fontWeight: value <= 4 ? FontWeight.normal : FontWeight.bold),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            _buildText("4. В доставке",
-                fontSize: MediaQuery.of(context).size.height * 0.017,
-                fontWeight: value <= 5 ? FontWeight.normal : FontWeight.bold),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.01,
-            ),
-            _buildText("5. Доставлен",
-                fontSize: MediaQuery.of(context).size.height * 0.017,
-                fontWeight: value <= 6 ? FontWeight.normal : FontWeight.bold),
-            SizedBox(
-              height: MediaQuery.of(context).size.height * 0.05,
-            ),
-            _buildUnderLine(),
-          ],
-        );
-      },
-    );
+  void _buildPaymentSystem() {
+    NotificationHelper.showNotification(
+        title: "Заказ успешно оплачен!",
+        body: "Следите за заказом в Вашей \"Истории\"!");
   }
 
   Widget _buildText(String message,
@@ -583,6 +525,8 @@ class _CartScreenState extends State<CartScreen> {
                 InkWell(
                   onTap: () {
                     if (Cart.NumProducts > 0 || value > 3) {
+                      print("$value");
+
                       if (value >= 2 && value <= 5) {
                         if ((_phoneNumber.length != 12 ||
                                 _phoneNumber[0] != '+') ||
@@ -593,12 +537,60 @@ class _CartScreenState extends State<CartScreen> {
                           ShowMessage(context, "Укажите адрес доставки");
                         } else {
                           if (_numberApartment.isNotEmpty && value == 2) {
+                            String street = MapScreen.STREET.value;
+                            if (street.length > 1) {
+                              List<String> parts = street.split(',');
+                              if (parts.length > 1) {
+                                String firstPart = parts[0].trim();
+                                int firstChar =
+                                    int.tryParse(firstPart[0]) ?? -1;
+                                if (firstChar != -1 &&
+                                    firstChar >= 0 &&
+                                    firstChar <= 9) {
+                                  parts[0] = firstPart.substring(1);
+                                  street = parts.join(',').trim();
+                                }
+                              }
+                            }
+
                             MapScreen.STREET.value =
-                                '$_numberApartment, ${MapScreen.STREET.value}';
+                                '$_numberApartment, $street';
                           }
 
                           switch (value) {
                             case 2:
+                              _buildPaymentSystem();
+
+                              String street = MapScreen.STREET.value;
+                              if (street.length > 1) {
+                                List<String> parts = street.split(',');
+                                if (parts.length > 1) {
+                                  String secondPart = parts[1].trim();
+                                  if (secondPart.length > 1) {
+                                    int? firstChar =
+                                        int.tryParse(secondPart[0]);
+                                    int? secondChar =
+                                        int.tryParse(secondPart[1]);
+                                    if (firstChar != null &&
+                                        firstChar >= 0 &&
+                                        firstChar <= 9 &&
+                                        secondChar != null &&
+                                        secondChar >= 0 &&
+                                        secondChar <= 9) {
+                                      parts.removeAt(0);
+                                      parts[0] = secondPart.substring(1) +
+                                          ", " +
+                                          parts[0].trim();
+                                      street = parts.join(',').trim();
+                                    }
+                                  }
+                                }
+                              }
+
+                              MapScreen.STREET.value = street;
+                              Provider.of<AuthProvider>(context, listen: false)
+                                  .saveStateUser(
+                                      street, _phoneNumber, _userName);
                               _orderState.CreateOrder(
                                   context,
                                   _userName,
@@ -606,35 +598,14 @@ class _CartScreenState extends State<CartScreen> {
                                   DeliveryType.PAID,
                                   MapScreen.STREET.value,
                                   Cart.GetProducts());
+
+                              Cart.removeAllProducts();
+                              _numberStatusCreationOrder.value = 0;
+                              _phoneNumber = "";
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, '/home', (route) => false);
                               break;
                             case 3:
-                              _orderState.SetStateOrder(
-                                  context,
-                                  "state",
-                                  DeliveryType.PAID
-                                      .toString()
-                                      .split('.')[1]
-                                      .toUpperCase());
-                              break;
-                            case 4:
-                              Cart.removeAllProducts();
-
-                              _orderState.SetStateOrder(
-                                  context,
-                                  "state",
-                                  DeliveryType.COOKING
-                                      .toString()
-                                      .split('.')[1]
-                                      .toUpperCase());
-                              break;
-                            case 5:
-                              _orderState.SetStateOrder(
-                                  context,
-                                  "state",
-                                  DeliveryType.DELIVERING
-                                      .toString()
-                                      .split('.')[1]
-                                      .toUpperCase());
                               break;
                             default:
                               break;
@@ -642,19 +613,9 @@ class _CartScreenState extends State<CartScreen> {
 
                           _numberStatusCreationOrder.value++;
                         }
-                      } else if (value >= 1 && value <= 6) {
-                        _numberStatusCreationOrder.value++;
-                        _orderState.SetStateOrder(
-                            context,
-                            "state",
-                            DeliveryType.DELIVERED
-                                .toString()
-                                .split('.')[1]
-                                .toUpperCase());
-                      } else if (value > 6) {
-                        _numberStatusCreationOrder.value = 1;
-                        Navigator.pushNamedAndRemoveUntil(
-                            context, '/home', (route) => false);
+                      } else if (value == 1) {
+                        value = 2;
+                        _numberStatusCreationOrder.value = 2;
                       }
                     } else {
                       ShowMessage(context,
@@ -674,18 +635,8 @@ class _CartScreenState extends State<CartScreen> {
                       alignment: Alignment.center,
                       child: Text(
                         value == 1
-                            ? "Далее • ${Cart.GetPrices()} ₽"
-                            : value == 2
-                                ? "Перейти к оплате • ${Cart.GetPrices()} ₽"
-                                : value == 3
-                                    ? "Оплатить"
-                                    : value == 4
-                                        ? "Запрос 'Готовится'"
-                                        : value == 5
-                                            ? "Запрос 'В доставке'"
-                                            : value == 6
-                                                ? "Доставлен"
-                                                : "Выйти в меню",
+                            ? "Далее • ${Cart.GetPrices().toInt()} ₽"
+                            : "Оплатить • ${Cart.GetPrices().toInt()} ₽",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 16.0,
