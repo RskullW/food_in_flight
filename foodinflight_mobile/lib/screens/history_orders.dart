@@ -17,6 +17,7 @@ import '../users/auth_provider.dart';
 class ProductsInCartHistory {
   List<ProductInCart> ProductsInCart;
   int Price;
+  String UuidOrder;
   String DataCreateOrder;
   String StatusOrder;
   String Address;
@@ -31,6 +32,7 @@ class ProductsInCartHistory {
     required this.Address,
     required this.NumberPhone,
     required this.NameClient,
+    required this.UuidOrder,
   });
 }
 
@@ -41,6 +43,9 @@ class HistoryOrders extends StatefulWidget {
 
 class _HistoryOrdersState extends State<HistoryOrders> {
   List<ProductsInCartHistory> _productsInCart = [];
+  bool _isLoading = true;
+  Color circle = colorAppBar;
+
   @override
   Widget build(BuildContext context) {
     return _buildAllBars();
@@ -49,14 +54,17 @@ class _HistoryOrdersState extends State<HistoryOrders> {
   @override
   void initState() {
     super.initState();
-    _getOrders();
+    _loadOrders();
   }
 
   Widget _buildAllBars() {
+    var body =
+        _isLoading ? Center(child: CircularProgressIndicator()) : _buildBody();
+
     return Container(
       decoration: GetGradientBackgroundScreenOnMenu(),
       child: Scaffold(
-        body: _buildBody(),
+        body: body,
         appBar: _buildAppBar(),
         backgroundColor: Colors.transparent,
       ),
@@ -64,7 +72,153 @@ class _HistoryOrdersState extends State<HistoryOrders> {
   }
 
   Widget _buildBody() {
-    return Container();
+    return ListView.builder(
+      itemCount: _productsInCart.length,
+      itemBuilder: (context, index) {
+        final order = _productsInCart[index];
+
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          margin: EdgeInsets.all(8.0),
+          child: ExpansionTile(
+            title: Column(
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'Заказ № ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${order.UuidOrder}',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Статус: ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${order.StatusOrder}',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Общая сумма заказа: ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${order.Price + 200} ₽',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.02,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Дата заказа: ',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    Text(
+                      '${order.DataCreateOrder}',
+                      style: TextStyle(
+                        color: Colors.white.withOpacity(0.7),
+                        fontSize: MediaQuery.of(context).size.width * 0.05,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            backgroundColor: colorAppBar.withOpacity(0.7),
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: ClampingScrollPhysics(),
+                itemCount: order.ProductsInCart.length,
+                itemBuilder: (context, productIndex) {
+                  final product = order.ProductsInCart[productIndex].product;
+                  final productCount =
+                      order.ProductsInCart[productIndex].numbersOfCount;
+
+                  return ListTile(
+                    title: Row(
+                      children: [
+                        Text(
+                          '${product.Name} ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: MediaQuery.of(context).size.width * 0.04,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        Text(
+                          'x${productCount}\t\t',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: MediaQuery.of(context).size.width * 0.04,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                        Text(
+                          '${(product.Price * productCount).toInt()}₽',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.8),
+                            fontSize: MediaQuery.of(context).size.width * 0.035,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   PreferredSizeWidget _buildAppBar() {
@@ -76,9 +230,10 @@ class _HistoryOrdersState extends State<HistoryOrders> {
         title: Text(
           "История заказов",
           style: TextStyle(
-              color: colorNameApp,
-              fontWeight: FontWeight.bold,
-              fontFamily: 'Roboto-Black'),
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: MediaQuery.of(context).size.width * 0.05,
+          ),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,
@@ -105,17 +260,45 @@ class _HistoryOrdersState extends State<HistoryOrders> {
     List<ProductInCart> productsInCart = [];
     String dataCreateOrder = json["created"];
     String state = json['state'];
+    String uuidOrder = json['unique_uuid'];
     /* Преобразование времени */
     DateTime dateTime = DateTime.parse(dataCreateOrder);
 
     String formattedDate =
         "${dateTime.day.toString().padLeft(2, '0')}.${dateTime.month.toString().padLeft(2, '0')}.${dateTime.year} ${(dateTime.hour + 3).toString().padLeft(2, '0')}:${dateTime.minute.toString().padLeft(2, '0')}";
 
+    uuidOrder = uuidOrder.substring(28, 36);
+
+    switch (state) {
+      case 'PENDING':
+        state = "Ожидает оплаты";
+        break;
+      case 'PAID':
+        state = "Оплачено";
+        break;
+      case 'COOKING':
+        state = "Готовится";
+        break;
+      case 'DELIVERING':
+        state = "В пути";
+        break;
+      case 'DELIVERED':
+        state = "Доставлен";
+        break;
+      case 'CANCELED':
+        state = "Отменен";
+        break;
+      default:
+        break;
+    }
+
     var items = json['items'];
     for (var item in items) {
       String slug = item['item_slug'];
       int amount = item['amount'];
+
       Product product = await fetchProducts(slug);
+
       productsInCart
           .add(ProductInCart(Product: product, numbersOfCount: amount));
     }
@@ -128,7 +311,20 @@ class _HistoryOrdersState extends State<HistoryOrders> {
       Address: utf8.decode(json['address'].codeUnits),
       NumberPhone: json['phone'],
       NameClient: utf8.decode(json['name'].codeUnits),
+      UuidOrder: uuidOrder,
     );
+  }
+
+  Future<void> _loadOrders() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    await _getOrders();
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> _getOrders() async {
@@ -146,18 +342,13 @@ class _HistoryOrdersState extends State<HistoryOrders> {
       for (var item in jsonData) {
         ProductsInCartHistory productsInCartHistory =
             await _getProductsInCartHistory(item);
-        _productsInCart.add(productsInCartHistory);
-        print(
-            "DEBUG:\nState:${productsInCartHistory.StatusOrder}\nAddress:${productsInCartHistory.Address}\nData:${productsInCartHistory.DataCreateOrder}\nName:${productsInCartHistory.NameClient}\nOrders:");
-        for (var item in productsInCartHistory.ProductsInCart) {
-          print("________________");
-          print(
-              "{Product: ${item.product.Name}\nAmount:${item.numbersOfCount}");
-          print("________________");
+
+        if (productsInCartHistory.StatusOrder == "PENDING") {
+          continue;
         }
+        _productsInCart.add(productsInCartHistory);
       }
     } else {
-      print("statussss code:${response.statusCode}");
       final jsonResponse = jsonDecode(response.body);
 
       throw Exception(

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile/components/cart.dart';
@@ -29,8 +30,8 @@ class OrderState {
     if (response.statusCode != 200 &&
         response.statusCode != 201 &&
         response.statusCode != 204) {
-      print("URI: 'https://foodflight.ru/api/orders/$_uniqueKey/");
-      throw Exception('Failed to set \'$key\' order: ${response.statusCode}\n');
+      if (kDebugMode)
+        ('Failed to set \'$key\' order: ${response.statusCode}\n');
     }
   }
 

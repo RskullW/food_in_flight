@@ -245,7 +245,7 @@ class ProductGridWithTitle extends StatelessWidget {
               child: Text(
                 'Популярное',
                 style: TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 28.0,
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   shadows: [
@@ -304,7 +304,7 @@ class ProductGridWithTitle extends StatelessWidget {
             children: [
               Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 16.0, horizontal: 24.0),
+                    vertical: 16.0, horizontal: 24.0), // horizontal: 16.0
                 child: Text(
                   category,
                   style: TextStyle(
