@@ -221,20 +221,6 @@ const FooterMainPart = () => {
             </IconButton>
           </Link>
 
-          <Link
-            href="https://github.com/RskullW/food_in_flight"
-            isExternal
-          >
-            <IconButton
-              bgGradient="linear(to-l, #E8DBFC, #F8F9D2)"
-              borderRadius="50%"
-              w="50px"
-              h="50px"
-            >
-              <AiFillGithub />
-            </IconButton>
-          </Link>
-
         </Flex>
 
       </Flex>

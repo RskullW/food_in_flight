@@ -43,23 +43,7 @@ const Contacts = () => {
             </Link>
           </Container>
         </WrapItem>
-        <WrapItem>
-          <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>Backend Developer</Text>
-            <br />
-            <Text fontSize='md'>Балкунов Сергей Иванович</Text>
-            <Link href="https://vk.com/itm0sha" isExternal>
-              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
-                ВКонтакте
-              </Button>
-            </Link>
-            <Link href="https://t.me/itmosha" isExternal margin='10px'>
-              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
-                Telegram
-              </Button>
-            </Link>
-          </Container>
-        </WrapItem>
+        
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
             <Text as='b' fontSize='md'>Backend Developer</Text>
@@ -77,9 +61,10 @@ const Contacts = () => {
             </Link>
           </Container>
         </WrapItem>
+
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>Frontend Developer</Text>
+            <Text as='b' fontSize='md'>Старший Frontend Developer</Text>
             <br />
             <Text fontSize='md'>Михайловский Никита Сергеевич</Text>
             <Link href="https://vk.com/mihalych32" isExternal>
@@ -94,6 +79,7 @@ const Contacts = () => {
             </Link>
           </Container>
         </WrapItem>
+
         <WrapItem>
           <Container w='543px' h='auto' bg='gray.200' padding='30px'>
             <Text as='b' fontSize='md'>Frontend Developer</Text>
@@ -111,23 +97,7 @@ const Contacts = () => {
             </Link>
           </Container>
         </WrapItem>
-        <WrapItem>
-          <Container w='543px' h='auto' bg='gray.200' padding='30px'>
-            <Text as='b' fontSize='md'>DevOps</Text>
-            <br />
-            <Text fontSize='md'>Бусырев Виктор Андреевич</Text>
-            <Link href="https://vk.com/vi350" isExternal>
-              <Button leftIcon={<SlSocialVkontakte />} colorScheme='blue' variant='solid' size='sm'>
-                ВКонтакте
-              </Button>
-            </Link>
-            <Link href="https://t.me/just_yoy" isExternal margin='10px'>
-              <Button leftIcon={<FaTelegramPlane />} colorScheme='telegram' variant='solid' size='sm'>
-                Telegram
-              </Button>
-            </Link>
-          </Container>
-        </WrapItem>
+        
       </Wrap>
       <Container w='543px' h='auto' bg='gray.200' padding='30px' marginTop='20px'>
         <Text as='b' fontSize='md'>Почта для предложений, отзывов, пожеланий:</Text>

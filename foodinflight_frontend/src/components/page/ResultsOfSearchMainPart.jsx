@@ -44,7 +44,6 @@ const ResultsOfSearchMainPart = () => {
           const productsJSON = await productsResponse.json();
           const filteredProducts = productsJSON.filter((product) => product.title.toLowerCase().includes(queryName));
           setAllProducts(filteredProducts);
-          console.log(allProducts.length);
         } else {
           setProductsError(true);
         }
